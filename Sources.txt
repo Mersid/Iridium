@@ -1,0 +1,41 @@
+A 2d parallelogram parameterizer. My own work.
+https://www.desmos.com/calculator/gonnwqh8c2
+
+A technique to determine the hit of a triangle by using planes and a point-in-point detector. Unused, but helpful.
+https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
+
+Check out the Geogebra file for an example of parallelogram detection in 3d space. Work is my own. Use in conjunction with Desmos link below.
+<Check Geogebra file>
+
+Companion tool used with Geogebra to help verify that the algorithms used work. Contains a built-in equation to compute dot products and s/t parameterization of a plane at a given point.
+https://www.desmos.com/calculator/5gysjqy7aa
+
+Another technique to compute ray tracing of triangles. Unused, but helpful.
+https://blog.scottlogic.com/2020/03/10/raytracer-how-to.html
+
+For providing the algorithms used by the Geogebra and Desmos calculators for parallelograms.
+The first and second links provide techniques for computing the intersection of a plane and a ray. I used the one in the first link, but the second one is essentially identical.
+The third link provides a technique for computing the parametric values s/t for some plane with reference to a given point. I modified it in the Geogebra and Desmos calculator to make it work for parallelograms.
+https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-plane-and-ray-disk-intersection
+https://web.archive.org/web/20110716101931/http://www.softsurfer.com/Archive/algorithm_0104/algorithm_0104B.htm
+https://web.archive.org/web/20110716101940/http://www.softsurfer.com/Archive/algorithm_0105/algorithm_0105.htm
+
+Desmos calculator to compute the intersection, given three points for the parallelogram and a ray. Work is my own.
+Here's a fun one: set l to [-1.6, -0.4, -1] to have it point at a vertex.
+https://www.desmos.com/calculator/tzhhydtblv
+
+For a list of common geometric object intersection algorithms
+https://www.realtimerendering.com/intersections.html
+
+For understanding perspective ray-tracing cameras and pinhole camera models.
+https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-generating-camera-rays/generating-camera-rays
+https://www.scratchapixel.com/lessons/3d-basic-rendering/3d-viewing-pinhole-camera
+
+For an intro to the ray-tracing algorithm.
+https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-ray-tracing/implementing-the-raytracing-algorithm
+
+For a technique to compute the intersection of a ray and a sphere
+https://www.youtube.com/watch?v=HFPlKQGChpE
+
+The providers of Eigen and the STB libraries
+<Sources obtained from assignment>
