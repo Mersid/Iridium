@@ -57,11 +57,15 @@ public:
 	/**
 	 * @return The number of pixels that comprise the camera's virtual plane.
 	 */
-	unsigned int pixelCount();
+	unsigned int getPixelCount();
+
+	double getAspectRatio();
 
 private:
 	int width;
 	int height;
+
+	double aspectRatio; // width / height
 
 	Scene* scene; // Which scene the camera is a part of. Can be null if it's not in a scene. This is needed to access other objects in the scene.
 };

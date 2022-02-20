@@ -5,20 +5,19 @@
 #include "Scene.h" // We can use "Scene.h" here because .cpp files aren't #included, so we won't have to deal with circular dependency
 
 Camera::Camera(int width, int height) :
-	width(width), height(height)
+	width(width), height(height), aspectRatio((double)width / height)
 {
 }
 
 Camera::Camera()
 {
-
 }
 
 Texture Camera::takeSnapshot(CameraMode cameraMode)
 {
 	Texture t(width, height);
 
-	for (unsigned int i = 0; i < pixelCount(); i++)
+	for (unsigned int i = 0; i < getPixelCount(); i++)
 	{
 		Eigen::Vector3d pixelRay = getPixelRayAt(i);
 		unsigned int pixelX = i % width;
@@ -114,11 +113,22 @@ Eigen::Vector3d Camera::getPixelRayAt(int i)
 	double screenX = 2 * ndcX - 1;
 	double screenY = 1 - 2 * ndcY;
 
-	return Eigen::Vector3d(screenX, screenY, -1);// We're fixing z = -1
+	double halfAlpha = EIGEN_PI / 4; // TODO: Replace this with adjustable focal len
+
+	double pixelCameraX = screenX * aspectRatio * std::tan(halfAlpha);
+	double pixelCameraY = screenY * std::tan(halfAlpha);
+
+
+	return Eigen::Vector3d(pixelCameraX, pixelCameraY, -1); // We're fixing z = -1
 }
 
-unsigned int Camera::pixelCount()
+unsigned int Camera::getPixelCount()
 {
 	return width * height;
+}
+
+double Camera::getAspectRatio()
+{
+	return aspectRatio;
 }
 
