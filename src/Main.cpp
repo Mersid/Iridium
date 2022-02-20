@@ -2,6 +2,6 @@
 
 int main()
 {
-	Shimmerlight a2RayTracer;
-	a2RayTracer.run();
+	Shimmerlight shimmerlight;
+	shimmerlight.run();
 }

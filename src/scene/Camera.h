@@ -42,10 +42,26 @@ public:
 	 */
 	void setScene(Scene& s);
 
+	/**
+	 * Gets the pixel ray's position on the virtual plane of the camera. This allows us to lazily compute the pixel ray position.
+	 * Testing shows that a 1600 x 1600 image can use something like 420.9 MB of RAM, most of which is just the precomputed
+	 * pixel ray positions.
+	 * NOTE: This technique reduced memory usage from ~420.9 MB for the multi2 image down to ~69.3 MB with what appears to be negligible difference in speed:
+	 * 		 The first run took 196 seconds the second took 203 seconds.
+	 * @param i The pixel value to return the position for. In 2d, the value i is y * width + x, starting with the first pixel at i = 0.
+	 * 			Ensure that the value is less than the number of pixels, or it will fall off the bottom edge.
+	 * @return The pixel ray position along the virtual plane.
+	 */
+	Eigen::Vector3d getPixelRayAt(int i);
+
+	/**
+	 * @return The number of pixels that comprise the camera's virtual plane.
+	 */
+	unsigned int pixelCount();
+
 private:
 	int width;
 	int height;
-	std::vector<Eigen::Vector3d> pixelRays;
 
 	Scene* scene; // Which scene the camera is a part of. Can be null if it's not in a scene. This is needed to access other objects in the scene.
 };

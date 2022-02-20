@@ -7,32 +7,6 @@
 Camera::Camera(int width, int height) :
 	width(width), height(height)
 {
-	// Create the required number of pixel rays
-	pixelRays = std::vector<Eigen::Vector3d>(width * height, Eigen::Vector3d(0, 0, 0));
-
-	// We start with an empty "image" represented by a vector of "pixel" rays, each pixel of which corresponds to a single pixel on
-	// a texture. However, our camera's pixel rays are from -1 to 1, so we need to scale accordingly.
-	// We're converting from raster space, to NDC, to screen space for each pixel to evenly distribute our pixel rays. We can still take
-	// advantage of their being in a vector to obtain the original raster coordinates.
-
-	for (std::vector<Eigen::Vector3d>::size_type i = 0; i < pixelRays.size(); i++)
-	{
-		unsigned int pixelX = i % width;
-		unsigned int pixelY = i / width;
-
-		// NDC, between 0 and 1
-		double ndcX = (pixelX + 0.5) / width;
-		double ndcY = (pixelY + 0.5) / height;
-
-		// Screen space, which our camera expects. Between -1 and 1 for each axis
-		double screenX = 2 * ndcX - 1;
-		double screenY = 1 - 2 * ndcY;
-
-		Eigen::Vector3d& pixelRay = pixelRays[i];
-		pixelRay[0] = screenX;
-		pixelRay[1] = screenY;
-		pixelRay[2] = -1; // We're fixing z = -1
-	}
 }
 
 Camera::Camera()
@@ -44,9 +18,9 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 {
 	Texture t(width, height);
 
-	for (std::vector<Eigen::Vector3d>::size_type i = 0; i < pixelRays.size(); i++)
+	for (unsigned int i = 0; i < pixelCount(); i++)
 	{
-		Eigen::Vector3d& pixelRay = pixelRays[i];
+		Eigen::Vector3d pixelRay = getPixelRayAt(i);
 		unsigned int pixelX = i % width;
 		unsigned int pixelY = i / width;
 
@@ -79,7 +53,7 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 			objectNormal = -objectNormal;
 
 		// Move hitPos in the normal direction a bit so that the shadow ray won't hit the object itself.
-		hitPos = hitPos + objectNormal * 0.001;
+		hitPos = hitPos + objectNormal * 1e-6;
 
 		Light& light = scene->getLight();
 
@@ -93,40 +67,25 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 
 		// See slide set 5: Final Shading Equation for more on this topic
 		// We should note that objectNormal and lightVector are unit vectors, so the dot of them is <= 1
-		// Compute ambient color
 
-		// Compute diffuse intensities for each of r, g, b.
-		double ambientR = scene->getAmbientCoefficient()[0] * scene->getAmbientLightIntensity();
-		double ambientG = scene->getAmbientCoefficient()[1] * scene->getAmbientLightIntensity();
-		double ambientB = scene->getAmbientCoefficient()[2] * scene->getAmbientLightIntensity();
-
-		double diffuseR = primitive.getDiffuseCoefficient()[0] * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
-		double diffuseG = primitive.getDiffuseCoefficient()[1] * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
-		double diffuseB = primitive.getDiffuseCoefficient()[2] * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
-
-		// Compute specular intensities for each of r, g, b
-		double specularR = primitive.getSpecularCoefficient()[0] * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getPhongExponent()));
-		double specularG = primitive.getSpecularCoefficient()[1] * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getPhongExponent()));
-		double specularB = primitive.getSpecularCoefficient()[2] * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getPhongExponent()));
+		Eigen::Vector3d ambient = scene->getAmbientCoefficient() * scene->getAmbientLightIntensity();
+		Eigen::Vector3d diffuse = primitive.getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
+		Eigen::Vector3d specular = primitive.getSpecularCoefficient() * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getPhongExponent()));
 
 		// If shadow ray hits an object, we won't have light hitting it, so ambient only
 		Ray shadow(hitPos, lightVector);
 		// Ignore self intersection because diffuse/specular dot products will handle it more accurately
-		std::shared_ptr<Primitive> shadowHitPtr = scene->getFirstIntersection(shadow, primitivePtr);
+		std::shared_ptr<Primitive> shadowHitPtr = scene->getFirstIntersection(shadow, primitivePtr); // TODO: This can *probably* go.
 		if (shadowHitPtr != nullptr)
 		{
-			diffuseR = 0;
-			diffuseG = 0;
-			diffuseB = 0;
-
-			specularR = 0;
-			specularG = 0;
-			specularB = 0;
+			diffuse = Eigen::Vector3d::Zero();
+			specular = Eigen::Vector3d::Zero();
 		}
 
-		unsigned char colorR = (unsigned char)(255 * std::clamp(ambientR + diffuseR + specularR, 0.0, 1.0));
-		unsigned char colorG = (unsigned char)(255 * std::clamp(ambientG + diffuseG + specularG, 0.0, 1.0));
-		unsigned char colorB = (unsigned char)(255 * std::clamp(ambientB + diffuseB + specularB, 0.0, 1.0));
+		Eigen::Vector3d color = ambient + diffuse + specular;
+		unsigned char colorR = (unsigned char)(255 * std::clamp(color[0], 0.0, 1.0));
+		unsigned char colorG = (unsigned char)(255 * std::clamp(color[1], 0.0, 1.0));
+		unsigned char colorB = (unsigned char)(255 * std::clamp(color[2], 0.0, 1.0));
 
 		t.setPixel((signed int)pixelX, (signed int)pixelY, colorR, colorG, colorB);
 	}
@@ -136,5 +95,30 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 void Camera::setScene(Scene &s)
 {
 	this->scene = &s;
+}
+
+Eigen::Vector3d Camera::getPixelRayAt(int i)
+{
+	// We start with an empty "image" represented by a vector of "pixel" rays, each pixel of which corresponds to a single pixel on
+	// a texture. However, our camera's pixel rays are from -1 to 1, so we need to scale accordingly.
+	// We're converting from raster space, to NDC, to screen space for each pixel to evenly distribute our pixel rays.
+
+	unsigned int pixelX = i % width;
+	unsigned int pixelY = i / width;
+
+	// NDC, between 0 and 1
+	double ndcX = (pixelX + 0.5) / width;
+	double ndcY = (pixelY + 0.5) / height;
+
+	// Screen space, which our camera expects. Between -1 and 1 for each axis
+	double screenX = 2 * ndcX - 1;
+	double screenY = 1 - 2 * ndcY;
+
+	return Eigen::Vector3d(screenX, screenY, -1);// We're fixing z = -1
+}
+
+unsigned int Camera::pixelCount()
+{
+	return width * height;
 }
 
