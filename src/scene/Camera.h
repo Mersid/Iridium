@@ -60,6 +60,14 @@ public:
 	 */
 	unsigned int getPixelCount();
 
+	/**
+	 * Sets the vertical field of view and scales the horizontal axis accordingly. This is done by manipulating the focal length.
+	 * By default, the focal length of 1 creates an angle of 90 degrees. Please note that explicitly setting the angle to 90 degrees
+	 * is not the EXACT same as setting the focal length to 1 due to floating point rounding errors (it actually sets the FOV to something like 1.000000001
+	 * @param angle The angle to set the vertical FOV to, in degrees.
+	 */
+	void setFov(double angle);
+
 private:
 	int width;
 	int height;

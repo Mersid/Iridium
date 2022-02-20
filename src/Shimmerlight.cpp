@@ -13,7 +13,8 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
-	Camera camera(800, 800, 1);
+	Camera camera(800, 800);
+	camera.setFov(90);
 //
 //	Scene parallelogramGreyscale;
 //	parallelogramGreyscale.setCamera(camera);
