@@ -10,9 +10,9 @@ Texture Scene::takeSnapshot(CameraMode cameraMode)
 	return camera.takeSnapshot(cameraMode);
 }
 
-Light& Scene::getLight()
+std::vector<Light>& Scene::getLights()
 {
-	return light;
+	return lights;
 }
 
 const Eigen::Vector3d &Scene::getAmbientCoefficient() const
@@ -31,9 +31,9 @@ void Scene::setCamera(Camera c)
 	camera.setScene(*this);
 }
 
-void Scene::setLight(Light l)
+void Scene::addLight(Light l)
 {
-	light = l;
+	lights.emplace_back(l);
 }
 
 void Scene::addPrimitive(std::shared_ptr<Primitive> p)

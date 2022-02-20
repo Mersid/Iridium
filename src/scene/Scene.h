@@ -9,7 +9,7 @@ class Scene
 public:
 	Scene();
 
-	Light& getLight();
+	std::vector<Light>& getLights();
 
 	/**
 	 * Sets the given camera as the camera. This camera is copied
@@ -21,7 +21,7 @@ public:
 	 * Adds a light to the scene
 	 * @param l The light to add to the scene
 	 */
-	void setLight(Light l);
+	void addLight(Light l);
 
 	/**
 	 * Adds a new primitive to the scene
@@ -51,7 +51,7 @@ public:
 private:
 	Camera camera;
 	std::vector<std::shared_ptr<Primitive>> primitives;
-	Light light;
+	std::vector<Light> lights;
 
 	Eigen::Vector3d ambientCoefficient;
 	double ambientLightIntensity{};

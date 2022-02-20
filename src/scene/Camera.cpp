@@ -32,7 +32,7 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 		else // Orthographic, so fire rays in a straight line
 			// RECALL THAT RAY PARAM TAKES POS AND DIR, NOT START AND END. DON'T BE LIKE ME AND MAKE THIS MISTAKE :'(  - Steven, 2022-02-11
 			// Guess what? I made the same mistake again (for the focal length), by changing the aperture's z pos but not the dir. Classic. - Steven, 2022-02-19
-			ray = Ray(pixelRay, Eigen::Vector3d(0, 0, -1));
+			ray = Ray(pixelRay + Eigen::Vector3d(0, 0, 1), pixelRay);
 
 		// Find the nearest primitive we'll hit
 		std::shared_ptr<Primitive> primitivePtr = scene->getFirstIntersection(ray);
@@ -58,34 +58,41 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 		// Move hitPos in the normal direction a bit so that the shadow ray won't hit the object itself.
 		hitPos = hitPos + objectNormal * 1e-6;
 
-		Light& light = scene->getLight();
-
-		// Unit vector from the impact point to the light
-		Eigen::Vector3d lightVector = (light.getPosition() - hitPos).normalized();
-
-		// Specular shading depends on the viewing angle of the user (camera). We need to compute the bisector, from the point of view of the impact position,
-		// of the ray to the camera and the vector to the light. The ray's direction vector points from the camera to the impact position, so negative
-		// of that points from the impact position to the camera
-		Eigen::Vector3d bisector = (-ray.getDirection() + lightVector).normalized();
-
-		// See slide set 5: Final Shading Equation for more on this topic
-		// We should note that objectNormal and lightVector are unit vectors, so the dot of them is <= 1
+		std::vector<Light>& lights = scene->getLights();
 
 		Eigen::Vector3d ambient = scene->getAmbientCoefficient() * scene->getAmbientLightIntensity();
-		Eigen::Vector3d diffuse = primitive.getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
-		Eigen::Vector3d specular = primitive.getSpecularCoefficient() * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getPhongExponent()));
+		Eigen::Vector3d color = ambient;
 
-		// If shadow ray hits an object, we won't have light hitting it, so ambient only
-		Ray shadow(hitPos, light.getPosition());
-		// Ignore self intersection because diffuse/specular dot products will handle it more accurately
-		std::shared_ptr<Primitive> shadowHitPtr = scene->getFirstIntersection(shadow, primitivePtr); // TODO: This can *probably* go.
-		if (shadowHitPtr != nullptr)
+		for (Light& light : lights)
 		{
-			diffuse = Eigen::Vector3d::Zero();
-			specular = Eigen::Vector3d::Zero();
+			// Unit vector from the impact point to the lights
+			Eigen::Vector3d lightVector = (light.getPosition() - hitPos).normalized();
+
+			// Specular shading depends on the viewing angle of the user (camera). We need to compute the bisector, from the point of view of the impact position,
+			// of the ray to the camera and the vector to the lights. The ray's direction vector points from the camera to the impact position, so negative
+			// of that points from the impact position to the camera
+			Eigen::Vector3d bisector = (-ray.getDirection() + lightVector).normalized();
+
+			// See slide set 5: Final Shading Equation for more on this topic
+			// We should note that objectNormal and lightVector are unit vectors, so the dot of them is <= 1
+
+
+			Eigen::Vector3d diffuse = primitive.getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
+			Eigen::Vector3d specular = primitive.getSpecularCoefficient() * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getPhongExponent()));
+
+			// If shadow ray hits an object, we won't have lights hitting it, so ambient only
+			Ray shadow(hitPos, light.getPosition());
+			// Ignore self intersection because diffuse/specular dot products will handle it more accurately
+			std::shared_ptr<Primitive> shadowHitPtr = scene->getFirstIntersection(shadow, primitivePtr); // TODO: This can *probably* go.
+			if (shadowHitPtr != nullptr)
+			{
+				diffuse = Eigen::Vector3d::Zero();
+				specular = Eigen::Vector3d::Zero();
+			}
+
+			color += diffuse + specular;
 		}
 
-		Eigen::Vector3d color = ambient + diffuse + specular;
 		unsigned char colorR = (unsigned char)(255 * std::clamp(color[0], 0.0, 1.0));
 		unsigned char colorG = (unsigned char)(255 * std::clamp(color[1], 0.0, 1.0));
 		unsigned char colorB = (unsigned char)(255 * std::clamp(color[2], 0.0, 1.0));
