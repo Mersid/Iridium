@@ -12,11 +12,12 @@ public:
 	Ray();
 
 	/**
-	 * Constructs a ray with the given position and direction
+	 * Constructs a ray with the given position and pos2
 	 * @param position The initial position of the ray
-	 * @param direction The direction of the ray. It will be normalized automatically.
+	 * @param pos2 Another point on the ray. The ray is formed from the initial position, going through this point.
+	 * 			   This is convenient because we can use a direction vector, or a "look-at" vector that will get automatically normalized.
 	 */
-	Ray(Eigen::Vector3d position, Eigen::Vector3d direction);
+	Ray(Eigen::Vector3d position, Eigen::Vector3d pos2);
 
 	[[nodiscard]] const Eigen::Vector3d& getPosition() const;
 

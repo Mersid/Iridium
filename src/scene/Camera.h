@@ -21,8 +21,9 @@ public:
 	 * If used in orthographic mode, the initial coordinates of the ray will be equal to the pixel ray, except at z = 0 instead of z = -1.
 	 * @param width The width of the camera, in pixels
 	 * @param height The height of the camera, in pixels
+	 * @param focalLength Distance from the virtual plane to the aperture. Defined this way to keep focalLength positive
 	 */
-	Camera(int width, int height);
+	Camera(int width, int height, double focalLength = 1.0);
 
 	/**
 	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.
@@ -59,11 +60,10 @@ public:
 	 */
 	unsigned int getPixelCount();
 
-	double getAspectRatio();
-
 private:
 	int width;
 	int height;
+	double focalLength;
 
 	double aspectRatio; // width / height
 

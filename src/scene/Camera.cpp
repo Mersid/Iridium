@@ -4,8 +4,8 @@
 #include "../Shimmerlight.h"
 #include "Scene.h" // We can use "Scene.h" here because .cpp files aren't #included, so we won't have to deal with circular dependency
 
-Camera::Camera(int width, int height) :
-	width(width), height(height), aspectRatio((double)width / height)
+Camera::Camera(int width, int height, double focalLength) :
+		width(width), height(height), focalLength(focalLength), aspectRatio((double)width / height)
 {
 }
 
@@ -25,9 +25,10 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 
 		Ray ray;
 		if (cameraMode == CameraMode::PERSPECTIVE)
-			ray = Ray(Eigen::Vector3d(0, 0, 0), pixelRay);
+			ray = Ray(Eigen::Vector3d(0, 0, -1 + focalLength), pixelRay); // because plane is at z = -1
 		else // Orthographic, so fire rays in a straight line
 			// RECALL THAT RAY PARAM TAKES POS AND DIR, NOT START AND END. DON'T BE LIKE ME AND MAKE THIS MISTAKE :'(  - Steven, 2022-02-11
+			// Guess what? I made the same mistake again (for the focal length), by changing the aperture's z pos but not the dir. Classic. - Steven, 2022-02-19
 			ray = Ray(pixelRay, Eigen::Vector3d(0, 0, -1));
 
 		// Find the nearest primitive we'll hit
@@ -72,7 +73,7 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 		Eigen::Vector3d specular = primitive.getSpecularCoefficient() * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getPhongExponent()));
 
 		// If shadow ray hits an object, we won't have light hitting it, so ambient only
-		Ray shadow(hitPos, lightVector);
+		Ray shadow(hitPos, light.getPosition());
 		// Ignore self intersection because diffuse/specular dot products will handle it more accurately
 		std::shared_ptr<Primitive> shadowHitPtr = scene->getFirstIntersection(shadow, primitivePtr); // TODO: This can *probably* go.
 		if (shadowHitPtr != nullptr)
@@ -125,10 +126,5 @@ Eigen::Vector3d Camera::getPixelRayAt(int i)
 unsigned int Camera::getPixelCount()
 {
 	return width * height;
-}
-
-double Camera::getAspectRatio()
-{
-	return aspectRatio;
 }
 

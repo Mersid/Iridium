@@ -13,67 +13,67 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
-	Camera camera(800, 400);
-
-	Scene parallelogramGreyscale;
-	parallelogramGreyscale.setCamera(camera);
-	parallelogramGreyscale.addPrimitive(std::make_shared<Parallelogram>(
-			Eigen::Vector3d(-0.5, -0.5, -1),
-			Eigen::Vector3d(-0.5, -0.5, -1) + Eigen::Vector3d(0, 0.7, -10),
-			Eigen::Vector3d(-0.5, -0.5, -1) + Eigen::Vector3d(1, 0.4, 0)));
-	parallelogramGreyscale.setLight(Light(Eigen::Vector3d(-1, 0.5, 0), 2));
-
-	Texture planePerspective = parallelogramGreyscale.takeSnapshot(CameraMode::PERSPECTIVE);
-	textureSerializer.serialize(planePerspective, "plane_perspective.png");
-
-	Texture planeOrthographic = parallelogramGreyscale.takeSnapshot(CameraMode::ORTHOGRAPHIC);
-	textureSerializer.serialize(planeOrthographic, "plane_orthographic.png");
-
-
-	Scene sphereGreyscale;
-	sphereGreyscale.setCamera(camera);
-	sphereGreyscale.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(0, -0.5, -2.5), 1,
-			Eigen::Vector3d(1.0, 1.0, 1.0), Eigen::Vector3d(0.05, 0.05, 0.05), 3));
-	sphereGreyscale.setLight(Light(Eigen::Vector3d(-0.5, 0.25, -1.5), 1));
-
-	Texture sphere = sphereGreyscale.takeSnapshot(CameraMode::PERSPECTIVE);
-	textureSerializer.serialize(sphere, "sphere.png");
-
-
-	Scene shading;
-	shading.setCamera(camera);
-	shading.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(0, -0.5, -2.5), 1,
-			Eigen::Vector3d(1.0, 0.07, 1.0), Eigen::Vector3d(0.05, 0.05, 0.3), 70));
-	shading.setLight(Light(Eigen::Vector3d(-1.6, 1, -1.35), 1));
-
-	Texture shadedSphere = shading.takeSnapshot(CameraMode::PERSPECTIVE);
-	textureSerializer.serialize(shadedSphere, "shading.png");
-
-	Texture shadedSphereOrthographic = shading.takeSnapshot(CameraMode::ORTHOGRAPHIC);
-	textureSerializer.serialize(shadedSphereOrthographic, "shading_orthographic.png");
-
-
-	Scene spherePlaneIntersect;
-
-	spherePlaneIntersect.setCamera(camera);
-	spherePlaneIntersect.setLight(Light(Eigen::Vector3d(-1, 4, -6), 1));
-	spherePlaneIntersect.addPrimitive(std::make_shared<Parallelogram>(
-			Eigen::Vector3d(-2, -2, -5),
-			Eigen::Vector3d(2,-2,-5),
-			Eigen::Vector3d(-2,2,-10)));
-	spherePlaneIntersect.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(-2, 0, -8), 1,
-			Eigen::Vector3d(0.1, 0.1, 0.5), Eigen::Vector3d(0.4, 0.4, 0.4)));
-	spherePlaneIntersect.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(-2, 1, -8), 1,
-			Eigen::Vector3d(0.5, 0.1, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
-	spherePlaneIntersect.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(0, 0.5, -6), 0.5,
-			Eigen::Vector3d(0.1, 0.5, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
-	Texture multi = spherePlaneIntersect.takeSnapshot();
-	textureSerializer.serialize(multi, "multi.png");
+	Camera camera(800, 800, 1);
+//
+//	Scene parallelogramGreyscale;
+//	parallelogramGreyscale.setCamera(camera);
+//	parallelogramGreyscale.addPrimitive(std::make_shared<Parallelogram>(
+//			Eigen::Vector3d(-0.5, -0.5, -1),
+//			Eigen::Vector3d(-0.5, -0.5, -1) + Eigen::Vector3d(0, 0.7, -10),
+//			Eigen::Vector3d(-0.5, -0.5, -1) + Eigen::Vector3d(1, 0.4, 0)));
+//	parallelogramGreyscale.setLight(Light(Eigen::Vector3d(-1, 0.5, 0), 2));
+//
+//	Texture planePerspective = parallelogramGreyscale.takeSnapshot(CameraMode::PERSPECTIVE);
+//	textureSerializer.serialize(planePerspective, "plane_perspective.png");
+//
+//	Texture planeOrthographic = parallelogramGreyscale.takeSnapshot(CameraMode::ORTHOGRAPHIC);
+//	textureSerializer.serialize(planeOrthographic, "plane_orthographic.png");
+//
+//
+//	Scene sphereGreyscale;
+//	sphereGreyscale.setCamera(camera);
+//	sphereGreyscale.addPrimitive(std::make_shared<Sphere>(
+//			Eigen::Vector3d(0, -0.5, -2.5), 1,
+//			Eigen::Vector3d(1.0, 1.0, 1.0), Eigen::Vector3d(0.05, 0.05, 0.05), 3));
+//	sphereGreyscale.setLight(Light(Eigen::Vector3d(-0.5, 0.25, -1.5), 1));
+//
+//	Texture sphere = sphereGreyscale.takeSnapshot(CameraMode::PERSPECTIVE);
+//	textureSerializer.serialize(sphere, "sphere.png");
+//
+//
+//	Scene shading;
+//	shading.setCamera(camera);
+//	shading.addPrimitive(std::make_shared<Sphere>(
+//			Eigen::Vector3d(0, -0.5, -2.5), 1,
+//			Eigen::Vector3d(1.0, 0.07, 1.0), Eigen::Vector3d(0.05, 0.05, 0.3), 70));
+//	shading.setLight(Light(Eigen::Vector3d(-1.6, 1, -1.35), 1));
+//
+//	Texture shadedSphere = shading.takeSnapshot(CameraMode::PERSPECTIVE);
+//	textureSerializer.serialize(shadedSphere, "shading.png");
+//
+//	Texture shadedSphereOrthographic = shading.takeSnapshot(CameraMode::ORTHOGRAPHIC);
+//	textureSerializer.serialize(shadedSphereOrthographic, "shading_orthographic.png");
+//
+//
+//	Scene spherePlaneIntersect;
+//
+//	spherePlaneIntersect.setCamera(camera);
+//	spherePlaneIntersect.setLight(Light(Eigen::Vector3d(-1, 4, -6), 1));
+//	spherePlaneIntersect.addPrimitive(std::make_shared<Parallelogram>(
+//			Eigen::Vector3d(-2, -2, -5),
+//			Eigen::Vector3d(2,-2,-5),
+//			Eigen::Vector3d(-2,2,-10)));
+//	spherePlaneIntersect.addPrimitive(std::make_shared<Sphere>(
+//			Eigen::Vector3d(-2, 0, -8), 1,
+//			Eigen::Vector3d(0.1, 0.1, 0.5), Eigen::Vector3d(0.4, 0.4, 0.4)));
+//	spherePlaneIntersect.addPrimitive(std::make_shared<Sphere>(
+//			Eigen::Vector3d(-2, 1, -8), 1,
+//			Eigen::Vector3d(0.5, 0.1, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
+//	spherePlaneIntersect.addPrimitive(std::make_shared<Sphere>(
+//			Eigen::Vector3d(0, 0.5, -6), 0.5,
+//			Eigen::Vector3d(0.1, 0.5, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
+//	Texture multi = spherePlaneIntersect.takeSnapshot();
+//	textureSerializer.serialize(multi, "multi.png");
 
 
 	Scene spherePlaneIntersect2;
