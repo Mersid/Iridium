@@ -132,6 +132,7 @@ double PerlinNoiseSampler::sample(double x, double y)
 double PerlinNoiseSampler::lerp(double from, double to, double weight)
 {
 	return from + (to - from) * weight;
+	//return (to - from) * (3.0 - weight * 2.0) * weight * weight + from; // Cubic interpolation
 }
 
 double PerlinNoiseSampler::smooth(double in)
@@ -141,8 +142,8 @@ double PerlinNoiseSampler::smooth(double in)
 
 PerlinNoiseSampler::PerlinNoiseSampler()
 {
-	mt = std::mt19937();
-	dist = std::uniform_real_distribution<double>(-1.0, 1.0);
+	std::mt19937 mt = std::mt19937();
+	std::uniform_real_distribution<double> dist = std::uniform_real_distribution<double>(-1.0, 1.0);
 
 	vectors.reserve(256 * 256);
 	for (int i = 0; i < vectors.capacity(); i++)

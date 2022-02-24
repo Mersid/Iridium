@@ -40,5 +40,11 @@ https://www.youtube.com/watch?v=HFPlKQGChpE
 For help on the Perlin noise algorithm. I made use of his average-of-averages algorithm.
 https://adrianb.io/2014/08/09/perlinnoise.html
 
+For some help on the mathematics and background regarding Perlin noise
+https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/perlin-noise-part-2
+
+For general information on noise generation. Applicable mainly to Unity, but a possibly useful resource nonetheless
+https://catlikecoding.com/unity/tutorials/noise/
+
 The providers of Eigen and the STB libraries
 <Sources obtained from assignment>
