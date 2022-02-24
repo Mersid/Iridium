@@ -83,6 +83,7 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 			// If shadow ray hits an object, we won't have lights hitting it, so ambient only
 			Ray shadow(hitPos, light.getPosition());
 			// Ignore self intersection because diffuse/specular dot products will handle it more accurately
+			// TODO: Detect if object is in front of or behind light, because if behind, we can ignore.
 			std::shared_ptr<Primitive> shadowHitPtr = scene->getFirstIntersection(shadow, primitivePtr); // TODO: This can *probably* go.
 			if (shadowHitPtr != nullptr)
 			{

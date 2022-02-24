@@ -15,34 +15,32 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
-	PerlinNoiseSampler rns;
-
-	double smallest = std::numeric_limits<double>::max();
-	double largest = std::numeric_limits<double>::min();
-
-	Texture t(800, 800);
-	for (int i = 0; i < t.getHeight() * t.getWidth(); i++)
-	{
-		unsigned int pixelX = i % t.getWidth();
-		unsigned int pixelY = i / t.getWidth();
-		unsigned char color = (unsigned char)(255 * std::clamp(rns.sample((pixelX + 0.5) * 0.02, (pixelY + 0.5) * 0.02) + 0.5, 0.0, 1.0));
-
-		double p = rns.sample((pixelX + 0.5) * 0.02, (pixelY + 0.5) * 0.02) + 0.5;
-		if (p < smallest)
-			smallest = p;
-		if (p > largest)
-			largest = p;
-
-		if (i % t.getWidth() == 0)
-			std::cout << std::to_string(pixelY) << std::endl;
-
-		t.setPixel(pixelX, pixelY, color, color, color);
-	}
-	textureSerializer.serialize(t, "random.png");
-	return;
-
 	Camera camera(800, 800);
 	camera.setFov(90);
+
+	Scene customTestScene;
+	customTestScene.setCamera(camera);
+	customTestScene.addLight(Light(Eigen::Vector3d(-2, 4, -5), 1));
+	customTestScene.addPrimitive(std::make_shared<Parallelogram>( // Baseplate
+			Eigen::Vector3d(-10, -2, 0),
+			Eigen::Vector3d(10,-2,0),
+			Eigen::Vector3d(-10,-2,-20)));
+	customTestScene.addPrimitive(std::make_shared<Sphere>( // Blue sphere
+			Eigen::Vector3d(-2, -1, -8), 1,
+			Eigen::Vector3d(0.1, 0.1, 0.5), Eigen::Vector3d(0.4, 0.4, 0.4)));
+	customTestScene.addPrimitive(std::make_shared<Sphere>( // Red sphere
+			Eigen::Vector3d(-2, 1, -8), 1,
+			Eigen::Vector3d(0.5, 0.1, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
+	customTestScene.addPrimitive(std::make_shared<Sphere>( // Floating green sphere
+			Eigen::Vector3d(0, 0.5, -6), 0.5,
+			Eigen::Vector3d(0.1, 0.5, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
+	customTestScene.addPrimitive(std::make_shared<Parallelogram>( // Cyan side-facing rectangle
+			Eigen::Vector3d(3, -2, -8),
+			Eigen::Vector3d(5,-2,-6),
+			Eigen::Vector3d(3,-0,-8),
+			Eigen::Vector3d(0, 1.5, 1.5)));
+	Texture multi2 = customTestScene.takeSnapshot();
+	textureSerializer.serialize(multi2, "custom_test.png");
 
 //	Scene parallelogramGreyscale;
 //	parallelogramGreyscale.setCamera(camera);
@@ -105,46 +103,46 @@ void Shimmerlight::run()
 //	textureSerializer.serialize(multi, "multi.png");
 
 
-	Scene spherePlaneIntersect2;
-
-	spherePlaneIntersect2.setCamera(camera);
-	//spherePlaneIntersect2.addLight(Light(Eigen::Vector3d(-1, 4, -6), 1));
-	spherePlaneIntersect2.addLight(Light(Eigen::Vector3d(-4, 4, -6), 0.65));
-	spherePlaneIntersect2.addLight(Light(Eigen::Vector3d(3, 4, -6), 0.65));
-	spherePlaneIntersect2.addPrimitive(std::make_shared<Parallelogram>( // Baseplate
-			Eigen::Vector3d(-10, -2, 0),
-			Eigen::Vector3d(10,-2,0),
-			Eigen::Vector3d(-10,-2,-20)));
-	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Blue sphere
-			Eigen::Vector3d(-2, -1, -8), 1,
-			Eigen::Vector3d(0.1, 0.1, 0.5), Eigen::Vector3d(0.4, 0.4, 0.4)));
-	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Red sphere
-			Eigen::Vector3d(-2, 1, -8), 1,
-			Eigen::Vector3d(0.5, 0.1, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
-	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Floating green sphere
-			Eigen::Vector3d(0, 0.5, -6), 0.5,
-			Eigen::Vector3d(0.1, 0.5, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
-	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Bronze sphere
-			Eigen::Vector3d(1, -1.5, -4), 0.5,
-			Eigen::Vector3d(0.5, 0.3, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
-	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Yellow sphere w/ blue Phong
-			Eigen::Vector3d(-1, -1.6, -3), 0.4,
-			Eigen::Vector3d(1, 1, 0), Eigen::Vector3d(0, 0, 1)));
-	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Lavender sphere
-			Eigen::Vector3d(-3, -1, -4), 0.6,
-			Eigen::Vector3d(0.8, 0.8, 1), Eigen::Vector3d(0.4, 0.4, 0.4)));
-	spherePlaneIntersect2.addPrimitive(std::make_shared<Parallelogram>( // Pink vertical rectangle
-			Eigen::Vector3d(1, -2, -9),
-			Eigen::Vector3d(3,-2,-9),
-			Eigen::Vector3d(1,-0,-9),
-			Eigen::Vector3d(1, 0.2, 0.6)));
-	spherePlaneIntersect2.addPrimitive(std::make_shared<Parallelogram>( // Cyan side-facing rectangle
-			Eigen::Vector3d(3, -2, -8),
-			Eigen::Vector3d(5,-2,-6),
-			Eigen::Vector3d(3,-0,-8),
-			Eigen::Vector3d(0, 1.5, 1.5)));
-	Texture multi2 = spherePlaneIntersect2.takeSnapshot();
-	textureSerializer.serialize(multi2, "multi2.png");
+//	Scene spherePlaneIntersect2;
+//
+//	spherePlaneIntersect2.setCamera(camera);
+//	//spherePlaneIntersect2.addLight(Light(Eigen::Vector3d(-1, 4, -6), 1));
+//	spherePlaneIntersect2.addLight(Light(Eigen::Vector3d(-4, 4, -6), 0.65));
+//	spherePlaneIntersect2.addLight(Light(Eigen::Vector3d(3, 4, -6), 0.65));
+//	spherePlaneIntersect2.addPrimitive(std::make_shared<Parallelogram>( // Baseplate
+//			Eigen::Vector3d(-10, -2, 0),
+//			Eigen::Vector3d(10,-2,0),
+//			Eigen::Vector3d(-10,-2,-20)));
+//	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Blue sphere
+//			Eigen::Vector3d(-2, -1, -8), 1,
+//			Eigen::Vector3d(0.1, 0.1, 0.5), Eigen::Vector3d(0.4, 0.4, 0.4)));
+//	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Red sphere
+//			Eigen::Vector3d(-2, 1, -8), 1,
+//			Eigen::Vector3d(0.5, 0.1, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
+//	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Floating green sphere
+//			Eigen::Vector3d(0, 0.5, -6), 0.5,
+//			Eigen::Vector3d(0.1, 0.5, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
+//	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Bronze sphere
+//			Eigen::Vector3d(1, -1.5, -4), 0.5,
+//			Eigen::Vector3d(0.5, 0.3, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
+//	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Yellow sphere w/ blue Phong
+//			Eigen::Vector3d(-1, -1.6, -3), 0.4,
+//			Eigen::Vector3d(1, 1, 0), Eigen::Vector3d(0, 0, 1)));
+//	spherePlaneIntersect2.addPrimitive(std::make_shared<Sphere>( // Lavender sphere
+//			Eigen::Vector3d(-3, -1, -4), 0.6,
+//			Eigen::Vector3d(0.8, 0.8, 1), Eigen::Vector3d(0.4, 0.4, 0.4)));
+//	spherePlaneIntersect2.addPrimitive(std::make_shared<Parallelogram>( // Pink vertical rectangle
+//			Eigen::Vector3d(1, -2, -9),
+//			Eigen::Vector3d(3,-2,-9),
+//			Eigen::Vector3d(1,-0,-9),
+//			Eigen::Vector3d(1, 0.2, 0.6)));
+//	spherePlaneIntersect2.addPrimitive(std::make_shared<Parallelogram>( // Cyan side-facing rectangle
+//			Eigen::Vector3d(3, -2, -8),
+//			Eigen::Vector3d(5,-2,-6),
+//			Eigen::Vector3d(3,-0,-8),
+//			Eigen::Vector3d(0, 1.5, 1.5)));
+//	Texture multi2 = spherePlaneIntersect2.takeSnapshot();
+//	textureSerializer.serialize(multi2, "multi2.png");
 }
 
 Shimmerlight* Shimmerlight::getInstance()
