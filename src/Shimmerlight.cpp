@@ -5,6 +5,8 @@
 #include "scene/Scene.h"
 #include "geometry/Sphere.h"
 #include "noise/PerlinNoiseSampler.h"
+#include "noise/LibraryPerlinNoiseSampler.h"
+#include "noise/AdriansPerlinNoiseSampler.h"
 
 
 Shimmerlight::Shimmerlight()
@@ -15,12 +17,27 @@ Shimmerlight::Shimmerlight()
 void Shimmerlight::run()
 {
 	PerlinNoiseSampler rns;
+	//PerlinNoise pn;
+	siv::PerlinNoise sivpn;
+	Perlin apr(-1);
+
+	double smallest = std::numeric_limits<double>::max();
+	double largest = std::numeric_limits<double>::min();
+
 	Texture t(800, 800);
 	for (int i = 0; i < t.getHeight() * t.getWidth(); i++)
 	{
 		unsigned int pixelX = i % t.getWidth();
 		unsigned int pixelY = i / t.getWidth();
-		unsigned char color = (unsigned char)(255 * rns.sample(pixelX / 800.0, pixelY / 800.0));
+		unsigned char color = (unsigned char)(255 * std::clamp(rns.sample((pixelX + 0.5) * 0.02, (pixelY + 0.5) * 0.02) + 0.5, 0.0, 1.0));
+		//unsigned char color = (unsigned char)( 255 * sivpn.noise2D_01((pixelX + 0.5) * 0.02, (pixelY + 0.5) * 0.02));
+		//unsigned char color = (unsigned char)( 255 * apr.perlin((pixelX + 0.5) * 0.02, (pixelY + 0.5) * 0.02, 16));
+
+		double p = rns.sample((pixelX + 0.5) * 0.02, (pixelY + 0.5) * 0.02) + 0.5;
+		if (p < smallest)
+			smallest = p;
+		if (p > largest)
+			largest = p;
 
 		if (i % t.getWidth() == 0)
 			std::cout << std::to_string(pixelY) << std::endl;
