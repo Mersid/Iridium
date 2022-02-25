@@ -78,7 +78,7 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 	Primitive& primitive = *primitivePtr;
 
 	// We hit nothing, then skip this pixel
-	if (primitivePtr == nullptr)
+	if (primitivePtr == nullptr || ttl <= 0)
 		return std::nullopt;
 
 	std::optional<Eigen::Vector3d> optHitPos = primitive.getRayIntersection(ray);
@@ -130,6 +130,12 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 
 		color += diffuse + specular;
 	}
+
+	Eigen::Vector3d reflectDirection = ray.getDirection() - 2 * ray.getDirection().dot(objectNormal) * objectNormal;
+	Ray reflectRay(hitPos, hitPos + reflectDirection);
+
+	std::optional<Eigen::Vector3d> optReflectColor = trace(reflectRay, ttl - 1);
+	color += 0.2 * (optReflectColor.has_value() ? optReflectColor.value() : Eigen::Vector3d::Zero());
 
 	// TODO: Reflections and refractions
 	return color;
