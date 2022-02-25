@@ -70,3 +70,67 @@ std::shared_ptr<Primitive> Scene::getFirstIntersection(const Ray& ray, std::shar
 
 	return nearestObject;
 }
+
+std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
+{
+	// Find the nearest primitive we'll hit
+	std::shared_ptr<Primitive> primitivePtr = getFirstIntersection(ray);
+	Primitive& primitive = *primitivePtr;
+
+	// We hit nothing, then skip this pixel
+	if (primitivePtr == nullptr)
+		return std::nullopt;
+
+	std::optional<Eigen::Vector3d> optHitPos = primitive.getRayIntersection(ray);
+	if (!optHitPos.has_value()) // Not needed anymore because we refactored above to guarantee primitive hit, but we'll leave it for now
+		return std::nullopt;
+
+	// Compute ray colors
+	Eigen::Vector3d hitPos = optHitPos.value();
+	Eigen::Vector3d objectNormal = primitive.getNormalAt(hitPos);
+
+	// Handle case of backwards-facing plane. The incoming ray and the normal should face opposite directions.
+	// In this case, they aren't, so fix it by changing the normal of the object
+	if (objectNormal.dot(ray.getDirection()) > 0)
+		objectNormal = -objectNormal;
+
+	// Move hitPos in the normal direction a bit so that the shadow ray won't hit the object itself.
+	hitPos = hitPos + objectNormal * 1e-6;
+
+	Eigen::Vector3d ambient = ambientCoefficient * ambientLightIntensity;
+	Eigen::Vector3d color = ambient;
+
+	for (Light& light : lights)
+	{
+		// Unit vector from the impact point to the lights
+		Eigen::Vector3d lightVector = (light.getPosition() - hitPos).normalized();
+
+		// Specular shading depends on the viewing angle of the user (camera). We need to compute the bisector, from the point of view of the impact position,
+		// of the ray to the camera and the vector to the lights. The ray's direction vector points from the camera to the impact position, so negative
+		// of that points from the impact position to the camera
+		Eigen::Vector3d bisector = (-ray.getDirection() + lightVector).normalized();
+
+		// See slide set 5: Final Shading Equation for more on this topic
+		// We should note that objectNormal and lightVector are unit vectors, so the dot of them is <= 1
+
+
+		Eigen::Vector3d diffuse = primitive.getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
+		Eigen::Vector3d specular = primitive.getSpecularCoefficient() * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getPhongExponent()));
+
+		// If shadow ray hits an object, we won't have lights hitting it, so ambient only
+		Ray shadow(hitPos, light.getPosition());
+		// Ignore self intersection because diffuse/specular dot products will handle it more accurately
+		// TODO: Detect if object is in front of or behind light, because if behind, we can ignore.
+		std::shared_ptr<Primitive> shadowHitPtr = getFirstIntersection(shadow, primitivePtr); // TODO: This can *probably* go.
+		if (shadowHitPtr != nullptr)
+		{
+			diffuse = Eigen::Vector3d::Zero();
+			specular = Eigen::Vector3d::Zero();
+		}
+
+		color += diffuse + specular;
+	}
+
+	// TODO: Reflections and refractions
+	return color;
+}

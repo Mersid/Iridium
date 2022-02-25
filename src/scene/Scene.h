@@ -48,6 +48,16 @@ public:
 
 	double getAmbientLightIntensity() const;
 
+	/**
+	 * Takes in a ray from a position with direction, and tests if it hits an object in the scene. This method is recursive,
+	 * and can trace its own rays to compute reflection and refraction effects.
+	 * @param ray A ray cast from a point in space, in a direction. If this ray hits an object, it will (recursively) compute the color
+	 * of the hit object
+	 * @param ttl The time-to-live for the ray. If the method is called with 0, the method will return nothing
+	 * @return Vector representing the color traced from the ray. If the ray missed or TTL is 0, returns nothing
+	 */
+	std::optional<Eigen::Vector3d> trace(const Ray& ray, int ttl = 1);
+
 private:
 	Camera camera;
 	std::vector<std::shared_ptr<Primitive>> primitives;
