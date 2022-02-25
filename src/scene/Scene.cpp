@@ -122,7 +122,7 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 		// Ignore self intersection because diffuse/specular dot products will handle it more accurately
 		// TODO: Detect if object is in front of or behind light, because if behind, we can ignore.
 		std::shared_ptr<Primitive> shadowHitPtr = getFirstIntersection(shadow, primitivePtr); // TODO: This can *probably* go.
-		if (shadowHitPtr != nullptr)
+		if (shadowHitPtr != nullptr && (shadowHitPtr->getRayIntersection(shadow).value() - hitPos).norm() < (light.getPosition() - hitPos).norm())
 		{
 			diffuse = Eigen::Vector3d::Zero();
 			specular = Eigen::Vector3d::Zero();
@@ -137,6 +137,6 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 	std::optional<Eigen::Vector3d> optReflectColor = trace(reflectRay, ttl - 1);
 	color += primitive.getReflectionCoefficient() * (optReflectColor.has_value() ? optReflectColor.value() : Eigen::Vector3d::Zero());
 
-	// TODO: Reflections and refractions
+	// TODO: refractions
 	return color;
 }
