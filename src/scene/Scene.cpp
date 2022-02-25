@@ -122,6 +122,9 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 		// Ignore self intersection because diffuse/specular dot products will handle it more accurately
 		// TODO: Detect if object is in front of or behind light, because if behind, we can ignore.
 		std::shared_ptr<Primitive> shadowHitPtr = getFirstIntersection(shadow, primitivePtr); // TODO: This can *probably* go.
+
+		// If we hit an object, get that object and test again (it's inefficient, I know): if the hit pos of the object between the first object and the light
+		// is less than the distance to the light, then the object is between the light and the first object, and is therefore in shadow.
 		if (shadowHitPtr != nullptr && (shadowHitPtr->getRayIntersection(shadow).value() - hitPos).norm() < (light.getPosition() - hitPos).norm())
 		{
 			diffuse = Eigen::Vector3d::Zero();

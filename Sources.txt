@@ -46,5 +46,10 @@ https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/perli
 For general information on noise generation. Applicable mainly to Unity, but a possibly useful resource nonetheless
 https://catlikecoding.com/unity/tutorials/noise/
 
+For information on reflection. Unused, but may be useful
+https://blog.demofox.org/2017/01/09/raytracing-reflection-refraction-fresnel-total-internal-reflection-and-beers-law/
+
+
+
 The providers of Eigen and the STB libraries
 <Sources obtained from assignment>

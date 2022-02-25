@@ -34,6 +34,11 @@ void Shimmerlight::run()
 	customTestScene.addPrimitive(std::make_shared<Sphere>( // Floating green sphere
 			Eigen::Vector3d(0, 0.5, -6), 0.5,
 			Eigen::Vector3d(0.1, 0.5, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4)));
+	customTestScene.addPrimitive(std::make_shared<Sphere>( // Near sphere
+			Eigen::Vector3d(1, 0, -4), 0.5,
+			Eigen::Vector3d(0.5, 0.5, 0.5),
+			Eigen::Vector3d(0.5, 0.5, 0.5),
+			10, 0.5));
 	customTestScene.addPrimitive(std::make_shared<Parallelogram>( // Cyan side-facing rectangle
 			Eigen::Vector3d(3, -2, -8),
 			Eigen::Vector3d(5,-2,-6),

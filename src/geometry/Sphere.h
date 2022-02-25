@@ -23,7 +23,7 @@ public:
 		   Eigen::Vector3d diffuseCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
 		   Eigen::Vector3d specularCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
 		   double phongExponent = 10,
-		   double reflectionCoefficient = 0.2);
+		   double reflectionCoefficient = 0);
 
 	/**
 	 * Gets the near intersection of the intersection of a ray with a sphere

@@ -26,7 +26,7 @@ public:
 	              Eigen::Vector3d diffuseCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
 	              Eigen::Vector3d specularCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
 	              double phongExponent = 10,
-				  double reflectionCoefficient = 0.2);
+				  double reflectionCoefficient = 0);
 
 	/**
 	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.
