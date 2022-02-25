@@ -135,7 +135,7 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 	Ray reflectRay(hitPos, hitPos + reflectDirection);
 
 	std::optional<Eigen::Vector3d> optReflectColor = trace(reflectRay, ttl - 1);
-	color += 0.2 * (optReflectColor.has_value() ? optReflectColor.value() : Eigen::Vector3d::Zero());
+	color += primitive.getReflectionCoefficient() * (optReflectColor.has_value() ? optReflectColor.value() : Eigen::Vector3d::Zero());
 
 	// TODO: Reflections and refractions
 	return color;

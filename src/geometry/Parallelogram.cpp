@@ -1,11 +1,12 @@
 #include "Parallelogram.h"
 
 Parallelogram::Parallelogram(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d c,
-							 Eigen::Vector3d diffuseCoefficient, Eigen::Vector3d specularCoefficient, double phongExponent) :
+							 Eigen::Vector3d diffuseCoefficient, Eigen::Vector3d specularCoefficient, double phongExponent, double reflectionCoefficient) :
 	a(a), b(b), c(c), u(b - a), v(c - a), normal(u.cross(v)),
 	diffuseCoefficient(diffuseCoefficient),
 	specularCoefficient(specularCoefficient),
-	phongExponent(phongExponent)
+	phongExponent(phongExponent),
+	reflectionCoefficient(reflectionCoefficient)
 {
 }
 
@@ -69,4 +70,9 @@ Eigen::Vector3d Parallelogram::getSpecularCoefficient()
 double Parallelogram::getPhongExponent()
 {
 	return phongExponent;
+}
+
+double Parallelogram::getReflectionCoefficient()
+{
+	return reflectionCoefficient;
 }

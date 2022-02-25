@@ -22,7 +22,8 @@ public:
 	Sphere(Eigen::Vector3d center, double radius,
 		   Eigen::Vector3d diffuseCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
 		   Eigen::Vector3d specularCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
-		   double phongExponent = 10);
+		   double phongExponent = 10,
+		   double reflectionCoefficient = 0.2);
 
 	/**
 	 * Gets the near intersection of the intersection of a ray with a sphere
@@ -46,6 +47,8 @@ public:
 
 	double getPhongExponent() override;
 
+	double getReflectionCoefficient() override;
+
 private:
 	Eigen::Vector3d center;
 	double radius{};
@@ -53,5 +56,6 @@ private:
 	Eigen::Vector3d diffuseCoefficient;
 	Eigen::Vector3d specularCoefficient;
 	double phongExponent; // From slide set 5: ~100: shiny, ~1000: glossy, ~10000: mirror
+	double reflectionCoefficient;
 };
 

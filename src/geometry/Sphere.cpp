@@ -1,10 +1,11 @@
 #include "Sphere.h"
 
-Sphere::Sphere(Eigen::Vector3d center, double radius, Eigen::Vector3d diffuseCoefficient, Eigen::Vector3d specularCoefficient, double phongExponent) :
+Sphere::Sphere(Eigen::Vector3d center, double radius, Eigen::Vector3d diffuseCoefficient, Eigen::Vector3d specularCoefficient, double phongExponent, double reflectionCoefficient) :
 		center(center), radius(radius),
 		diffuseCoefficient(diffuseCoefficient),
 		specularCoefficient(specularCoefficient),
-		phongExponent(phongExponent)
+		phongExponent(phongExponent),
+		reflectionCoefficient(reflectionCoefficient)
 {
 }
 
@@ -60,5 +61,10 @@ double Sphere::getPhongExponent()
 Sphere::Sphere()
 {
 
+}
+
+double Sphere::getReflectionCoefficient()
+{
+	return reflectionCoefficient;
 }
 

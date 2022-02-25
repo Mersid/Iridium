@@ -26,6 +26,7 @@ public:
 	virtual Eigen::Vector3d getDiffuseCoefficient() = 0;
 	virtual Eigen::Vector3d getSpecularCoefficient() = 0;
 	virtual double getPhongExponent() = 0;
+	virtual double getReflectionCoefficient() = 0;
 };
 
 

@@ -25,7 +25,8 @@ public:
 	Parallelogram(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d c,
 	              Eigen::Vector3d diffuseCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
 	              Eigen::Vector3d specularCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
-	              double phongExponent = 10);
+	              double phongExponent = 10,
+				  double reflectionCoefficient = 0.2);
 
 	/**
 	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.
@@ -50,6 +51,8 @@ public:
 	Eigen::Vector3d getSpecularCoefficient() override;
 	double getPhongExponent() override;
 
+	double getReflectionCoefficient() override;
+
 private:
 	Eigen::Vector3d a; // Common point
 	Eigen::Vector3d b; // Usually the horizontal point
@@ -62,6 +65,7 @@ private:
 	Eigen::Vector3d diffuseCoefficient;
 	Eigen::Vector3d specularCoefficient;
 	double phongExponent; // From slide set 5: ~100: shiny, ~1000: glossy, ~10000: mirror
+	double reflectionCoefficient;
 };
 
 
