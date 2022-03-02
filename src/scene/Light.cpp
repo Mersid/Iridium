@@ -7,7 +7,7 @@ Light::Light(Eigen::Vector3d position, double intensity) :
 
 }
 
-const Eigen::Vector3d &Light::getPosition() const
+const Eigen::Vector3d& Light::getPosition() const
 {
 	return position;
 }

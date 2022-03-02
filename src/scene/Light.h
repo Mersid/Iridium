@@ -13,7 +13,7 @@ public:
 	 */
 	Light() = default;
 
-	const Eigen::Vector3d &getPosition() const;
+	const Eigen::Vector3d& getPosition() const;
 
 	double getIntensity() const;
 

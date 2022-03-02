@@ -30,7 +30,7 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 			// Guess what? I made the same mistake again (for the focal length), by changing the aperture's z pos but not the dir. Classic. - Steven, 2022-02-19
 			ray = Ray(pixelRay + Eigen::Vector3d(0, 0, 1), pixelRay);
 
-		std::optional<Eigen::Vector3d> colorOpt = scene->trace(ray, 3);
+		std::optional<Eigen::Vector3d> colorOpt = scene->trace(ray, 16);
 		Eigen::Vector3d color = colorOpt.has_value() ? colorOpt.value() : Eigen::Vector3d::Zero(); // Missed pixels are black
 
 		unsigned char colorR = (unsigned char)(255 * std::clamp(color[0], 0.0, 1.0));
