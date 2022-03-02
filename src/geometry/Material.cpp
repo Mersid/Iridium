@@ -1,8 +1,8 @@
 #include "Material.h"
 
 Material::Material(Eigen::Vector3d diffuseCoefficient, Eigen::Vector3d specularCoefficient, double phongExponent,
-                   double reflectionCoefficient) :
-				   diffuseCoefficient(diffuseCoefficient), specularCoefficient(specularCoefficient), phongExponent(phongExponent), reflectionCoefficient(reflectionCoefficient)
+                   double reflectionCoefficient, std::optional<Texture> texture) :
+				   diffuseCoefficient(diffuseCoefficient), specularCoefficient(specularCoefficient), phongExponent(phongExponent), reflectionCoefficient(reflectionCoefficient), texture(texture)
 {
 }
 
@@ -24,4 +24,9 @@ double Material::getPhongExponent() const
 double Material::getReflectionCoefficient() const
 {
 	return reflectionCoefficient;
+}
+
+const std::optional<Texture>& Material::getTexture() const
+{
+	return texture;
 }

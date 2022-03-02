@@ -113,14 +113,27 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 		// See slide set 5: Final Shading Equation for more on this topic
 		// We should note that objectNormal and lightVector are unit vectors, so the dot of them is <= 1
 
+		// TODO: WARN: Only works for spheres, as algorithm for planes are different (and not needed right now).
+		// If object has texture, set the diffuse to that instead. (We may also consider handling the computation elsewhere)
+		Eigen::Vector3d diffuse;
+		if (primitive.getMaterial().getTexture() == std::nullopt)
+			diffuse = primitive.getMaterial().getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
+		else
+		{
+			// u, v between 0 and 1, so we need to remop it to the size of the texture later.
+			double u = std::atan2(objectNormal.x(), objectNormal.z()) / (2 * EIGEN_PI) + 0.5;
+			double v = objectNormal.y() * 0.5 + 0.5;
+			const Texture& texture = primitive.getMaterial().getTexture().value();
+			// TODO: Handle translucent alpha channel? Currently we'll discard it entirely.
+			Eigen::Vector3d colorAtPos = texture.getPixelVectorAt(u * texture.getWidth(), v * texture.getHeight()).head<3>();
 
-		Eigen::Vector3d diffuse = primitive.getMaterial().getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
+			diffuse = colorAtPos * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
+		}
 		Eigen::Vector3d specular = primitive.getMaterial().getSpecularCoefficient() * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getMaterial().getPhongExponent()));
 
 		// If shadow ray hits an object, we won't have lights hitting it, so ambient only
 		Ray shadow(hitPos, light.getPosition());
 		// Ignore self intersection because diffuse/specular dot products will handle it more accurately
-		// TODO: Detect if object is in front of or behind light, because if behind, we can ignore.
 		std::shared_ptr<Primitive> shadowHitPtr = getFirstIntersection(shadow, primitivePtr); // TODO: This can *probably* go.
 
 		// If we hit an object, get that object and test again (it's inefficient, I know): if the hit pos of the object between the first object and the light

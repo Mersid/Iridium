@@ -15,6 +15,13 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
+	Texture sample(192, 192);
+	for (int i = 0; i < 192; i++)
+	for (int j = 0; j < 192; j++)
+		sample.setPixel(i, j, i + 64, j + 64, 0);
+
+	textureSerializer.serialize(sample, "colortest.png");
+
 
 	Camera camera(800, 800);
 
@@ -45,9 +52,9 @@ void Shimmerlight::run()
 	defaultScene.addPrimitive(std::make_shared<Sphere>(
 			Eigen::Vector3d(1, 0.2, -1 + zOffset), 1,
 			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection)));
-	defaultScene.addPrimitive(std::make_shared<Sphere>(
+	defaultScene.addPrimitive(std::make_shared<Sphere>( // This sphere is the one to apply the texture to
 			Eigen::Vector3d(-2, 0.4, 1 + zOffset), 1,
-			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection)));
+			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection, sample)));
 	defaultScene.addPrimitive(std::make_shared<Sphere>(
 			Eigen::Vector3d(-5, 0.8, -1 + zOffset), 1,
 			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection)));
