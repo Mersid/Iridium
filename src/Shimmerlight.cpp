@@ -16,7 +16,52 @@ Shimmerlight::Shimmerlight()
 void Shimmerlight::run()
 {
 	Camera camera(800, 800);
-	camera.setFov(90);
+
+	Scene defaultScene; // TODO: Set ambient?
+	defaultScene.setCamera(camera);
+	Eigen::Vector3d defaultDiffuse(0.6, 0.4, 0.4);
+	Eigen::Vector3d defaultSpecular(0.2, 0.2, 0.2);
+	double defaultPhongExponent = 256;
+	double defaultReflection = 0.7;
+	double zOffset = -4.5;
+	double defaultLightIntensity = 0.3;
+	defaultScene.addLight(Light(Eigen::Vector3d(8, 8, zOffset), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(6, -8, zOffset), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(4, 8, zOffset), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(2, -8, zOffset), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(0, 8, zOffset), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(-2, -8, zOffset), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(-4, 8, zOffset), defaultLightIntensity));
+	defaultScene.addPrimitive(std::make_shared<Sphere>(
+			Eigen::Vector3d(10, 0, 1 + zOffset), 1,
+			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
+	defaultScene.addPrimitive(std::make_shared<Sphere>(
+			Eigen::Vector3d(7, 0.05, -1 + zOffset), 1,
+			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
+	defaultScene.addPrimitive(std::make_shared<Sphere>(
+			Eigen::Vector3d(4, 0.1, 1 + zOffset), 1,
+			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
+	defaultScene.addPrimitive(std::make_shared<Sphere>(
+			Eigen::Vector3d(1, 0.2, -1 + zOffset), 1,
+			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
+	defaultScene.addPrimitive(std::make_shared<Sphere>(
+			Eigen::Vector3d(-2, 0.4, 1 + zOffset), 1,
+			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
+	defaultScene.addPrimitive(std::make_shared<Sphere>(
+			Eigen::Vector3d(-5, 0.8, -1 + zOffset), 1,
+			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
+	defaultScene.addPrimitive(std::make_shared<Sphere>(
+			Eigen::Vector3d(-8, 1.6, 1 + zOffset), 1,
+			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
+	defaultScene.addPrimitive(std::make_shared<Parallelogram>( // Baseplate
+			Eigen::Vector3d(-50, -0.6, 100),
+			Eigen::Vector3d(50,-0.6,10),
+			Eigen::Vector3d(-50,-0.6,-90),
+			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
+
+	Texture defaultTextureRender = defaultScene.takeSnapshot();
+	textureSerializer.serialize(defaultTextureRender, "default.png");
+
 
 //	Scene customTestScene;
 //	customTestScene.setCamera(camera);
@@ -47,48 +92,6 @@ void Shimmerlight::run()
 //	Texture multi2 = customTestScene.takeSnapshot();
 //	textureSerializer.serialize(multi2, "custom_test.png");
 
-	Scene defaultScene; // TODO: Set ambient?
-	defaultScene.setCamera(camera);
-	Eigen::Vector3d defaultDiffuse(0.5, 0.5, 0.5);
-	Eigen::Vector3d defaultSpecular(0.2, 0.2, 0.2);
-	double defaultPhongExponent = 256;
-	double defaultReflection = 0.7;
-	double zOffset = -5;
-	defaultScene.addLight(Light(Eigen::Vector3d(-2, 4, -5), 1));
-	defaultScene.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(10, 0, 1 + zOffset), 1,
-			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
-	defaultScene.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(7, 0.05, -1 + zOffset), 1,
-			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
-	defaultScene.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(4, 0.1, 1 + zOffset), 1,
-			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
-	defaultScene.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(1, 0.2, -1 + zOffset), 1,
-			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
-	defaultScene.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(-2, 0.4, 1 + zOffset), 1,
-			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
-	defaultScene.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(-5, 0.8, -1 + zOffset), 1,
-			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
-	defaultScene.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(-8, 1.6, 1 + zOffset), 1,
-			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
-	defaultScene.addPrimitive(std::make_shared<Parallelogram>( // Baseplate
-			Eigen::Vector3d(-50, -1, 10),
-			Eigen::Vector3d(50,-1,10),
-			Eigen::Vector3d(-50,-1,-90),
-			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
-	defaultScene.addPrimitive(std::make_shared<Parallelogram>(
-			Eigen::Vector3d(-100, 100, -100),
-			Eigen::Vector3d(-1.25, 0, -1.2),
-			Eigen::Vector3d(-100, -100, 100),
-			defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection
-			));
-	Texture defaultTextureRender = defaultScene.takeSnapshot();
-	textureSerializer.serialize(defaultTextureRender, "default.png");
 
 //	Scene parallelogramGreyscale;
 //	parallelogramGreyscale.setCamera(camera);
