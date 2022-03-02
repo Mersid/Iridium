@@ -20,7 +20,31 @@ void Shimmerlight::run()
 	for (int j = 0; j < 192; j++)
 		sample.setPixel(i, j, i + 64, j + 64, 0);
 
+
 	textureSerializer.serialize(sample, "colortest.png");
+
+	PerlinNoiseSampler perlinNoiseSampler;
+	Texture perlin(800, 800);
+	for (int i = 0; i < perlin.getHeight() * perlin.getWidth(); i++)
+	{
+		unsigned int pixelX = i % perlin.getWidth();
+		unsigned int pixelY = i / perlin.getWidth();
+		unsigned char color = (unsigned char)(255 * std::clamp(perlinNoiseSampler.sample((pixelX + 0.0) * 0.02, (pixelY + 0.0) * 0.02) + 0.5, 0.0, 1.0));
+		perlin.setPixel(pixelX, pixelY, 0, color, 0);
+	}
+
+	Texture checkerboard(800, 800);
+	for (int i = 0; i < checkerboard.getHeight(); i++)
+	for (int j = 0; j < checkerboard.getWidth(); j++)
+	{
+		bool c = false;
+		if ((i / 100) % 2 == 0) c = !c;
+		if ((j / 100) % 2 == 0) c = !c;
+
+		if (c) checkerboard.setPixel(j, i, 255, 255, 255);
+		else checkerboard.setPixel(j, i, 0, 0, 0);
+	}
+	textureSerializer.serialize(checkerboard, "checkerboard.png");
 
 
 	Camera camera(800, 800);
@@ -54,7 +78,7 @@ void Shimmerlight::run()
 			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection)));
 	defaultScene.addPrimitive(std::make_shared<Sphere>( // This sphere is the one to apply the texture to
 			Eigen::Vector3d(-2, 0.4, 1 + zOffset), 1,
-			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection, sample)));
+			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection, perlin)));
 	defaultScene.addPrimitive(std::make_shared<Sphere>(
 			Eigen::Vector3d(-5, 0.8, -1 + zOffset), 1,
 			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection)));
