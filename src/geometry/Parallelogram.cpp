@@ -1,12 +1,8 @@
 #include "Parallelogram.h"
 
-Parallelogram::Parallelogram(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d c,
-							 Eigen::Vector3d diffuseCoefficient, Eigen::Vector3d specularCoefficient, double phongExponent, double reflectionCoefficient) :
+Parallelogram::Parallelogram(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d c, Material material) :
 	a(a), b(b), c(c), u(b - a), v(c - a), normal(u.cross(v)),
-	diffuseCoefficient(diffuseCoefficient),
-	specularCoefficient(specularCoefficient),
-	phongExponent(phongExponent),
-	reflectionCoefficient(reflectionCoefficient)
+	material(material)
 {
 }
 
@@ -47,32 +43,14 @@ std::optional<Eigen::Vector3d> Parallelogram::getRayIntersection(const Ray& ray)
 	return std::nullopt;
 }
 
-Eigen::Vector3d Parallelogram::getDiffuseCoefficient()
-{
-	return diffuseCoefficient;
-}
 
 Eigen::Vector3d Parallelogram::getNormalAt(Eigen::Vector3d position)
 {
 	return (b - a).cross(c - a).normalized();
 }
 
-Parallelogram::Parallelogram()
+Material& Parallelogram::getMaterial()
 {
-
+	return material;
 }
 
-Eigen::Vector3d Parallelogram::getSpecularCoefficient()
-{
-	return specularCoefficient;
-}
-
-double Parallelogram::getPhongExponent()
-{
-	return phongExponent;
-}
-
-double Parallelogram::getReflectionCoefficient()
-{
-	return reflectionCoefficient;
-}

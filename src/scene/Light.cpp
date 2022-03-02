@@ -17,7 +17,3 @@ double Light::getIntensity() const
 	return intensity;
 }
 
-Light::Light()
-{
-
-}

@@ -9,10 +9,6 @@ Camera::Camera(int width, int height, double focalLength) :
 {
 }
 
-Camera::Camera()
-{
-}
-
 Texture Camera::takeSnapshot(CameraMode cameraMode)
 {
 	Texture t(width, height);

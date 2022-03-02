@@ -114,8 +114,8 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 		// We should note that objectNormal and lightVector are unit vectors, so the dot of them is <= 1
 
 
-		Eigen::Vector3d diffuse = primitive.getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
-		Eigen::Vector3d specular = primitive.getSpecularCoefficient() * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getPhongExponent()));
+		Eigen::Vector3d diffuse = primitive.getMaterial().getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
+		Eigen::Vector3d specular = primitive.getMaterial().getSpecularCoefficient() * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getMaterial().getPhongExponent()));
 
 		// If shadow ray hits an object, we won't have lights hitting it, so ambient only
 		Ray shadow(hitPos, light.getPosition());
@@ -138,7 +138,7 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 	Ray reflectRay(hitPos, hitPos + reflectDirection);
 
 	std::optional<Eigen::Vector3d> optReflectColor = trace(reflectRay, ttl - 1);
-	color += primitive.getReflectionCoefficient() * (optReflectColor.has_value() ? optReflectColor.value() : Eigen::Vector3d::Zero());
+	color += primitive.getMaterial().getReflectionCoefficient() * (optReflectColor.has_value() ? optReflectColor.value() : Eigen::Vector3d::Zero());
 
 	// TODO: refractions
 	return color;

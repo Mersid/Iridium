@@ -11,7 +11,7 @@ public:
 	/**
 	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.
 	 */
-	Light();
+	Light() = default;
 
 	const Eigen::Vector3d &getPosition() const;
 

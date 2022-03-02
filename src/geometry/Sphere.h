@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Primitive.h"
+#include "Material.h"
 
 class Sphere : public Primitive
 {
@@ -9,21 +10,15 @@ public:
 	/**
 	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.
 	 */
-	Sphere();
+	Sphere() = default;
 
 	/**
 	 * Creates a sphere
 	 * @param center The 3d coordinates of where the center of the sphere is
 	 * @param radius The radius of the sphere, relative to the center
-	 * @param diffuseCoefficient The diffuse coefficient for RGB
-	 * @param specularCoefficient The specular coefficient for RGB
-	 * @param phongExponent Phong exponent for specular shading. Larger number means smaller, brighter point
+	 * @param material The properties of the material of this primitive
 	 */
-	Sphere(Eigen::Vector3d center, double radius,
-		   Eigen::Vector3d diffuseCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
-		   Eigen::Vector3d specularCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
-		   double phongExponent = 10,
-		   double reflectionCoefficient = 0);
+	Sphere(Eigen::Vector3d center, double radius, Material material);
 
 	/**
 	 * Gets the near intersection of the intersection of a ray with a sphere
@@ -41,21 +36,12 @@ public:
 	 */
 	Eigen::Vector3d getNormalAt(Eigen::Vector3d position) override;
 
-	Eigen::Vector3d getDiffuseCoefficient() override;
-
-	Eigen::Vector3d getSpecularCoefficient() override;
-
-	double getPhongExponent() override;
-
-	double getReflectionCoefficient() override;
+	Material& getMaterial() override;
 
 private:
 	Eigen::Vector3d center;
 	double radius{};
 
-	Eigen::Vector3d diffuseCoefficient;
-	Eigen::Vector3d specularCoefficient;
-	double phongExponent; // From slide set 5: ~100: shiny, ~1000: glossy, ~10000: mirror
-	double reflectionCoefficient;
+	Material material;
 };
 

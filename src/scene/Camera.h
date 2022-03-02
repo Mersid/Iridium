@@ -28,7 +28,7 @@ public:
 	/**
 	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.
 	 */
-	Camera();
+	Camera() = default;
 
 	/**
 	 * Takes a snapshot of what the camera sees

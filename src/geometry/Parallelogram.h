@@ -18,20 +18,14 @@ public:
 	 * @param a The base point of the parallelogram
 	 * @param b The second point of the parallelogram. Consider the cross product will use the vector ab as its A value (for A X B)
 	 * @param c The third point of the parallelogram. Consider the cross product will use the vector ac as its B value (for A X B)
-	 * @param diffuseCoefficient The diffuse coefficient for RGB
-	 * @param specularCoefficient The specular coefficient for RGB
-	 * @param phongExponent Phong exponent for specular shading. Larger number means smaller, brighter point
+	 * @param material The properties of the material of this primitive
 	 */
-	Parallelogram(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d c,
-	              Eigen::Vector3d diffuseCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
-	              Eigen::Vector3d specularCoefficient = Eigen::Vector3d(0.5, 0.5, 0.5),
-	              double phongExponent = 10,
-				  double reflectionCoefficient = 0);
+	Parallelogram(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d c, Material material);
 
 	/**
 	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.
 	 */
-	Parallelogram();
+	Parallelogram() = default;
 
 	/**
 	 * Test if the given ray intersects this parallelogram
@@ -47,11 +41,8 @@ public:
 	 */
 	Eigen::Vector3d getNormalAt(Eigen::Vector3d position) override;
 
-	Eigen::Vector3d getDiffuseCoefficient() override;
-	Eigen::Vector3d getSpecularCoefficient() override;
-	double getPhongExponent() override;
+	Material& getMaterial() override;
 
-	double getReflectionCoefficient() override;
 
 private:
 	Eigen::Vector3d a; // Common point
@@ -62,10 +53,7 @@ private:
 	Eigen::Vector3d v; // Vector ac, equal to c-a
 	Eigen::Vector3d normal; // Normal vector of this parallelogram, equal to cross product of u x v.
 
-	Eigen::Vector3d diffuseCoefficient;
-	Eigen::Vector3d specularCoefficient;
-	double phongExponent; // From slide set 5: ~100: shiny, ~1000: glossy, ~10000: mirror
-	double reflectionCoefficient;
+	Material material;
 };
 
 

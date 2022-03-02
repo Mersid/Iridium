@@ -1,11 +1,7 @@
 #include "Sphere.h"
 
-Sphere::Sphere(Eigen::Vector3d center, double radius, Eigen::Vector3d diffuseCoefficient, Eigen::Vector3d specularCoefficient, double phongExponent, double reflectionCoefficient) :
-		center(center), radius(radius),
-		diffuseCoefficient(diffuseCoefficient),
-		specularCoefficient(specularCoefficient),
-		phongExponent(phongExponent),
-		reflectionCoefficient(reflectionCoefficient)
+Sphere::Sphere(Eigen::Vector3d center, double radius, Material material) :
+		center(center), radius(radius), material(material)
 {
 }
 
@@ -43,28 +39,8 @@ Eigen::Vector3d Sphere::getNormalAt(Eigen::Vector3d position)
 	return (position - center).normalized();
 }
 
-Eigen::Vector3d Sphere::getDiffuseCoefficient()
+Material& Sphere::getMaterial()
 {
-	return diffuseCoefficient;
-}
-
-Eigen::Vector3d Sphere::getSpecularCoefficient()
-{
-	return specularCoefficient;
-}
-
-double Sphere::getPhongExponent()
-{
-	return phongExponent;
-}
-
-Sphere::Sphere()
-{
-
-}
-
-double Sphere::getReflectionCoefficient()
-{
-	return reflectionCoefficient;
+	return material;
 }
 

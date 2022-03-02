@@ -4,6 +4,7 @@
 #include <optional>
 #include "Eigen/Core"
 #include "Ray.h"
+#include "Material.h"
 
 class Primitive
 {
@@ -23,10 +24,7 @@ public:
 	 */
 	virtual Eigen::Vector3d getNormalAt(Eigen::Vector3d position) = 0;
 
-	virtual Eigen::Vector3d getDiffuseCoefficient() = 0;
-	virtual Eigen::Vector3d getSpecularCoefficient() = 0;
-	virtual double getPhongExponent() = 0;
-	virtual double getReflectionCoefficient() = 0;
+	virtual Material& getMaterial() = 0;
 };
 
 
