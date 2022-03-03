@@ -4,8 +4,10 @@
 #include "../Shimmerlight.h"
 #include "Scene.h" // We can use "Scene.h" here because .cpp files aren't #included, so we won't have to deal with circular dependency
 
-Camera::Camera(int width, int height, double focalLength) :
-		width(width), height(height), focalLength(focalLength), aspectRatio((double)width / height)
+Camera::Camera(int width, int height, double focalLength, double apertureRadius, unsigned int rayShots) :
+		width(width), height(height), focalLength(focalLength), aspectRatio((double)width / height),
+		apertureRadius(apertureRadius), rayShots(rayShots),
+		dist(std::uniform_real_distribution<double>(-apertureRadius, apertureRadius))
 {
 }
 
@@ -22,20 +24,41 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 		if (i % width == 0)
 			std::cout << std::to_string(pixelY) << std::endl;
 
-		Ray ray;
-		if (cameraMode == CameraMode::PERSPECTIVE)
-			ray = Ray(Eigen::Vector3d(0, 0, -1 + focalLength), pixelRay); // because plane is at z = -1
-		else // Orthographic, so fire rays in a straight line
-			// RECALL THAT RAY PARAM TAKES POS AND DIR, NOT START AND END. DON'T BE LIKE ME AND MAKE THIS MISTAKE :'(  - Steven, 2022-02-11
-			// Guess what? I made the same mistake again (for the focal length), by changing the aperture's z pos but not the dir. Classic. - Steven, 2022-02-19
-			ray = Ray(pixelRay + Eigen::Vector3d(0, 0, 1), pixelRay);
+		// Potentially sample many colors for depth of field, and we need to average them
+		std::vector<Eigen::Vector3d> colors;
+		colors.reserve(rayShots);
 
-		std::optional<Eigen::Vector3d> colorOpt = scene->trace(ray, 16);
-		Eigen::Vector3d color = colorOpt.has_value() ? colorOpt.value() : Eigen::Vector3d::Zero(); // Missed pixels are black
+		for (int i = 0; i < rayShots; i++)
+		{
+			Ray ray;
+			if (cameraMode == CameraMode::PERSPECTIVE)
+				ray = Ray(Eigen::Vector3d(dist(mt), dist(mt), -1 + focalLength), pixelRay); // because plane is at z = -1
+			else // Orthographic, so fire rays in a straight line
+				// RECALL THAT RAY PARAM TAKES POS AND DIR, NOT START AND END. DON'T BE LIKE ME AND MAKE THIS MISTAKE :'(  - Steven, 2022-02-11
+				// Guess what? I made the same mistake again (for the focal length), by changing the aperture's z pos but not the dir. Classic. - Steven, 2022-02-19
+				ray = Ray(pixelRay + Eigen::Vector3d(0, 0, 1), pixelRay);
 
-		unsigned char colorR = (unsigned char)(255 * std::clamp(color[0], 0.0, 1.0));
-		unsigned char colorG = (unsigned char)(255 * std::clamp(color[1], 0.0, 1.0));
-		unsigned char colorB = (unsigned char)(255 * std::clamp(color[2], 0.0, 1.0));
+			std::optional<Eigen::Vector3d> colorOpt = scene->trace(ray, 16);
+			Eigen::Vector3d color = colorOpt.has_value() ? colorOpt.value() : Eigen::Vector3d::Zero(); // Missed pixels are black
+			colors.emplace_back(color);
+		}
+
+		double avgR = 0;
+		double avgG = 0;
+		double avgB = 0;
+		for (Eigen::Vector3d& colorVec : colors)
+		{
+			avgR += colorVec[0];
+			avgG += colorVec[1];
+			avgB += colorVec[2];
+		}
+		avgR /= rayShots;
+		avgG /= rayShots;
+		avgB /= rayShots;
+
+		unsigned char colorR = (unsigned char)(255 * std::clamp(avgR, 0.0, 1.0));
+		unsigned char colorG = (unsigned char)(255 * std::clamp(avgG, 0.0, 1.0));
+		unsigned char colorB = (unsigned char)(255 * std::clamp(avgB, 0.0, 1.0));
 
 		t.setPixel((signed int)pixelX, (signed int)pixelY, colorR, colorG, colorB);
 	}
