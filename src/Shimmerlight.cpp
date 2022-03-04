@@ -47,7 +47,7 @@ void Shimmerlight::run()
 	textureSerializer.serialize(checkerboard, "checkerboard.png");
 
 
-	Camera camera(800, 800, 1.0, 0.5, 80);
+	Camera camera(1600, 1600, 1.0, 0.006, 8);
 
 	Scene defaultScene; // TODO: Set ambient?
 	defaultScene.setCamera(camera);
