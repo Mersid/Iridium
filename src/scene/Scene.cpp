@@ -123,8 +123,8 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 			// u, v between 0 and 1, so we need to remop it to the size of the texture later.
 
 			// Similar algorithm to the one used in official implementation
-			const double u = acos(objectNormal.z()) / 3.1415;
-			const double v = (3.1415 + atan2(objectNormal.y(), objectNormal.x())) / (2 * 3.1415);
+			const double u = acos(objectNormal.z()) / EIGEN_PI;
+			const double v = (double)((EIGEN_PI + atan2(objectNormal.y(), objectNormal.x())) / (2 * EIGEN_PI)); // cast to double to make clang happy
 			const Texture& texture = primitive.getMaterial().getTexture().value();
 			// TODO: Handle translucent alpha channel? Currently we'll discard it entirely.
 			Eigen::Vector3d colorAtPos = texture.getPixelVectorAt(u * texture.getWidth(), v * texture.getHeight()).head<3>();
