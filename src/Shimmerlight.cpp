@@ -17,8 +17,8 @@ void Shimmerlight::run()
 {
 	Texture sample(192, 192);
 	for (int i = 0; i < 192; i++)
-	for (int j = 0; j < 192; j++)
-		sample.setPixel(i, j, i + 64, j + 64, 0);
+		for (int j = 0; j < 192; j++)
+			sample.setPixel(i, j, i + 64, j + 64, 0);
 
 
 	textureSerializer.serialize(sample, "colortest.png");
@@ -35,20 +35,22 @@ void Shimmerlight::run()
 
 	Texture checkerboard(800, 800);
 	for (int i = 0; i < checkerboard.getHeight(); i++)
-	for (int j = 0; j < checkerboard.getWidth(); j++)
-	{
-		bool c = false;
-		if ((i / 100) % 2 == 0) c = !c;
-		if ((j / 100) % 2 == 0) c = !c;
+		for (int j = 0; j < checkerboard.getWidth(); j++)
+		{
+			bool c = false;
+			if ((i / 100) % 2 == 0) c = !c;
+			if ((j / 100) % 2 == 0) c = !c;
 
-		if (c) checkerboard.setPixel(j, i, 255, 255, 255);
-		else checkerboard.setPixel(j, i, 0, 0, 0);
-	}
+			if (c) checkerboard.setPixel(j, i, 255, 255, 255);
+			else checkerboard.setPixel(j, i, 0, 0, 0);
+		}
+
 	textureSerializer.serialize(checkerboard, "checkerboard.png");
 
 
 	// 0.006 is a good aperture radius, probably, with 8 rays.
-	Camera camera(800, 800);
+	Camera camera(1600, 800);
+	camera.setFov(65);
 
 	Scene defaultScene; // TODO: Set ambient?
 	defaultScene.setCamera(camera);
