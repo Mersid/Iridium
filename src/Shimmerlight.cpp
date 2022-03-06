@@ -91,7 +91,7 @@ void Shimmerlight::run()
 	Texture lowFovTexture = defaultScene.takeSnapshot();
 	textureSerializer.serialize(lowFovTexture, "low_fov.png");
 
-	Camera dofCamera(1600, 800, 1, 0.0042, 16);
+	Camera dofCamera(1600, 800, 1, 0.006, 16);
 	dofCamera.setFov(65);
 	defaultScene.setCamera(dofCamera);
 
