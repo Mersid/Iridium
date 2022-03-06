@@ -19,6 +19,11 @@ public:
 	 */
 	void setPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255);
 
+	/**
+	 * @param data Replace the data in this texture with the data passed in from this parameter
+	 */
+	void setData(const std::vector<unsigned char>& d);
+
 	[[nodiscard]] int getWidth() const;
 	[[nodiscard]] int getHeight() const;
 

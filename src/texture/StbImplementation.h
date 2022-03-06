@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include "Texture.h"
 
 /**
  * Implementations for stb_image and related headers. The implementation itself is in the associated .cpp file to ensure it is
@@ -20,6 +21,13 @@ public:
 	 * 				and the number of bytes should be 4 * width * height.
 	 */
 	static void writePNG(const std::string& file, int width, int height, std::vector<unsigned char> bytes);
+
+	/**
+	 * Reads from a file.
+	 * @param file The file to read from. The file MUST be in RGBA format
+	 * @return Texture of the image read. Behaviour is undefined for invalid files or anything of that nature
+	 */
+	static Texture readPNG(const std::string& file);
 };
 
 

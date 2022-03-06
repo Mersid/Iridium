@@ -67,16 +67,19 @@ double PerlinNoiseSampler::sample(double x, double y)
 
 double PerlinNoiseSampler::lerp(double from, double to, double weight)
 {
+	if (mode == PerlinFilterMode::CUBIC)
+		return (to - from) * (3.0 - weight * 2.0) * weight * weight + from; // Cubic interpolation
 	return from + (to - from) * weight;
-	//return (to - from) * (3.0 - weight * 2.0) * weight * weight + from; // Cubic interpolation
 }
 
 double PerlinNoiseSampler::smooth(double in)
 {
-	return in * in * in * (in * (in * 6.0 - 15.0) + 10.0);
+	if (mode == PerlinFilterMode::FADE)
+		return in * in * in * (in * (in * 6.0 - 15.0) + 10.0);
+	return in;
 }
 
-PerlinNoiseSampler::PerlinNoiseSampler()
+PerlinNoiseSampler::PerlinNoiseSampler(PerlinFilterMode mode) : mode(mode)
 {
 	std::mt19937 mt = std::mt19937();
 	std::uniform_real_distribution<double> dist = std::uniform_real_distribution<double>(-1.0, 1.0);

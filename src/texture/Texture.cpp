@@ -58,3 +58,8 @@ Eigen::Vector4d Texture::getPixelVectorAt(int x, int y) const
 	return Eigen::Vector4d(r / 255.0, g / 255.0, b / 255.0, a / 255.0);
 }
 
+void Texture::setData(const std::vector<unsigned char>& d)
+{
+	data = d;
+}
+
