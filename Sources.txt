@@ -49,7 +49,8 @@ https://catlikecoding.com/unity/tutorials/noise/
 For information on reflection. Unused, but may be useful
 https://blog.demofox.org/2017/01/09/raytracing-reflection-refraction-fresnel-total-internal-reflection-and-beers-law/
 
-
+For the world map
+https://geology.com/world/world-map.shtml
 
 The providers of Eigen and the STB libraries
 <Sources obtained from assignment>
