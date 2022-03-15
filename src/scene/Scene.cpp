@@ -113,24 +113,7 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 		// See slide set 5: Final Shading Equation for more on this topic
 		// We should note that objectNormal and lightVector are unit vectors, so the dot of them is <= 1
 
-		// TODO: WARN: Only works for spheres, as algorithm for planes are different (and not needed right now).
-		// If object has texture, set the diffuse to that instead. (We may also consider handling the computation elsewhere)
-		Eigen::Vector3d diffuse;
-		if (primitive.getMaterial().getTexture() == std::nullopt)
-			diffuse = primitive.getMaterial().getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
-		else
-		{
-			// u, v between 0 and 1, so we need to remop it to the size of the texture later.
-
-			// Similar algorithm to the one used in official implementation
-			const double u = acos(objectNormal.z()) / EIGEN_PI;
-			const double v = (double)((EIGEN_PI + atan2(objectNormal.y(), objectNormal.x())) / (2 * EIGEN_PI)); // cast to double to make clang happy
-			const Texture& texture = primitive.getMaterial().getTexture().value();
-			// TODO: Handle translucent alpha channel? Currently we'll discard it entirely.
-			Eigen::Vector3d colorAtPos = texture.getPixelVectorAt(u * texture.getWidth(), v * texture.getHeight()).head<3>();
-
-			diffuse = colorAtPos * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
-		}
+		Eigen::Vector3d diffuse = primitive.getMaterial().getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));;
 		Eigen::Vector3d specular = primitive.getMaterial().getSpecularCoefficient() * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getMaterial().getPhongExponent()));
 
 		// If shadow ray hits an object, we won't have lights hitting it, so ambient only
@@ -155,6 +138,5 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 	std::optional<Eigen::Vector3d> optReflectColor = trace(reflectRay, ttl - 1);
 	color += primitive.getMaterial().getReflectionCoefficient() * (optReflectColor.has_value() ? optReflectColor.value() : Eigen::Vector3d::Zero());
 
-	// TODO: refractions
 	return color;
 }

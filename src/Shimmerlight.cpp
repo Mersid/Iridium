@@ -17,20 +17,7 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
-	PerlinTextureGenerator perlinTextureGenerator(PerlinFilterMode::CUBIC);
-	Texture perlin = perlinTextureGenerator.generateTexture(800, 800, 0.02);
-	PerlinTextureGenerator perlinTextureGeneratorLinear(PerlinFilterMode::LINEAR);
-	Texture perlinLinear = perlinTextureGeneratorLinear.generateTexture(800, 800, 0.02);
-	PerlinTextureGenerator perlinTextureGeneratorFade(PerlinFilterMode::FADE);
-	Texture perlinFade = perlinTextureGeneratorFade.generateTexture(800, 800, 0.02);
-
-	CheckerboardTextureGenerator checkerboardTextureGenerator;
-	Texture checkerboard = checkerboardTextureGenerator.generateTexture(800, 800, 100);
-	Texture worldMap = textureSerializer.deserialize("../world-map.png");
-
-	// 0.006 is a good aperture radius, probably, with 8 rays.
-	Camera camera(1600, 800);
-	camera.setFov(65);
+	Camera camera(640, 480);
 
 	Scene defaultScene;
 	defaultScene.setCamera(camera);
@@ -59,9 +46,9 @@ void Shimmerlight::run()
 	defaultScene.addPrimitive(std::make_shared<Sphere>(
 			Eigen::Vector3d(1, 0.2, -1 + zOffset), 1,
 			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection)));
-	defaultScene.addPrimitive(std::make_shared<Sphere>( // This sphere is the one to apply the texture to
+	defaultScene.addPrimitive(std::make_shared<Sphere>(
 			Eigen::Vector3d(-2, 0.4, 1 + zOffset), 1,
-			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection, perlin)));
+			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection)));
 	defaultScene.addPrimitive(std::make_shared<Sphere>(
 			Eigen::Vector3d(-5, 0.8, -1 + zOffset), 1,
 			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection)));
@@ -76,51 +63,6 @@ void Shimmerlight::run()
 
 	Texture defaultTextureRender = defaultScene.takeSnapshot();
 	textureSerializer.serialize(defaultTextureRender, "default.png");
-
-	Camera highFOV(1600, 800);
-	highFOV.setFov(120);
-	defaultScene.setCamera(highFOV);
-
-	Texture highFovTexture = defaultScene.takeSnapshot();
-	textureSerializer.serialize(highFovTexture, "high_fov.png");
-
-	Camera lowFOV(1600, 800);
-	lowFOV.setFov(30);
-	defaultScene.setCamera(lowFOV);
-
-	Texture lowFovTexture = defaultScene.takeSnapshot();
-	textureSerializer.serialize(lowFovTexture, "low_fov.png");
-
-	Camera dofCamera(1600, 800, 1, 0.006, 16);
-	dofCamera.setFov(65);
-	defaultScene.setCamera(dofCamera);
-
-	Texture dofTexture = defaultScene.takeSnapshot();
-	textureSerializer.serialize(dofTexture, "depth_of_field.png");
-
-
-	defaultScene.setCamera(camera);
-
-	defaultScene.addPrimitive(std::make_shared<Sphere>( // This sphere is the one to apply the texture to
-			Eigen::Vector3d(-2, 0.4, 1 + zOffset), 1.001,
-			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection, perlinLinear)));
-	Texture defaultTexture2 = defaultScene.takeSnapshot();
-	textureSerializer.serialize(defaultTexture2, "linear.png");
-
-	defaultScene.addPrimitive(std::make_shared<Sphere>( // This sphere is the one to apply the texture to
-			Eigen::Vector3d(-2, 0.4, 1 + zOffset), 1.002,
-			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection, perlinFade)));
-	Texture defaultTexture3 = defaultScene.takeSnapshot();
-	textureSerializer.serialize(defaultTexture3, "fade.png");
-
-	defaultScene.addPrimitive(std::make_shared<Sphere>( // This sphere is the one to apply the texture to
-			Eigen::Vector3d(-2, 0.4, 1 + zOffset), 1.003,
-			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection, checkerboard)));
-	defaultScene.addPrimitive(std::make_shared<Sphere>(
-			Eigen::Vector3d(1, 0.2, -1 + zOffset), 1.003,
-			Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection, worldMap)));
-	Texture defaultTexture4 = defaultScene.takeSnapshot();
-	textureSerializer.serialize(defaultTexture4, "otherfx.png");
 
 }
 
