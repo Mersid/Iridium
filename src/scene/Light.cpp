@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Light.h"
 
 Light::Light(Eigen::Vector3d position, double intensity) :

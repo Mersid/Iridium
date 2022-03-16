@@ -2,6 +2,7 @@
 
 
 #include "texture/TextureSerializer.h"
+#include "geometry/OffSerializer.h"
 
 class Shimmerlight
 {
@@ -16,6 +17,7 @@ public:
 private:
 	inline static Shimmerlight* instance;
 	TextureSerializer textureSerializer;
+	OffSerializer offSerializer;
 };
 
 

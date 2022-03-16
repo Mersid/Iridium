@@ -1,5 +1,4 @@
 #include "Scene.h"
-#include "../geometry/Sphere.h"
 
 Scene::Scene() : ambientCoefficient(Eigen::Vector3d(1, 1, 1)), ambientLightIntensity(0.005)
 {

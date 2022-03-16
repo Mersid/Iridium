@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Camera.h"
-#include "../texture/Texture.h"
 #include "../Shimmerlight.h"
 #include "Scene.h" // We can use "Scene.h" here because .cpp files aren't #included, so we won't have to deal with circular dependency
 
@@ -11,7 +10,7 @@ Camera::Camera(int width, int height, double focalLength, double apertureRadius,
 {
 }
 
-Texture Camera::takeSnapshot(CameraMode cameraMode)
+Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 {
 	Texture t(width, height);
 
@@ -21,8 +20,8 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 		unsigned int pixelX = i % width;
 		unsigned int pixelY = i / width;
 
-		if (i % width == 0)
-			std::cout << std::to_string(pixelY) << std::endl;
+		//if (i % width == 0)
+			std::cout << std::to_string(pixelY) + " | " + std::to_string(pixelX) << std::endl;
 
 		// Potentially sample many colors for depth of field, and we need to average them
 		std::vector<Eigen::Vector3d> colors;
@@ -38,7 +37,7 @@ Texture Camera::takeSnapshot(CameraMode cameraMode)
 				// Guess what? I made the same mistake again (for the focal length), by changing the aperture's z pos but not the dir. Classic. - Steven, 2022-02-19
 				ray = Ray(pixelRay + Eigen::Vector3d(0, 0, 1), pixelRay);
 
-			std::optional<Eigen::Vector3d> colorOpt = scene->trace(ray, 16);
+			std::optional<Eigen::Vector3d> colorOpt = scene->trace(ray, ttl);
 			Eigen::Vector3d color = colorOpt.has_value() ? colorOpt.value() : Eigen::Vector3d::Zero(); // Missed pixels are black
 			colors.emplace_back(color);
 		}

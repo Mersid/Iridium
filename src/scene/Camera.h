@@ -36,9 +36,10 @@ public:
 	/**
 	 * Takes a snapshot of what the camera sees
 	 * @param cameraMode Take the snapshot in orthographic or perspective mode
+	 * @param ttl The number of times the ray can bounce. 1 means no reflections
 	 * @return A texture depicting what the camera saw at each of its pixel rays.
 	 */
-	Texture takeSnapshot(CameraMode cameraMode = CameraMode::PERSPECTIVE);
+	Texture takeSnapshot(CameraMode cameraMode = CameraMode::PERSPECTIVE, int ttl = 1);
 
 	/**
 	 * Sets the scene of this camera. This is needed for the camera to access other objects in the scene

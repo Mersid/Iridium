@@ -54,3 +54,15 @@ Material& Parallelogram::getMaterial()
 	return material;
 }
 
+void Parallelogram::setMaterial(Material material)
+{
+	this->material = material;
+}
+
+void Parallelogram::move(Eigen::Vector3d newPos)
+{
+	a += newPos;
+	b += newPos;
+	c += newPos;
+}
+

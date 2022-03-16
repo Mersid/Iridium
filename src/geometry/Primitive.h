@@ -24,7 +24,13 @@ public:
 	 */
 	virtual Eigen::Vector3d getNormalAt(Eigen::Vector3d position) = 0;
 
+	virtual void setMaterial(Material material) = 0;
 	virtual Material& getMaterial() = 0;
+
+	/**
+	 * @param newPos Moves the primitive relative to its current position by this quantity
+	 */
+	virtual void move(Eigen::Vector3d newPos) = 0;
 };
 
 
