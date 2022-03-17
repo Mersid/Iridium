@@ -16,7 +16,7 @@ public:
 	 * @param c The third point of the triangle. Consider the cross product will use the vector ac as its B value (for A X B)
 	 * @param material The properties of the material of this primitive
 	 */
-	Triangle(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d c, Material material = Material());
+	Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, const Material& material = Material());
 
 	std::optional<Eigen::Vector3d> getRayIntersection(const Ray& ray) override;
 

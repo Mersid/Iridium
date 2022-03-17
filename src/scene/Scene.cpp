@@ -30,12 +30,12 @@ void Scene::setCamera(Camera c)
 	camera.setScene(*this);
 }
 
-void Scene::addLight(Light l)
+void Scene::addLight(const Light& l)
 {
 	lights.emplace_back(l);
 }
 
-void Scene::addModel(Model model)
+void Scene::addModel(const Model& model)
 {
 	models.emplace_back(model);
 }
@@ -108,7 +108,7 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 		// See slide set 5: Final Shading Equation for more on this topic
 		// We should note that objectNormal and lightVector are unit vectors, so the dot of them is <= 1
 
-		Eigen::Vector3d diffuse = primitive.getMaterial().getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));;
+		Eigen::Vector3d diffuse = primitive.getMaterial().getDiffuseCoefficient() * light.getIntensity() * std::max(0.0, objectNormal.dot(lightVector));
 		Eigen::Vector3d specular = primitive.getMaterial().getSpecularCoefficient() * light.getIntensity() * (std::pow(std::max(0.0, objectNormal.dot(bisector)), primitive.getMaterial().getPhongExponent()));
 
 		// If shadow ray hits an object, we won't have lights hitting it, so ambient only

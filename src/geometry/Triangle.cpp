@@ -1,6 +1,6 @@
 #include "Triangle.h"
 
-Triangle::Triangle(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d c, Material material) :
+Triangle::Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, const Material& material) :
 		a(a), b(b), c(c), u(b - a), v(c - a), normal(u.cross(v)),
 		material(material)
 {

@@ -22,12 +22,12 @@ public:
 	 * Adds a light to the scene
 	 * @param l The light to add to the scene
 	 */
-	void addLight(Light l);
+	void addLight(const Light& l);
 
 	/**
 	 * @param model The model to add to the scene
 	 */
-	void addModel(Model model);
+	void addModel(const Model& model);
 
 	/**
 	 * Takes a snapshot with the camera in the scene

@@ -20,7 +20,7 @@ public:
 	 * @param c The third point of the parallelogram. Consider the cross product will use the vector ac as its B value (for A X B)
 	 * @param material The properties of the material of this primitive
 	 */
-	Parallelogram(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d c, Material material);
+	Parallelogram(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, const Material& material);
 
 	/**
 	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.

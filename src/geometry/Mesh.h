@@ -21,7 +21,7 @@ public:
 	/**
 	 * @param translateBy Translates the model by this amount
 	 */
-	void translate(Eigen::Vector3d translateBy);
+	void translate(const Eigen::Vector3d& translateBy);
 
 
 private:

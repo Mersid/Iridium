@@ -31,7 +31,7 @@ public:
 	 * @return A normalized color (0, 1) vector at the given coordinates. Is a utility function; if we need the true color, get the actual data and compute it there.
 	 * Returns in the form RGBA.
 	 */
-	Eigen::Vector4d getPixelVectorAt(int x, int y) const;
+	[[nodiscard]] Eigen::Vector4d getPixelVectorAt(int x, int y) const;
 
 	[[nodiscard]] const std::vector<unsigned char>& getData() const;
 

@@ -4,9 +4,9 @@
 #include "Scene.h" // We can use "Scene.h" here because .cpp files aren't #included, so we won't have to deal with circular dependency
 
 Camera::Camera(int width, int height, double focalLength, double apertureRadius, unsigned int rayShots) :
-		width(width), height(height), focalLength(focalLength), aspectRatio((double)width / height),
-		apertureRadius(apertureRadius), rayShots(rayShots),
-		dist(std::uniform_real_distribution<double>(-apertureRadius, apertureRadius))
+		width(width), height(height), focalLength(focalLength), apertureRadius(apertureRadius),
+		rayShots(rayShots), dist(std::uniform_real_distribution<double>(-apertureRadius, apertureRadius)),
+		aspectRatio((double)width / height)
 {
 }
 
@@ -69,7 +69,7 @@ void Camera::setScene(Scene &s)
 	this->scene = &s;
 }
 
-Eigen::Vector3d Camera::getPixelRayAt(int i)
+Eigen::Vector3d Camera::getPixelRayAt(int i) const
 {
 	// We start with an empty "image" represented by a vector of "pixel" rays, each pixel of which corresponds to a single pixel on
 	// a texture. However, our camera's pixel rays are from -1 to 1, so we need to scale accordingly.
@@ -95,7 +95,7 @@ Eigen::Vector3d Camera::getPixelRayAt(int i)
 	return Eigen::Vector3d(pixelCameraX, pixelCameraY, -1); // We're fixing z = -1
 }
 
-unsigned int Camera::getPixelCount()
+unsigned int Camera::getPixelCount() const
 {
 	return width * height;
 }

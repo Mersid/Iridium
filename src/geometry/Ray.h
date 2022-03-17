@@ -17,7 +17,7 @@ public:
 	 * @param pos2 Another point on the ray. The ray is formed from the initial position, going through this point.
 	 * 			   This is convenient because we can use a direction vector, or a "look-at" vector that will get automatically normalized.
 	 */
-	Ray(Eigen::Vector3d position, Eigen::Vector3d pos2);
+	Ray(const Eigen::Vector3d& position, const Eigen::Vector3d& pos2);
 
 	[[nodiscard]] const Eigen::Vector3d& getPosition() const;
 

@@ -10,7 +10,7 @@ const Eigen::Vector3d& Ray::getDirection() const
 	return direction;
 }
 
-Ray::Ray(Eigen::Vector3d position, Eigen::Vector3d pos2) :
+Ray::Ray(const Eigen::Vector3d& position, const Eigen::Vector3d& pos2) :
 	position(position), direction((pos2 - position).normalized())
 {
 

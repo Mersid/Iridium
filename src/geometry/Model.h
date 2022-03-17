@@ -16,7 +16,7 @@ public:
 	 * @param mesh Constructs a model from the given mesh
 	 * @param material The material to be applied to each of the triangles
 	 */
-	explicit Model(Mesh mesh, Material material = Material());
+	explicit Model(const Mesh& mesh, const Material& material = Material());
 
 	/**
 	 * @param ray The ray to fire against the model

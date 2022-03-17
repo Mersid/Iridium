@@ -18,7 +18,7 @@ public:
 	 * @param radius The radius of the sphere, relative to the center
 	 * @param material The properties of the material of this primitive
 	 */
-	Sphere(Eigen::Vector3d center, double radius, Material material);
+	Sphere(const Eigen::Vector3d& center, double radius, const Material& material);
 
 	/**
 	 * Gets the near intersection of the intersection of a ray with a sphere

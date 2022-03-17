@@ -1,6 +1,6 @@
 #include "Light.h"
 
-Light::Light(Eigen::Vector3d position, double intensity) :
+Light::Light(const Eigen::Vector3d& position, double intensity) :
 	position(position), intensity(intensity)
 {
 

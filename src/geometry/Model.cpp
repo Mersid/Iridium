@@ -1,6 +1,6 @@
 #include "Model.h"
 
-Model::Model(Mesh mesh, Material material) : mesh(mesh)
+Model::Model(const Mesh& mesh, const Material& material) : mesh(mesh)
 {
 	setMaterial(material);
 	computeBoundingBox();

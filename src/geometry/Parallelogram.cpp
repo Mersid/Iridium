@@ -1,6 +1,6 @@
 #include "Parallelogram.h"
 
-Parallelogram::Parallelogram(Eigen::Vector3d a, Eigen::Vector3d b, Eigen::Vector3d c, Material material) :
+Parallelogram::Parallelogram(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, const Material& material) :
 	a(a), b(b), c(c), u(b - a), v(c - a), normal(u.cross(v)),
 	material(material)
 {
