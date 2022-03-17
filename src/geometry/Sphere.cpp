@@ -1,7 +1,9 @@
 #include "Sphere.h"
 
-Sphere::Sphere(const Eigen::Vector3d& center, double radius, const Material& material) :
-		center(center), radius(radius), material(material)
+#include <utility>
+
+Sphere::Sphere(Eigen::Vector3d center, double radius, Material material) :
+		center(std::move(center)), radius(radius), material(std::move(material))
 {
 }
 

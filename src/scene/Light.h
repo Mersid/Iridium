@@ -6,7 +6,7 @@
 class Light
 {
 public:
-	explicit Light(const Eigen::Vector3d& position, double intensity = 1);
+	explicit Light(Eigen::Vector3d position, double intensity = 1);
 
 	/**
 	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.

@@ -24,6 +24,8 @@ void Shimmerlight::run()
 	double defaultReflection = 0.7;
 	double zOffset = -4.5;
 	double defaultLightIntensity = 0.3;
+	Material defaultMaterial(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection);
+
 	defaultScene.addLight(Light(Eigen::Vector3d(8, 8, zOffset), defaultLightIntensity));
 	defaultScene.addLight(Light(Eigen::Vector3d(6, -8, zOffset), defaultLightIntensity));
 	defaultScene.addLight(Light(Eigen::Vector3d(4, 8, zOffset), defaultLightIntensity));
@@ -35,7 +37,7 @@ void Shimmerlight::run()
 	defaultScene.addLight(Light(Eigen::Vector3d(-5, 0, zOffset), defaultLightIntensity));
 
 	Mesh mesh = offSerializer.loadOff("data/bunny.off");
-	Model model(mesh, Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
+	Model model(mesh, defaultMaterial);
 	model.translate(Eigen::Vector3d(0, 0, -5 + zOffset));
 	defaultScene.addModel(model);
 

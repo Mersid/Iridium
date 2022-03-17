@@ -1,7 +1,8 @@
 #include <iostream>
+#include <utility>
 #include "Mesh.h"
 
-Mesh::Mesh(std::vector<Triangle> triangles) : triangles(triangles)
+Mesh::Mesh(std::vector<Triangle> triangles) : triangles(std::move(triangles))
 {
 
 }

@@ -1,6 +1,8 @@
 #include "Model.h"
 
-Model::Model(const Mesh& mesh, const Material& material) : mesh(mesh)
+#include <utility>
+
+Model::Model(Mesh mesh, const Material& material) : mesh(std::move(mesh))
 {
 	setMaterial(material);
 	computeBoundingBox();
@@ -68,7 +70,7 @@ std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 	return RayTraceInfo(nearestObject, nearestHitPos);
 }
 
-void Model::translate(Eigen::Vector3d translateBy)
+void Model::translate(const Eigen::Vector3d& translateBy)
 {
 	mesh.translate(translateBy);
 }

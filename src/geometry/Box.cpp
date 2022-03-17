@@ -1,6 +1,8 @@
 #include "Box.h"
 
-Box::Box(const Eigen::Vector3d& min, const Eigen::Vector3d& max) : min(min), max(max)
+#include <utility>
+
+Box::Box(Eigen::Vector3d min, Eigen::Vector3d max) : min(std::move(min)), max(std::move(max))
 {
 
 }

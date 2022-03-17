@@ -1,8 +1,10 @@
 #include "Material.h"
 
+#include <utility>
+
 Material::Material(Eigen::Vector3d diffuseCoefficient, Eigen::Vector3d specularCoefficient, double phongExponent,
                    double reflectionCoefficient) :
-				   diffuseCoefficient(diffuseCoefficient), specularCoefficient(specularCoefficient), phongExponent(phongExponent), reflectionCoefficient(reflectionCoefficient)
+				   diffuseCoefficient(std::move(diffuseCoefficient)), specularCoefficient(std::move(specularCoefficient)), phongExponent(phongExponent), reflectionCoefficient(reflectionCoefficient)
 {
 }
 

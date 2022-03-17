@@ -16,7 +16,7 @@ public:
 	 * @param mesh Constructs a model from the given mesh
 	 * @param material The material to be applied to each of the triangles
 	 */
-	explicit Model(const Mesh& mesh, const Material& material = Material());
+	explicit Model(Mesh mesh, const Material& material = Material());
 
 	/**
 	 * @param ray The ray to fire against the model
@@ -29,7 +29,7 @@ public:
 	/**
 	 * @param translateBy Translates the model by this amount
 	 */
-	void translate(Eigen::Vector3d translateBy);
+	void translate(const Eigen::Vector3d& translateBy);
 
 	Box& getBoundingBox();
 

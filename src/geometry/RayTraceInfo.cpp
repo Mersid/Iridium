@@ -1,6 +1,8 @@
 #include "RayTraceInfo.h"
 
-RayTraceInfo::RayTraceInfo(Primitive* primitive, const Eigen::Vector3d& hitPos) : hitPrimitive(primitive), hitPos(hitPos)
+#include <utility>
+
+RayTraceInfo::RayTraceInfo(Primitive* primitive, Eigen::Vector3d hitPos) : hitPrimitive(primitive), hitPos(std::move(hitPos))
 {
 
 }

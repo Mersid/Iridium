@@ -6,7 +6,7 @@
 class RayTraceInfo
 {
 public:
-	RayTraceInfo(Primitive* primitive, const Eigen::Vector3d& hitPos);
+	RayTraceInfo(Primitive* primitive, Eigen::Vector3d hitPos);
 
 	[[nodiscard]] Primitive* getHitPrimitive() const;
 
