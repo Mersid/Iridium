@@ -34,15 +34,10 @@ void Shimmerlight::run()
 	//defaultScene.addLight(Light(Eigen::Vector3d(0, 0, zOffset), defaultLightIntensity * 4));
 	defaultScene.addLight(Light(Eigen::Vector3d(-5, 0, zOffset), defaultLightIntensity));
 
-	auto t = offSerializer.loadOff("data/bunny.off");
-
-	for (auto& triangle : t)
-	{
-		triangle->move(Eigen::Vector3d(0, 0, -5 + zOffset));
-		triangle->setMaterial(Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
-
-		defaultScene.addPrimitive(triangle);
-	}
+	Mesh mesh = offSerializer.loadOff("data/bunny.off");
+	Model model(mesh, Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection));
+	model.translate(Eigen::Vector3d(0, 0, -5 + zOffset));
+	defaultScene.addModel(model);
 
 	Texture defaultTextureRender = defaultScene.takeSnapshot();
 	textureSerializer.serialize(defaultTextureRender, "default.png");

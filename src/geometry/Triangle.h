@@ -28,6 +28,12 @@ public:
 
 	void move(Eigen::Vector3d newPos) override;
 
+	[[nodiscard]] const Eigen::Vector3d& getA() const;
+
+	[[nodiscard]] const Eigen::Vector3d& getB() const;
+
+	[[nodiscard]] const Eigen::Vector3d& getC() const;
+
 private:
 	Eigen::Vector3d a; // Common point
 	Eigen::Vector3d b; // Usually the horizontal point

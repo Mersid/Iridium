@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Triangle.h"
+#include "Mesh.h"
 
 /**
  * Limited-functionality .OFF file loader. Assumes the second line has the vertex/face count, and that each face is a triangle
@@ -12,7 +13,7 @@
 class OffSerializer
 {
 public:
-	std::vector<std::shared_ptr<Triangle>> loadOff(const std::string& path);
+	Mesh loadOff(const std::string& path);
 
 private:
 

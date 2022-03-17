@@ -2,6 +2,7 @@
 
 #include "Eigen/Core"
 #include "Camera.h"
+#include "../geometry/Model.h"
 #include <memory>
 
 class Scene
@@ -24,10 +25,9 @@ public:
 	void addLight(Light l);
 
 	/**
-	 * Adds a new primitive to the scene
-	 * @param p The primitive to add to the scene
+	 * @param model The model to add to the scene
 	 */
-	void addPrimitive(std::shared_ptr<Primitive> p);
+	void addModel(Model model);
 
 	/**
 	 * Takes a snapshot with the camera in the scene
@@ -37,16 +37,16 @@ public:
 	Texture takeSnapshot(CameraMode cameraMode = CameraMode::PERSPECTIVE);
 
 	/**
-	 * Finds the first object the ray intersects
+	 * Finds the first object the ray intersects.
+	 * \deprecated This method is approaching deprecation
 	 * @param ray The ray to cast
-	 * @param ignore Ignores the specified primitive from the intersection calculation, computing the next one if necessary
 	 * @return A shared pointer to the object that was hit first, or a shared pointer to nullptr if it missed
 	 */
-	std::shared_ptr<Primitive> getFirstIntersection(const Ray& ray, std::shared_ptr<Primitive> ignore = nullptr);
+	Primitive* getFirstIntersection(const Ray& ray);
 
-	const Eigen::Vector3d& getAmbientCoefficient() const;
+	[[nodiscard]] const Eigen::Vector3d& getAmbientCoefficient() const;
 
-	double getAmbientLightIntensity() const;
+	[[nodiscard]] double getAmbientLightIntensity() const;
 
 	/**
 	 * Takes in a ray from a position with direction, and tests if it hits an object in the scene. This method is recursive,
@@ -60,7 +60,7 @@ public:
 
 private:
 	Camera camera;
-	std::vector<std::shared_ptr<Primitive>> primitives;
+	std::vector<Model> models;
 	std::vector<Light> lights;
 
 	Eigen::Vector3d ambientCoefficient;

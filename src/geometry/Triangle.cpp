@@ -65,5 +65,20 @@ void Triangle::move(Eigen::Vector3d newPos)
 	c += newPos;
 }
 
+const Eigen::Vector3d& Triangle::getA() const
+{
+	return a;
+}
+
+const Eigen::Vector3d& Triangle::getB() const
+{
+	return b;
+}
+
+const Eigen::Vector3d& Triangle::getC() const
+{
+	return c;
+}
+
 
 

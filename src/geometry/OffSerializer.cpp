@@ -2,7 +2,7 @@
 #include "OffSerializer.h"
 #include "../utils/StringUtils.h"
 
-std::vector<std::shared_ptr<Triangle>> OffSerializer::loadOff(const std::string& path)
+Mesh OffSerializer::loadOff(const std::string& path)
 {
 	std::ifstream stream(path);
 	std::stringstream ss;
@@ -16,7 +16,7 @@ std::vector<std::shared_ptr<Triangle>> OffSerializer::loadOff(const std::string&
 
 	std::vector<Eigen::Vector3d> vertices;
 	vertices.reserve(vertexCount);
-	std::vector<std::shared_ptr<Triangle>> triangles;
+	std::vector<Triangle> triangles;
 	triangles.reserve(trisCount);
 
 	// Load vertices
@@ -38,8 +38,8 @@ std::vector<std::shared_ptr<Triangle>> OffSerializer::loadOff(const std::string&
 		unsigned long indexB = std::stoul(tokens[2]);
 		unsigned long indexC = std::stoul(tokens[3]);
 
-		triangles.emplace_back(std::make_shared<Triangle>(vertices[indexA], vertices[indexB], vertices[indexC]));
+		triangles.emplace_back(vertices[indexA], vertices[indexB], vertices[indexC]);
 	}
 
-	return triangles;
+	return Mesh(triangles);
 }
