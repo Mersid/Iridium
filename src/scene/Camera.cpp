@@ -6,7 +6,7 @@
 Camera::Camera(int width, int height, double focalLength, double apertureRadius, unsigned int rayShots) :
 		width(width), height(height), focalLength(focalLength), apertureRadius(apertureRadius),
 		rayShots(rayShots), dist(std::uniform_real_distribution<double>(-apertureRadius, apertureRadius)),
-		aspectRatio((double)width / height)
+		aspectRatio((double)width / height), scene(nullptr)
 {
 }
 
@@ -27,7 +27,7 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 		std::vector<Eigen::Vector3d> colors;
 		colors.reserve(rayShots);
 
-		for (int i = 0; i < rayShots; i++)
+		for (int j = 0; j < rayShots; j++)
 		{
 			Ray ray;
 			if (cameraMode == CameraMode::PERSPECTIVE)

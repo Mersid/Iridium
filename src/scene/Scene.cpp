@@ -70,12 +70,12 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 {
 	// Find the nearest primitive we'll hit
 	Primitive* primitivePtr = getFirstIntersection(ray);
-	Primitive& primitive = *primitivePtr;
 
 	// We hit nothing, then skip this pixel
 	if (primitivePtr == nullptr || ttl <= 0)
 		return std::nullopt;
 
+	Primitive& primitive = *primitivePtr;
 	std::optional<Eigen::Vector3d> optHitPos = primitive.getRayIntersection(ray);
 	if (!optHitPos.has_value()) // Not needed anymore because we refactored above to guarantee primitive hit, but we'll leave it for now
 		return std::nullopt;

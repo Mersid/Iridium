@@ -38,7 +38,6 @@ public:
 
 	/**
 	 * Finds the first object the ray intersects.
-	 * \deprecated This method is approaching deprecation
 	 * @param ray The ray to cast
 	 * @return A shared pointer to the object that was hit first, or a shared pointer to nullptr if it missed
 	 */

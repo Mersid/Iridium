@@ -77,7 +77,7 @@ private:
 	int height;
 	double focalLength;
 	double apertureRadius;
-	int rayShots;
+	unsigned int rayShots;
 
 	std::mt19937 mt;
 	std::uniform_real_distribution<double> dist;
