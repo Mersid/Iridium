@@ -9,12 +9,21 @@
 class Primitive
 {
 public:
+
+	virtual ~Primitive() = default;
+
 	/**
 	 * Test if the given ray intersects this parallelogram
 	 * @param ray The ray to test against
 	 * @return The vector representing the position of the intersection with the given ray if the ray hit the parallelogram
 	 */
 	virtual std::optional<Eigen::Vector3d> getRayIntersection(const Ray& ray) = 0;
+
+	/**
+	 * We need primitives to keep track of a position for BVH purposes. It doesn't really matter too much how it's done exactly.
+	 * @return The position of the primitive. It should probably correspond to one of its vertices
+	 */
+	virtual Eigen::Vector3d getPosition() = 0;
 
 	/**
 	 * Gets the vector normal to the surface of the primitive at the specified position. The position should be close to the surface, or undefined

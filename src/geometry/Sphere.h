@@ -38,6 +38,11 @@ public:
 
 	Material& getMaterial() override;
 
+	Eigen::Vector3d getPosition() override;
+
+	void setMaterial(Material material) override;
+
+	void translate(Eigen::Vector3d newPos) override;
 
 
 private:

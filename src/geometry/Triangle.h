@@ -28,6 +28,8 @@ public:
 
 	void translate(Eigen::Vector3d translation) override;
 
+	Eigen::Vector3d getPosition() override;
+
 	[[nodiscard]] const Eigen::Vector3d& getA() const;
 
 	[[nodiscard]] const Eigen::Vector3d& getB() const;

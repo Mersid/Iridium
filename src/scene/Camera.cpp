@@ -27,7 +27,7 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 		std::vector<Eigen::Vector3d> colors;
 		colors.reserve(rayShots);
 
-		for (int j = 0; j < rayShots; j++)
+		for (unsigned int j = 0; j < rayShots; j++)
 		{
 			Ray ray;
 			if (cameraMode == CameraMode::PERSPECTIVE)

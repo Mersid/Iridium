@@ -46,3 +46,18 @@ Material& Sphere::getMaterial()
 	return material;
 }
 
+Eigen::Vector3d Sphere::getPosition()
+{
+	return center;
+}
+
+void Sphere::setMaterial(Material material)
+{
+	this->material = material;
+}
+
+void Sphere::translate(Eigen::Vector3d newPos)
+{
+	center += newPos;
+}
+

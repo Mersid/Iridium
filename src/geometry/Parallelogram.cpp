@@ -68,3 +68,8 @@ void Parallelogram::translate(Eigen::Vector3d translation)
 	c += translation;
 }
 
+Eigen::Vector3d Parallelogram::getPosition()
+{
+	return a;
+}
+

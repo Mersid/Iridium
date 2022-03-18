@@ -47,6 +47,8 @@ public:
 
 	void translate(Eigen::Vector3d translation) override;
 
+	Eigen::Vector3d getPosition() override;
+
 private:
 	Eigen::Vector3d a; // Common point
 	Eigen::Vector3d b; // Usually the horizontal point
