@@ -36,9 +36,10 @@ void Shimmerlight::run()
 	//defaultScene.addLight(Light(Eigen::Vector3d(0, 0, zOffset), defaultLightIntensity * 4));
 	defaultScene.addLight(Light(Eigen::Vector3d(-5, 0, zOffset), defaultLightIntensity));
 
-	Mesh mesh = offSerializer.loadOff("data/bunny.off");
+	Mesh mesh = offSerializer.loadOff("data/cube.off");
 	Model model(mesh, defaultMaterial);
 	model.translate(Eigen::Vector3d(0, 0, -5 + zOffset));
+	model.generateBVH();
 	defaultScene.addModel(model);
 
 	Texture defaultTextureRender = defaultScene.takeSnapshot();

@@ -7,9 +7,13 @@ Mesh::Mesh(std::vector<std::shared_ptr<Primitive>> primitives) : primitives(std:
 
 }
 
-std::vector<std::shared_ptr<Primitive>>& Mesh::getPrimitives()
+std::vector<Primitive*> Mesh::getPrimitives()
 {
-	return primitives;
+	std::vector<Primitive*> ptrs;
+	ptrs.reserve(primitives.size());
+	for (const std::shared_ptr<Primitive>& primitive : primitives)
+		ptrs.emplace_back(primitive.get());
+	return ptrs;
 }
 
 

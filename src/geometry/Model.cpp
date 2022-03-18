@@ -9,7 +9,7 @@ Model::Model(Mesh mesh, const Material& material) : mesh(std::move(mesh))
 
 void Model::setMaterial(const Material& material)
 {
-	for (const std::shared_ptr<Primitive>& primitive : mesh.getPrimitives())
+	for (Primitive* primitive : mesh.getPrimitives())
 	{
 		primitive->setMaterial(material);
 	}
@@ -20,7 +20,7 @@ std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 	Primitive* nearestObject = nullptr;
 	Eigen::Vector3d nearestHitPos; // The hit pos of the nearest object. We need this to compare with the current object, and replace it if it's closer than this one
 
-	for (const std::shared_ptr<Primitive>& primitive : mesh.getPrimitives())
+	for (Primitive* primitive : mesh.getPrimitives())
 	{
 		std::optional<Eigen::Vector3d> possibleHit = primitive->getRayIntersection(ray);
 		if (!possibleHit.has_value())
@@ -33,7 +33,7 @@ std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 		// OR: If our new object has a shorter ray than the previous closest object, replace it.
 		if (nearestObject == nullptr || (hitPos - ray.getPosition()).norm() < (nearestHitPos - ray.getPosition()).norm())
 		{
-			nearestObject = primitive.get();
+			nearestObject = primitive;
 			nearestHitPos = hitPos;
 		}
 	}
@@ -46,4 +46,9 @@ std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 void Model::translate(const Eigen::Vector3d& translateBy)
 {
 	mesh.translate(translateBy);
+}
+
+void Model::generateBVH()
+{
+	bvh = BoundingVolumeHierarchy(mesh.getPrimitives());
 }

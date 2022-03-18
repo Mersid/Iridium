@@ -31,6 +31,11 @@ public:
 	 */
 	void translate(const Eigen::Vector3d& translateBy);
 
+	/**
+	 * Generates a bounding volume hierarchy for this model
+	 */
+	void generateBVH();
+
 
 private:
 	Mesh mesh;

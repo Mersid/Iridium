@@ -13,7 +13,7 @@ public:
 
 	void addPrimitive(std::shared_ptr<Primitive>&& primitive);
 
-	std::vector<std::shared_ptr<Primitive>>& getPrimitives();
+	std::vector<Primitive*> getPrimitives();
 
 	/**
 	 * @param translateBy Translates the model by this amount
