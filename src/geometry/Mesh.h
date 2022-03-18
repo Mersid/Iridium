@@ -11,6 +11,8 @@ class Mesh
 public:
 	explicit Mesh(std::vector<std::shared_ptr<Primitive>> primitives);
 
+	void addPrimitive(std::shared_ptr<Primitive>&& primitive);
+
 	std::vector<std::shared_ptr<Primitive>>& getPrimitives();
 
 	/**

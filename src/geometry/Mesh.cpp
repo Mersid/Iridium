@@ -19,3 +19,7 @@ void Mesh::translate(const Eigen::Vector3d& translateBy)
 		primitive->translate(translateBy);
 }
 
+void Mesh::addPrimitive(std::shared_ptr<Primitive>&& primitive)
+{
+	primitives.emplace_back(primitive);
+}

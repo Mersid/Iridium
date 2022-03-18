@@ -39,9 +39,9 @@ public:
 	/**
 	 * Finds the first object the ray intersects.
 	 * @param ray The ray to cast
-	 * @return A shared pointer to the object that was hit first, or a shared pointer to nullptr if it missed
+	 * @return A pointer to the object that was hit first, or a pointer to nullptr if it missed
 	 */
-	std::shared_ptr<Primitive> getFirstIntersection(const Ray& ray);
+	Primitive* getFirstIntersection(const Ray& ray);
 
 	[[nodiscard]] const Eigen::Vector3d& getAmbientCoefficient() const;
 

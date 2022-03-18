@@ -17,7 +17,7 @@ void Model::setMaterial(const Material& material)
 
 std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 {
-	std::shared_ptr<Primitive> nearestObject = nullptr;
+	Primitive* nearestObject = nullptr;
 	Eigen::Vector3d nearestHitPos; // The hit pos of the nearest object. We need this to compare with the current object, and replace it if it's closer than this one
 
 	for (const std::shared_ptr<Primitive>& primitive : mesh.getPrimitives())
@@ -33,7 +33,7 @@ std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 		// OR: If our new object has a shorter ray than the previous closest object, replace it.
 		if (nearestObject == nullptr || (hitPos - ray.getPosition()).norm() < (nearestHitPos - ray.getPosition()).norm())
 		{
-			nearestObject = primitive;
+			nearestObject = primitive.get();
 			nearestHitPos = hitPos;
 		}
 	}
