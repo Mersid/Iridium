@@ -31,15 +31,10 @@ public:
 	 */
 	void translate(const Eigen::Vector3d& translateBy);
 
-	Box& getBoundingBox();
-
 
 private:
 	Mesh mesh;
-	Box boundingBox;
 	BoundingVolumeHierarchy bvh;
-
-	void computeBoundingBox();
 };
 
 

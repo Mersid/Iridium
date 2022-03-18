@@ -2,12 +2,12 @@
 
 #include <utility>
 
-RayTraceInfo::RayTraceInfo(Primitive* primitive, Eigen::Vector3d hitPos) : hitPrimitive(primitive), hitPos(std::move(hitPos))
+RayTraceInfo::RayTraceInfo(std::shared_ptr<Primitive> primitive, Eigen::Vector3d hitPos) : hitPrimitive(std::move(primitive)), hitPos(std::move(hitPos))
 {
 
 }
 
-Primitive* RayTraceInfo::getHitPrimitive() const
+std::shared_ptr<Primitive> RayTraceInfo::getHitPrimitive() const
 {
 	return hitPrimitive;
 }

@@ -40,9 +40,9 @@ void Scene::addModel(const Model& model)
 	models.emplace_back(model);
 }
 
-Primitive* Scene::getFirstIntersection(const Ray& ray)
+std::shared_ptr<Primitive> Scene::getFirstIntersection(const Ray& ray)
 {
-	Primitive* nearestObject = nullptr;
+	std::shared_ptr<Primitive> nearestObject = nullptr;
 	Eigen::Vector3d nearestHitPos; // The hit pos of the nearest object. We need this to compare with the current object, and replace it if it's closer than this one
 
 	for (Model& model : models)
@@ -69,7 +69,7 @@ Primitive* Scene::getFirstIntersection(const Ray& ray)
 std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 {
 	// Find the nearest primitive we'll hit
-	Primitive* primitivePtr = getFirstIntersection(ray);
+	std::shared_ptr<Primitive> primitivePtr = getFirstIntersection(ray);
 
 	// We hit nothing, then skip this pixel
 	if (primitivePtr == nullptr || ttl <= 0)
@@ -114,7 +114,7 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 		// If shadow ray hits an object, we won't have lights hitting it, so ambient only
 		Ray shadow(hitPos, light.getPosition());
 
-		Primitive* shadowHitPtr = getFirstIntersection(shadow);
+		std::shared_ptr<Primitive> shadowHitPtr = getFirstIntersection(shadow);
 
 		// If we hit an object, get that object and test again (it's inefficient, I know): if the hit pos of the object between the first object and the light
 		// is less than the distance to the light, then the object is between the light and the first object, and is therefore in shadow.

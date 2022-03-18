@@ -16,7 +16,7 @@ Mesh OffSerializer::loadOff(const std::string& path)
 
 	std::vector<Eigen::Vector3d> vertices;
 	vertices.reserve(vertexCount);
-	std::vector<Triangle> triangles;
+	std::vector<std::shared_ptr<Primitive>> triangles;
 	triangles.reserve(trisCount);
 
 	// Load vertices
@@ -38,7 +38,7 @@ Mesh OffSerializer::loadOff(const std::string& path)
 		unsigned long indexB = std::stoul(tokens[2]);
 		unsigned long indexC = std::stoul(tokens[3]);
 
-		triangles.emplace_back(vertices[indexA], vertices[indexB], vertices[indexC]);
+		triangles.emplace_back(std::make_shared<Triangle>(vertices[indexA], vertices[indexB], vertices[indexC]));
 	}
 
 	return Mesh(triangles);

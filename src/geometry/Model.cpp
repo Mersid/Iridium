@@ -5,51 +5,24 @@
 Model::Model(Mesh mesh, const Material& material) : mesh(std::move(mesh))
 {
 	setMaterial(material);
-	computeBoundingBox();
 }
 
 void Model::setMaterial(const Material& material)
 {
-	for (Triangle& triangle : mesh.getTriangles())
+	for (const std::shared_ptr<Primitive>& primitive : mesh.getPrimitives())
 	{
-		triangle.setMaterial(material);
+		primitive->setMaterial(material);
 	}
-}
-
-void Model::computeBoundingBox()
-{
-	double dbMax = std::numeric_limits<double>::max();
-	double dbMin = std::numeric_limits<double>::min();
-	Eigen::Vector3d min(dbMax, dbMax, dbMax);
-	Eigen::Vector3d max(dbMin, dbMin, dbMin);
-
-	for (Eigen::Vector3d vertex : mesh.getVertices())
-	{
-		min[0] = std::min(min[0], vertex.x());
-		min[1] = std::min(min[1], vertex.y());
-		min[2] = std::min(min[2], vertex.z());
-
-		max[0] = std::max(max[0], vertex.x());
-		max[1] = std::max(max[1], vertex.y());
-		max[2] = std::max(max[2], vertex.z());
-	}
-
-	boundingBox = Box(min, max);
-}
-
-Box& Model::getBoundingBox()
-{
-	return boundingBox;
 }
 
 std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 {
-	Primitive* nearestObject = nullptr;
+	std::shared_ptr<Primitive> nearestObject = nullptr;
 	Eigen::Vector3d nearestHitPos; // The hit pos of the nearest object. We need this to compare with the current object, and replace it if it's closer than this one
 
-	for (Triangle& triangle : mesh.getTriangles())
+	for (const std::shared_ptr<Primitive>& primitive : mesh.getPrimitives())
 	{
-		std::optional<Eigen::Vector3d> possibleHit = triangle.getRayIntersection(ray);
+		std::optional<Eigen::Vector3d> possibleHit = primitive->getRayIntersection(ray);
 		if (!possibleHit.has_value())
 			continue; // We missed. Continue on with the next object
 
@@ -60,7 +33,7 @@ std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 		// OR: If our new object has a shorter ray than the previous closest object, replace it.
 		if (nearestObject == nullptr || (hitPos - ray.getPosition()).norm() < (nearestHitPos - ray.getPosition()).norm())
 		{
-			nearestObject = &triangle;
+			nearestObject = primitive;
 			nearestHitPos = hitPos;
 		}
 	}

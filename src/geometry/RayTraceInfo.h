@@ -6,14 +6,14 @@
 class RayTraceInfo
 {
 public:
-	RayTraceInfo(Primitive* primitive, Eigen::Vector3d hitPos);
+	RayTraceInfo(std::shared_ptr<Primitive> primitive, Eigen::Vector3d hitPos);
 
-	[[nodiscard]] Primitive* getHitPrimitive() const;
+	[[nodiscard]] std::shared_ptr<Primitive> getHitPrimitive() const;
 
 	[[nodiscard]] const Eigen::Vector3d& getHitPos() const;
 
 private:
-	Primitive* hitPrimitive;
+	std::shared_ptr<Primitive> hitPrimitive;
 	Eigen::Vector3d hitPos;
 };
 

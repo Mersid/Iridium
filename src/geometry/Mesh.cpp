@@ -2,34 +2,20 @@
 #include <utility>
 #include "Mesh.h"
 
-Mesh::Mesh(std::vector<Triangle> triangles) : triangles(std::move(triangles))
+Mesh::Mesh(std::vector<std::shared_ptr<Primitive>> primitives) : primitives(std::move(primitives))
 {
 
 }
 
-std::vector<Triangle>& Mesh::getTriangles()
+std::vector<std::shared_ptr<Primitive>>& Mesh::getPrimitives()
 {
-	return triangles;
+	return primitives;
 }
 
-std::vector<Eigen::Vector3d> Mesh::getVertices()
-{
-	std::vector<Eigen::Vector3d> vertices;
-	vertices.reserve(3 * triangles.size());
-
-	for (Triangle& triangle : triangles)
-	{
-		vertices.emplace_back(triangle.getA());
-		vertices.emplace_back(triangle.getB());
-		vertices.emplace_back(triangle.getC());
-	}
-
-	return vertices;
-}
 
 void Mesh::translate(const Eigen::Vector3d& translateBy)
 {
-	for (Triangle& t : triangles) // Forgetting the & cost me an hour :(  -- Steven, 2022-03-16
-		t.translate(translateBy);
+	for (const std::shared_ptr<Primitive>& primitive : primitives) // Forgetting the & cost me an hour :(  -- Steven, 2022-03-16
+		primitive->translate(translateBy);
 }
 

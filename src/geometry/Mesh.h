@@ -4,19 +4,14 @@
 #include "Triangle.h"
 
 /**
- * A mesh is a collection of triangles. Other primitives are not currently supported to simplify things.
+ * A mesh is a collection of primitives
  */
 class Mesh
 {
 public:
-	explicit Mesh(std::vector<Triangle> triangles);
+	explicit Mesh(std::vector<std::shared_ptr<Primitive>> primitives);
 
-	std::vector<Triangle>& getTriangles();
-
-	/**
-	 * @return All the vertices that make up the mesh, in no particular order.
-	 */
-	std::vector<Eigen::Vector3d> getVertices();
+	std::vector<std::shared_ptr<Primitive>>& getPrimitives();
 
 	/**
 	 * @param translateBy Translates the model by this amount
@@ -25,7 +20,7 @@ public:
 
 
 private:
-	std::vector<Triangle> triangles;
+	std::vector<std::shared_ptr<Primitive>> primitives;
 };
 
 
