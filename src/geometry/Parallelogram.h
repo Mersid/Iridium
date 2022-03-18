@@ -45,7 +45,7 @@ public:
 
 	void setMaterial(Material material) override;
 
-	void move(Eigen::Vector3d newPos) override;
+	void translate(Eigen::Vector3d translation) override;
 
 private:
 	Eigen::Vector3d a; // Common point

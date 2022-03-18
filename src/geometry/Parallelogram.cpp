@@ -61,10 +61,10 @@ void Parallelogram::setMaterial(Material material)
 	this->material = material;
 }
 
-void Parallelogram::move(Eigen::Vector3d newPos)
+void Parallelogram::translate(Eigen::Vector3d translation)
 {
-	a += newPos;
-	b += newPos;
-	c += newPos;
+	a += translation;
+	b += translation;
+	c += translation;
 }
 

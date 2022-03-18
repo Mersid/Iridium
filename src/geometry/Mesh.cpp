@@ -30,6 +30,6 @@ std::vector<Eigen::Vector3d> Mesh::getVertices()
 void Mesh::translate(const Eigen::Vector3d& translateBy)
 {
 	for (Triangle& t : triangles) // Forgetting the & cost me an hour :(  -- Steven, 2022-03-16
-		t.move(translateBy);
+		t.translate(translateBy);
 }
 

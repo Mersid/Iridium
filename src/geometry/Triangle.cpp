@@ -60,11 +60,11 @@ void Triangle::setMaterial(Material mat)
 	material = mat;
 }
 
-void Triangle::move(Eigen::Vector3d newPos)
+void Triangle::translate(Eigen::Vector3d translation)
 {
-	a += newPos;
-	b += newPos;
-	c += newPos;
+	a += translation;
+	b += translation;
+	c += translation;
 }
 
 const Eigen::Vector3d& Triangle::getA() const

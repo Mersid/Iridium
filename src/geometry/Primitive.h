@@ -30,7 +30,7 @@ public:
 	/**
 	 * @param newPos Moves the primitive relative to its current position by this quantity
 	 */
-	virtual void move(Eigen::Vector3d newPos) = 0;
+	virtual void translate(Eigen::Vector3d newPos) = 0;
 };
 
 

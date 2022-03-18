@@ -26,7 +26,7 @@ public:
 
 	void setMaterial(Material mat) override;
 
-	void move(Eigen::Vector3d newPos) override;
+	void translate(Eigen::Vector3d translation) override;
 
 	[[nodiscard]] const Eigen::Vector3d& getA() const;
 

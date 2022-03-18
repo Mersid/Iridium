@@ -38,6 +38,8 @@ public:
 
 	Material& getMaterial() override;
 
+
+
 private:
 	Eigen::Vector3d center;
 	double radius{};
