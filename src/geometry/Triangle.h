@@ -2,6 +2,7 @@
 
 
 #include "Primitive.h"
+#include "Box.h"
 
 /**
  * Represents a triangle. Note that the code is essentially copied from the parallelogram,
@@ -29,6 +30,8 @@ public:
 	void translate(Eigen::Vector3d translation) override;
 
 	Eigen::Vector3d getPosition() override;
+
+	Box getBoundingBox() override;
 
 	[[nodiscard]] const Eigen::Vector3d& getA() const;
 

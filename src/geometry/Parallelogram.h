@@ -49,6 +49,9 @@ public:
 
 	Eigen::Vector3d getPosition() override;
 
+	Box getBoundingBox() override;
+
+
 private:
 	Eigen::Vector3d a; // Common point
 	Eigen::Vector3d b; // Usually the horizontal point

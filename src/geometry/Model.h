@@ -39,7 +39,16 @@ public:
 
 private:
 	Mesh mesh;
-	BoundingVolumeHierarchy bvh;
+	std::shared_ptr<BoundingVolumeHierarchy> bvh;
+
+	/**
+	 * Gets a short-listed list of possible intersects. Since this list is likely *much* shorter than the list of all primitives,
+	 * it is much faster. They are possible intersects because it only computes ray intersections with the bounding boxes that
+	 * contain the primitive. The ray can go through objects.
+	 * @param ray The ray to test collisions for
+	 * @return A list possible hits. More collisions will have to be considered to ensure a hit and also which one is closest.
+	 */
+	std::vector<Primitive*> getPossibleIntersects(const Ray& ray);
 };
 
 

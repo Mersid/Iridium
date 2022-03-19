@@ -15,11 +15,22 @@ public:
 	explicit BoundingVolumeHierarchy(std::vector<Primitive*> primitives, unsigned int i = 0);
 	BoundingVolumeHierarchy() = default;
 
+	/**
+	 * Static recursive method call that gets a list of possible hits. TODO: Consider making non-static
+	 * @param bvh The BVH to test against.
+	 * @param ray The ray to fire against the BVH and all its substructures
+	 * @param bvhHits Pass in a reference to a vector, and the call will add on any possible hits to it
+	 * @return True if it hit the main box, false otherwise
+	 */
+	static bool intersectsBVH(std::shared_ptr<BoundingVolumeHierarchy>& bvh, const Ray& ray, std::vector<Primitive*>& bvhHits);
+
 private:
 	std::shared_ptr<BoundingVolumeHierarchy> left;
 	std::shared_ptr<BoundingVolumeHierarchy> right;
 	Box box;
 	Primitive* primitive;
+
+
 };
 
 

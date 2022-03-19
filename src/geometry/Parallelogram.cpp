@@ -73,3 +73,19 @@ Eigen::Vector3d Parallelogram::getPosition()
 	return a;
 }
 
+Box Parallelogram::getBoundingBox()
+{
+	Eigen::Vector3d opposite = a + u + v;
+
+	Eigen::Vector3d min(
+			std::min(std::min(std::min(a.x(), b.x()), c.x()), opposite.x()),
+			std::min(std::min(std::min(a.y(), b.y()), c.y()), opposite.y()),
+			std::min(std::min(std::min(a.z(), b.z()), c.z()), opposite.z()));
+	Eigen::Vector3d max(
+			std::max(std::max(std::max(a.x(), b.x()), c.x()), opposite.x()),
+			std::max(std::max(std::max(a.y(), b.y()), c.y()), opposite.y()),
+			std::max(std::max(std::max(a.z(), b.z()), c.z()), opposite.z()));
+
+	return Box(min, max);
+}
+

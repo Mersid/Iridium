@@ -61,3 +61,17 @@ void Sphere::translate(Eigen::Vector3d newPos)
 	center += newPos;
 }
 
+Box Sphere::getBoundingBox()
+{
+	Eigen::Vector3d min(
+			center.x() - radius,
+			center.y() - radius,
+			center.z() - radius);
+	Eigen::Vector3d max(
+			center.x() + radius,
+			center.y() + radius,
+			center.z() + radius);
+
+	return Box(min, max);
+}
+

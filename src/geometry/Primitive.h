@@ -5,6 +5,7 @@
 #include "Eigen/Core"
 #include "Ray.h"
 #include "Material.h"
+#include "Box.h"
 
 class Primitive
 {
@@ -24,6 +25,11 @@ public:
 	 * @return The position of the primitive. It should probably correspond to one of its vertices
 	 */
 	virtual Eigen::Vector3d getPosition() = 0;
+
+	/**
+	 * @return A bounding box large enough to contain the given primitive
+	 */
+	virtual Box getBoundingBox() = 0;
 
 	/**
 	 * Gets the vector normal to the surface of the primitive at the specified position. The position should be close to the surface, or undefined

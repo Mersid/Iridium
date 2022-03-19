@@ -50,5 +50,12 @@ void Model::translate(const Eigen::Vector3d& translateBy)
 
 void Model::generateBVH()
 {
-	bvh = BoundingVolumeHierarchy(mesh.getPrimitives());
+	bvh = std::make_shared<BoundingVolumeHierarchy>(mesh.getPrimitives());
+}
+
+std::vector<Primitive*> Model::getPossibleIntersects(const Ray& ray)
+{
+	std::vector<Primitive*> bvhHits;
+	BoundingVolumeHierarchy::intersectsBVH(bvh, ray, bvhHits);
+	return bvhHits;
 }

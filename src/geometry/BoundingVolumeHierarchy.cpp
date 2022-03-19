@@ -1,7 +1,13 @@
 #include "BoundingVolumeHierarchy.h"
 
-BoundingVolumeHierarchy::BoundingVolumeHierarchy(std::vector<Primitive*> primitives, unsigned int i)
+BoundingVolumeHierarchy::BoundingVolumeHierarchy(std::vector<Primitive*> primitives, unsigned int i) : primitive(nullptr)
 {
+	// Create bounding boxes for the BVH. Even leaf nodes get one, so it goes before the case check.
+	std::vector<Box> boxes;
+	boxes.reserve(primitives.size());
+	for (Primitive* p : primitives)
+		boxes.emplace_back(p->getBoundingBox());
+	box = Box::aggregate(boxes);
 
 	// Base case: The primitives vector has a single element, so that we have reached the end for this branch.
 	if (primitives.size() == 1)
@@ -30,4 +36,28 @@ BoundingVolumeHierarchy::BoundingVolumeHierarchy(std::vector<Primitive*> primiti
 	left = std::make_shared<BoundingVolumeHierarchy>(leftPrimitives, i + 1);
 	right = std::make_shared<BoundingVolumeHierarchy>(rightPrimitives, i + 1);
 
+}
+
+
+bool BoundingVolumeHierarchy::intersectsBVH(std::shared_ptr<BoundingVolumeHierarchy>& bvh, const Ray& ray,
+                                            std::vector<Primitive*>& bvhHits)
+{
+	// Missed, can discard all below.
+	if (!bvh->box.intersect(ray))
+		return false;
+
+	// Didn't miss.
+
+	// Leaf node. Add its primitive to the list of hits and return.
+	if (bvh->primitive != nullptr)
+	{
+		bvhHits.emplace_back(bvh->primitive);
+		return true;
+	}
+
+	// Branch node. Recurse.
+	intersectsBVH(bvh->left, ray, bvhHits);
+	intersectsBVH(bvh->right, ray, bvhHits);
+
+	return true;
 }

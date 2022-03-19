@@ -44,6 +44,8 @@ public:
 
 	void translate(Eigen::Vector3d newPos) override;
 
+	Box getBoundingBox() override;
+
 
 private:
 	Eigen::Vector3d center;
