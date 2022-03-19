@@ -1,3 +1,5 @@
+#include <chrono>
+#include <iostream>
 #include "Shimmerlight.h"
 #include "texture/Texture.h"
 #include "scene/Camera.h"
@@ -39,11 +41,17 @@ void Shimmerlight::run()
 	Mesh mesh = offSerializer.loadOff("data/bunny.off");
 	Model model(mesh, defaultMaterial);
 	model.translate(Eigen::Vector3d(0, 0, -5 + zOffset));
-	model.generateBVH();
+	//model.generateBVH();
 	defaultScene.addModel(model);
+
+	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
 	Texture defaultTextureRender = defaultScene.takeSnapshot();
 	textureSerializer.serialize(defaultTextureRender, "default.png");
+
+	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+
+	std::cout << "Rendered in " + std::to_string(std::chrono::duration_cast<std::chrono::seconds>(t1 - t0).count()) + " seconds" << std::endl;
 
 }
 

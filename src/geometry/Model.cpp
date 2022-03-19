@@ -2,7 +2,7 @@
 
 #include <utility>
 
-Model::Model(Mesh mesh, const Material& material) : mesh(std::move(mesh))
+Model::Model(Mesh mesh, const Material& material) : mesh(std::move(mesh)), bvh(nullptr)
 {
 	setMaterial(material);
 }
@@ -20,7 +20,9 @@ std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 	Primitive* nearestObject = nullptr;
 	Eigen::Vector3d nearestHitPos; // The hit pos of the nearest object. We need this to compare with the current object, and replace it if it's closer than this one
 
-	for (Primitive* primitive : mesh.getPrimitives())
+	std::vector<Primitive*> consideredPrimitives = bvh == nullptr ? mesh.getPrimitives() : getPossibleIntersects(ray);
+
+	for (Primitive* primitive : consideredPrimitives)
 	{
 		std::optional<Eigen::Vector3d> possibleHit = primitive->getRayIntersection(ray);
 		if (!possibleHit.has_value())
