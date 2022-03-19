@@ -29,8 +29,5 @@ private:
 	std::shared_ptr<BoundingVolumeHierarchy> right;
 	Box box;
 	Primitive* primitive;
-
-
 };
-
 

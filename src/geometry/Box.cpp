@@ -43,15 +43,15 @@ bool Box::intersect(const Ray& ray)
 {
 	// Implementation of the Cyrus-Beck clipping algorithm. See sources for sources
 
-	double t1 = (min.x() - ray.getPosition().x()) / ray.getDirection().x();
-	double t2 = (max.x() - ray.getPosition().x()) / ray.getDirection().x();
-	double t3 = (min.y() - ray.getPosition().y()) / ray.getDirection().y();
-	double t4 = (max.y() - ray.getPosition().y()) / ray.getDirection().y();
-	double t5 = (min.z() - ray.getPosition().z()) / ray.getDirection().z();
-	double t6 = (max.z() - ray.getPosition().z()) / ray.getDirection().z();
+	double xNear = (min.x() - ray.getPosition().x()) / ray.getDirection().x();
+	double xFar = (max.x() - ray.getPosition().x()) / ray.getDirection().x();
+	double yNear = (min.y() - ray.getPosition().y()) / ray.getDirection().y();
+	double yFar = (max.y() - ray.getPosition().y()) / ray.getDirection().y();
+	double zNear = (min.z() - ray.getPosition().z()) / ray.getDirection().z();
+	double zFar = (max.z() - ray.getPosition().z()) / ray.getDirection().z();
 
-	double tMin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
-	double tMax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
+	double tMin = std::max(std::max(std::min(xNear, xFar), std::min(yNear, yFar)), std::min(zNear, zFar));
+	double tMax = std::min(std::min(std::max(xNear, xFar), std::max(yNear, yFar)), std::max(zNear, zFar));
 
 	// If tMax < 0, it's behind us. If tMax < tMin, we missed.
 	return tMax >= 0 && tMax >= tMin;

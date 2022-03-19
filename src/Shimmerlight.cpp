@@ -41,7 +41,7 @@ void Shimmerlight::run()
 	Mesh mesh = offSerializer.loadOff("data/bunny.off");
 	Model model(mesh, defaultMaterial);
 	model.translate(Eigen::Vector3d(0, 0, -5 + zOffset));
-	//model.generateBVH();
+	model.generateBVH();
 	defaultScene.addModel(model);
 
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();

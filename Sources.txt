@@ -52,5 +52,12 @@ https://blog.demofox.org/2017/01/09/raytracing-reflection-refraction-fresnel-tot
 For the world map
 https://geology.com/world/world-map.shtml
 
+For information regarding bounded volume hierarchies
+https://www.azurefromthetrenches.com/introductory-guide-to-aabb-tree-collision-detection/
+
+For the Cyrus-Beck clipping algorithm used to determine ray-AABB intersections
+https://izzofinal.wordpress.com/2012/11/09/ray-vs-box-round-1/
+https://gdbooks.gitbooks.io/3dcollisions/content/Chapter3/raycast_aabb.html
+
 The providers of Eigen and the STB libraries
 <Sources obtained from assignment>
