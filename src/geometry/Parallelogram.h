@@ -51,15 +51,19 @@ public:
 
 	Box getBoundingBox() override;
 
+	std::vector<Eigen::Vector3d> getVertices() override;
+
+	std::shared_ptr<Primitive> clone() override;
+
 
 private:
 	Eigen::Vector3d a; // Common point
 	Eigen::Vector3d b; // Usually the horizontal point
 	Eigen::Vector3d c; // Usually the vertical point
 
-	Eigen::Vector3d u; // Vector ab, equal to b-a
-	Eigen::Vector3d v; // Vector ac, equal to c-a
-	Eigen::Vector3d normal; // Normal vector of this parallelogram, equal to cross product of u x v.
+	Eigen::Vector3d getU(); // Vector ab, equal to b-a
+	Eigen::Vector3d getV(); // Vector ac, equal to c-a
+	Eigen::Vector3d getNormal(); // Normal vector of this triangle, equal to cross product of u x v.
 
 	Material material;
 };

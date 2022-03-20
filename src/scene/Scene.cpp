@@ -4,7 +4,7 @@ Scene::Scene() : ambientCoefficient(Eigen::Vector3d(1, 1, 1)), ambientLightInten
 {
 }
 
-Texture Scene::takeSnapshot(CameraMode cameraMode)
+Texture Scene::render(CameraMode cameraMode)
 {
 	return camera.takeSnapshot(cameraMode);
 }

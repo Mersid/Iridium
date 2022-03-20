@@ -3,8 +3,7 @@
 #include <utility>
 
 Triangle::Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Material material) :
-		a(a), b(b), c(c), u(b - a), v(c - a), normal(u.cross(v)),
-		material(std::move(material))
+		a(a), b(b), c(c), material(std::move(material))
 {
 
 }
@@ -12,6 +11,7 @@ Triangle::Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eig
 std::optional<Eigen::Vector3d> Triangle::getRayIntersection(const Ray& ray)
 {
 	// See https://www.desmos.com/calculator/tzhhydtblv for more info. We have all variables needed already at this point
+	Eigen::Vector3d normal = getNormal();
 
 	// Plane and ray are parallel, and will never intersect. Trying to compute it will cause div/0.
 	if (ray.getDirection().dot(normal) == 0)
@@ -32,6 +32,9 @@ std::optional<Eigen::Vector3d> Triangle::getRayIntersection(const Ray& ray)
 	//https://web.archive.org/web/20110716101940/http://www.softsurfer.com/Archive/algorithm_0105/algorithm_0105.htm.
 	// w is the vector from "a" to the impact rayImpact.
 	Eigen::Vector3d w = rayImpact - a;
+
+	Eigen::Vector3d u = getU();
+	Eigen::Vector3d v = getV();
 
 	double s = (u.dot(v) * w.dot(v) - v.dot(v) * w.dot(u)) / (u.dot(v) * u.dot(v) - u.dot(u) * v.dot(v));
 	double t = (u.dot(v) * w.dot(u) - u.dot(u) * w.dot(v)) / (u.dot(v) * u.dot(v) - u.dot(u) * v.dot(v));
@@ -99,6 +102,31 @@ Box Triangle::getBoundingBox()
 			std::max(std::max(a.z(), b.z()), c.z()));
 
 	return Box(min, max);
+}
+
+std::vector<Eigen::Vector3d> Triangle::getVertices()
+{
+	return {a, b, c};
+}
+
+std::shared_ptr<Primitive> Triangle::clone()
+{
+	return std::make_shared<Triangle>(a, b, c, material);
+}
+
+Eigen::Vector3d Triangle::getU()
+{
+	return b - a;
+}
+
+Eigen::Vector3d Triangle::getV()
+{
+	return c - a;
+}
+
+Eigen::Vector3d Triangle::getNormal()
+{
+	return (b - a).cross(c - a).normalized();
 }
 
 

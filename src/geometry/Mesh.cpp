@@ -27,3 +27,21 @@ void Mesh::addPrimitive(std::shared_ptr<Primitive>&& primitive)
 {
 	primitives.emplace_back(primitive);
 }
+
+Mesh& Mesh::operator=(const Mesh& other)
+{
+	for (const std::shared_ptr<Primitive>& p : other.primitives)
+	{
+		primitives.emplace_back(p->clone());
+	}
+
+	return *this;
+}
+
+Mesh::Mesh(const Mesh& other)
+{
+	for (const std::shared_ptr<Primitive>& p : other.primitives)
+	{
+		primitives.emplace_back(p->clone());
+	}
+}

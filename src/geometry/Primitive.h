@@ -46,6 +46,16 @@ public:
 	 * @param newPos Moves the primitive relative to its current position by this quantity
 	 */
 	virtual void translate(Eigen::Vector3d newPos) = 0;
+
+	/**
+	 * @return A vector of vertex coordinates of the primitive. This is useful for applying linear transformations against.
+	 */
+	virtual std::vector<Eigen::Vector3d> getVertices() = 0;
+
+	/**
+	 * @return A copy of this object, with its own memory and stuff.
+	 */
+	virtual std::shared_ptr<Primitive> clone() = 0;
 };
 
 

@@ -75,3 +75,13 @@ Box Sphere::getBoundingBox()
 	return Box(min, max);
 }
 
+std::vector<Eigen::Vector3d> Sphere::getVertices()
+{
+	return {center};
+}
+
+std::shared_ptr<Primitive> Sphere::clone()
+{
+	return std::make_shared<Sphere>(center, radius, material);
+}
+

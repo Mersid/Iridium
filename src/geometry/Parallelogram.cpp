@@ -3,8 +3,7 @@
 #include <utility>
 
 Parallelogram::Parallelogram(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Material material) :
-	a(a), b(b), c(c), u(b - a), v(c - a), normal(u.cross(v)),
-	material(std::move(material))
+	a(a), b(b), c(c), material(std::move(material))
 {
 }
 
@@ -12,6 +11,7 @@ std::optional<Eigen::Vector3d> Parallelogram::getRayIntersection(const Ray& ray)
 {
 	// See https://www.desmos.com/calculator/tzhhydtblv for more info. We have all variables needed already at this point
 	// For debugging, a=[-1, -1, 0], b = [-4, -2, 2], c = [-4, 1, -1], ray.position = [1, 2, 6], ray.direction = [-1.6, -0.4, -1] should hit the vertex implied in the parallelogram with s, t = 1.
+	Eigen::Vector3d normal = getNormal();
 
 	// Plane and ray are parallel, and will never intersect. Trying to compute it will cause div/0.
 	if (ray.getDirection().dot(normal) == 0)
@@ -32,6 +32,9 @@ std::optional<Eigen::Vector3d> Parallelogram::getRayIntersection(const Ray& ray)
 	//https://web.archive.org/web/20110716101940/http://www.softsurfer.com/Archive/algorithm_0105/algorithm_0105.htm.
 	// w is the vector from "a" to the impact rayImpact.
 	Eigen::Vector3d w = rayImpact - a;
+
+	Eigen::Vector3d u = getU();
+	Eigen::Vector3d v = getV();
 
 	double s = (u.dot(v) * w.dot(v) - v.dot(v) * w.dot(u)) / (u.dot(v) * u.dot(v) - u.dot(u) * v.dot(v));
 	double t = (u.dot(v) * w.dot(u) - u.dot(u) * w.dot(v)) / (u.dot(v) * u.dot(v) - u.dot(u) * v.dot(v));
@@ -75,7 +78,7 @@ Eigen::Vector3d Parallelogram::getPosition()
 
 Box Parallelogram::getBoundingBox()
 {
-	Eigen::Vector3d opposite = a + u + v;
+	Eigen::Vector3d opposite = a + getU() + getV();
 
 	Eigen::Vector3d min(
 			std::min(std::min(std::min(a.x(), b.x()), c.x()), opposite.x()),
@@ -87,5 +90,30 @@ Box Parallelogram::getBoundingBox()
 			std::max(std::max(std::max(a.z(), b.z()), c.z()), opposite.z()));
 
 	return Box(min, max);
+}
+
+std::vector<Eigen::Vector3d> Parallelogram::getVertices()
+{
+	return {a, b, c};
+}
+
+std::shared_ptr<Primitive> Parallelogram::clone()
+{
+	return std::make_shared<Parallelogram>(a, b, c, material);
+}
+
+Eigen::Vector3d Parallelogram::getU()
+{
+	return b - a;
+}
+
+Eigen::Vector3d Parallelogram::getV()
+{
+	return c - a;
+}
+
+Eigen::Vector3d Parallelogram::getNormal()
+{
+	return (b - a).cross(c - a).normalized();
 }
 

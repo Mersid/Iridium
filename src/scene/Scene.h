@@ -34,7 +34,7 @@ public:
 	 * @param cameraMode Take the snapshot in perspective or orthographic mode
 	 * @return The texture containing what this camera captured when the method was called
 	 */
-	Texture takeSnapshot(CameraMode cameraMode = CameraMode::PERSPECTIVE);
+	Texture render(CameraMode cameraMode = CameraMode::PERSPECTIVE);
 
 	/**
 	 * Finds the first object the ray intersects.
@@ -59,6 +59,7 @@ public:
 
 private:
 	Camera camera;
+	std::vector<Model> modelStorage;
 	std::vector<Model> models;
 	std::vector<Light> lights;
 

@@ -10,6 +10,8 @@ class Mesh
 {
 public:
 	explicit Mesh(std::vector<std::shared_ptr<Primitive>> primitives);
+	Mesh& operator=(const Mesh& other);
+	Mesh(const Mesh& other);
 
 	void addPrimitive(std::shared_ptr<Primitive>&& primitive);
 
