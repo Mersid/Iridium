@@ -64,7 +64,8 @@ void Shimmerlight::run()
 
 	Scene combinedScene;
 	combinedScene.setCamera(combinedCamera);
-	combinedScene.addLight(Light(Eigen::Vector3d(-1, 4, -6), 1));
+	combinedScene.addLight(Light(Eigen::Vector3d(-1, 4, -6), 0.5));
+	combinedScene.addLight(Light(Eigen::Vector3d(0, 4, 0), 0.5));
 
 	std::vector<std::shared_ptr<Primitive>> worldMeshPrimitives = {
 			std::make_shared<Parallelogram>( // Baseplate
@@ -83,11 +84,11 @@ void Shimmerlight::run()
 
 			std::make_shared<Sphere>( // Floating green sphere
 					Eigen::Vector3d(0, 0.5, -6), 0.5,
-					Material(Eigen::Vector3d(0.1, 0.5, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4), 10, 0.7)),
+					Material(Eigen::Vector3d(0.1, 0.5, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4), 10, 0.5)),
 
 			std::make_shared<Sphere>( // Bronze sphere
 					Eigen::Vector3d(1, -1.5, -4), 0.5,
-					Material(Eigen::Vector3d(0.5, 0.3, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4))),
+					Material(Eigen::Vector3d(0.5, 0.3, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4), 12, 0.25)),
 
 			std::make_shared<Sphere>( // Yellow sphere w/ blue Phong
 					Eigen::Vector3d(-1, -1.6, -3), 0.4,
@@ -114,63 +115,14 @@ void Shimmerlight::run()
 	Model worldModel(worldMesh, Material(), false);
 	combinedScene.addModel(worldModel);
 
+	Model redDragon(dragonMesh, Material(Eigen::Vector3d(0.8, 0.35, 0.35), defaultSpecular, defaultPhongExponent, 0));
+	redDragon.setPosition(Eigen::Vector3d(0, -1.3, -5));
+	redDragon.setRotation(Eigen::Vector3d(0, 80, 0));
+	redDragon.setScale(Eigen::Vector3d(2, 2, 2));
+	combinedScene.addModel(redDragon);
+
 	Texture combinedTexture = combinedScene.render();
 	textureSerializer.serialize(combinedTexture, "combined.png");
-
-
-	Scene testReflScene;
-	Camera testCam(500, 300);
-	testCam.setFov(65);
-	testReflScene.setCamera(testCam);
-
-	Eigen::Vector3d defaultDiffuse2(0.57, 0.4, 0.4);
-	Eigen::Vector3d defaultSpecular2(0.2, 0.2, 0.2);
-	double defaultPhongExponent2 = 256;
-	double defaultReflection2 = 0.7;
-	double zOffset2 = -4.5;
-	double defaultLightIntensity2 = 0.3;
-	testReflScene.addLight(Light(Eigen::Vector3d(8, 8, zOffset2), defaultLightIntensity2));
-	testReflScene.addLight(Light(Eigen::Vector3d(6, -8, zOffset2), defaultLightIntensity2));
-	testReflScene.addLight(Light(Eigen::Vector3d(4, 8, zOffset2), defaultLightIntensity2));
-	testReflScene.addLight(Light(Eigen::Vector3d(2, -8, zOffset2), defaultLightIntensity2));
-	testReflScene.addLight(Light(Eigen::Vector3d(0, 8, zOffset2), defaultLightIntensity2));
-	testReflScene.addLight(Light(Eigen::Vector3d(-2, -8, zOffset2), defaultLightIntensity2));
-	testReflScene.addLight(Light(Eigen::Vector3d(-4, 8, zOffset2), defaultLightIntensity2));
-	std::vector<std::shared_ptr<Primitive>> testReflMeshPrimitives = {
-			std::make_shared<Sphere>(
-					Eigen::Vector3d(10, 0, 1 + zOffset2), 1,
-					Material(defaultDiffuse2, defaultSpecular2, defaultPhongExponent2, defaultReflection2)),
-			std::make_shared<Sphere>(
-					Eigen::Vector3d(7, 0.05, -1 + zOffset2), 1,
-					Material(defaultDiffuse2, defaultSpecular2, defaultPhongExponent2, defaultReflection2)),
-			std::make_shared<Sphere>(
-					Eigen::Vector3d(4, 0.1, 1 + zOffset2), 1,
-					Material(defaultDiffuse2, defaultSpecular2, defaultPhongExponent2, defaultReflection2)),
-			std::make_shared<Sphere>(
-					Eigen::Vector3d(1, 0.2, -1 + zOffset2), 1,
-					Material(defaultDiffuse2, defaultSpecular2, defaultPhongExponent2, defaultReflection2)),
-			std::make_shared<Sphere>( // This sphere is the one to apply the texture to
-					Eigen::Vector3d(-2, 0.4, 1 + zOffset2), 1,
-					Material(defaultDiffuse2, defaultSpecular2, defaultPhongExponent2, defaultReflection2)),
-			std::make_shared<Sphere>(
-					Eigen::Vector3d(-5, 0.8, -1 + zOffset2), 1,
-					Material(defaultDiffuse2, defaultSpecular2, defaultPhongExponent2, defaultReflection2)),
-			std::make_shared<Sphere>(
-					Eigen::Vector3d(-8, 1.6, 1 + zOffset2), 1,
-					Material(defaultDiffuse2, defaultSpecular2, defaultPhongExponent2, defaultReflection2)),
-			std::make_shared<Parallelogram>( // Baseplate
-					Eigen::Vector3d(-50, -0.6, 100),
-					Eigen::Vector3d(50,-0.6,10),
-					Eigen::Vector3d(-50,-0.6,-90),
-					Material(defaultDiffuse2, defaultSpecular2, defaultPhongExponent2, defaultReflection2))
-	};
-	Mesh testReflMesh(testReflMeshPrimitives);
-	Model testReflModel(testReflMesh, Material(), false);
-	testReflScene.addModel(testReflModel);
-	Texture testReflRender = testReflScene.render();
-	textureSerializer.serialize(testReflRender, "testrender.png");
-
-
 
 
 	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
