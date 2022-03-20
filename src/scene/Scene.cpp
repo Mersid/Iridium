@@ -151,4 +151,9 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 	return color;
 }
 
+void Scene::clearModels()
+{
+	modelStorage.clear();
+}
+
 

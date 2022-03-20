@@ -28,20 +28,20 @@ void Shimmerlight::run()
 	double defaultLightIntensity = 0.3;
 	Material defaultMaterial(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection);
 
-	defaultScene.addLight(Light(Eigen::Vector3d(8, 8, zOffset), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(6, -8, zOffset), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(4, 8, zOffset), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(2, -8, zOffset), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(0, 8, zOffset), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(-2, -8, zOffset), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(-4, 8, zOffset), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(-5, 0, zOffset), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(8, 8, 0), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(6, -8, 0), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(4, 8, 0), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(2, -8, 0), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(0, 8, 0), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(-2, -8, 0), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(-4, 8, 0), defaultLightIntensity));
+	defaultScene.addLight(Light(Eigen::Vector3d(-5, 0, 0), defaultLightIntensity));
 
 	Mesh mesh = offSerializer.loadOff("data/bunny.off");
 	Model model(mesh, defaultMaterial);
 
 	model.setPosition(Eigen::Vector3d(0, 0, -5 + zOffset));
-	model.setRotation(Eigen::Vector3d(0, 90, 0));
+	model.setRotation(Eigen::Vector3d(0, 80, 0));
 	defaultScene.addModel(model);
 
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
