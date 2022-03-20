@@ -23,7 +23,7 @@ void Shimmerlight::run()
 	Eigen::Vector3d defaultDiffuse(0.35, 0.8, 0.35);
 	Eigen::Vector3d defaultSpecular(0.2, 0.2, 0.2);
 	double defaultPhongExponent = 256;
-	double defaultReflection = 0.7;
+	double defaultReflection = 0;
 	double zOffset = -2;
 	double defaultLightIntensity = 0.13;
 	Material defaultMaterial(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection);
@@ -47,8 +47,8 @@ void Shimmerlight::run()
 
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
-	//Texture dragonTexture = defaultScene.render();
-	//textureSerializer.serialize(dragonTexture, "dragon.png");
+	Texture dragonTexture = defaultScene.render();
+	textureSerializer.serialize(dragonTexture, "dragon.png");
 
 
 	defaultScene.clearModels();
@@ -56,11 +56,11 @@ void Shimmerlight::run()
 	dragonModel.setScale(Eigen::Vector3d(2, 2, 2));
 	defaultScene.addModel(dragonModel);
 
-	//Texture dragonForwardsTexture = defaultScene.render();
-	//textureSerializer.serialize(dragonForwardsTexture, "dragon_forwards.png");
+	Texture dragonForwardsTexture = defaultScene.render();
+	textureSerializer.serialize(dragonForwardsTexture, "dragon_forwards.png");
 
 
-	Camera combinedCamera(4000, 4000);
+	Camera combinedCamera(800, 800);
 
 	Scene combinedScene;
 	combinedScene.setCamera(combinedCamera);
