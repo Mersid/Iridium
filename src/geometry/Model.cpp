@@ -3,10 +3,11 @@
 #include <utility>
 #include "Eigen/Dense"
 
-Model::Model(Mesh mesh, const Material& material) : mesh(std::move(mesh)), bvh(nullptr),
+Model::Model(Mesh mesh, const Material& material, bool applyMaterial) : mesh(std::move(mesh)), bvh(nullptr),
 	position(Eigen::Vector3d::Zero()), rotation(Eigen::Vector3d::Zero()), scale(Eigen::Vector3d::Ones())
 {
-	setMaterial(material);
+	if (applyMaterial)
+		setMaterial(material);
 }
 
 void Model::setMaterial(const Material& material)

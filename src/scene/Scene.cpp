@@ -18,7 +18,7 @@ Texture Scene::render(CameraMode cameraMode)
 	for (Model& m : models)
 		m.generateBVH();
 
-	Texture t = camera.takeSnapshot(cameraMode);
+	Texture t = camera.takeSnapshot(cameraMode, 5);
 
 	models.clear();
 	return t;
