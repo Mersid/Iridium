@@ -92,9 +92,9 @@ Box Parallelogram::getBoundingBox()
 	return Box(min, max);
 }
 
-std::vector<Eigen::Vector3d> Parallelogram::getVertices()
+std::vector<Eigen::Vector3d*> Parallelogram::getVertices()
 {
-	return {a, b, c};
+	return {&a, &b, &c};
 }
 
 std::shared_ptr<Primitive> Parallelogram::clone()

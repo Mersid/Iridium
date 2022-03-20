@@ -50,7 +50,7 @@ public:
 	/**
 	 * @return A vector of vertex coordinates of the primitive. This is useful for applying linear transformations against.
 	 */
-	virtual std::vector<Eigen::Vector3d> getVertices() = 0;
+	virtual std::vector<Eigen::Vector3d*> getVertices() = 0;
 
 	/**
 	 * @return A copy of this object, with its own memory and stuff.

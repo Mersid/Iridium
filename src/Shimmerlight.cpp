@@ -35,14 +35,13 @@ void Shimmerlight::run()
 	defaultScene.addLight(Light(Eigen::Vector3d(0, 8, zOffset), defaultLightIntensity));
 	defaultScene.addLight(Light(Eigen::Vector3d(-2, -8, zOffset), defaultLightIntensity));
 	defaultScene.addLight(Light(Eigen::Vector3d(-4, 8, zOffset), defaultLightIntensity));
-	//defaultScene.addLight(Light(Eigen::Vector3d(0, 0, zOffset), defaultLightIntensity * 4));
 	defaultScene.addLight(Light(Eigen::Vector3d(-5, 0, zOffset), defaultLightIntensity));
 
 	Mesh mesh = offSerializer.loadOff("data/bunny.off");
 	Model model(mesh, defaultMaterial);
 
-	model.translate(Eigen::Vector3d(0, 0, -5 + zOffset));
-	model.generateBVH();
+	model.setPosition(Eigen::Vector3d(0, 0, -5 + zOffset));
+	model.setRotation(Eigen::Vector3d(0, 90, 0));
 	defaultScene.addModel(model);
 
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();

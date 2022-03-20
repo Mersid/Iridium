@@ -6,7 +6,22 @@ Scene::Scene() : ambientCoefficient(Eigen::Vector3d(1, 1, 1)), ambientLightInten
 
 Texture Scene::render(CameraMode cameraMode)
 {
-	return camera.takeSnapshot(cameraMode);
+	for (Model m : modelStorage)
+	{
+		m.applyTransforms();
+		models.emplace_back(m);
+	}
+	// TODO / BUG: Pay off technical debt. Beyond this being a hack-job, we have to generate the models' BVHs
+	// TODO: in-place because otherwise when copying models with a BVH the BVH is copied... but it points to the old
+	// TODO: model's primitives, so if that old copy disappears or the new one is updated or whatever, it will not reflect
+	// TODO: the actual situation, and we will likely end up with a crash for dereferencing invalid memory.
+	for (Model& m : models)
+		m.generateBVH();
+
+	Texture t = camera.takeSnapshot(cameraMode);
+
+	models.clear();
+	return t;
 }
 
 std::vector<Light>& Scene::getLights()
@@ -37,7 +52,7 @@ void Scene::addLight(const Light& l)
 
 void Scene::addModel(const Model& model)
 {
-	models.emplace_back(model);
+	modelStorage.emplace_back(model);
 }
 
 Primitive* Scene::getFirstIntersection(const Ray& ray)

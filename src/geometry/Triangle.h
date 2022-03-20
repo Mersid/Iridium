@@ -39,7 +39,7 @@ public:
 
 	[[nodiscard]] const Eigen::Vector3d& getC() const;
 
-	std::vector<Eigen::Vector3d> getVertices() override;
+	std::vector<Eigen::Vector3d*> getVertices() override;
 
 	std::shared_ptr<Primitive> clone() override;
 

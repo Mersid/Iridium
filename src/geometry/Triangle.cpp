@@ -104,9 +104,9 @@ Box Triangle::getBoundingBox()
 	return Box(min, max);
 }
 
-std::vector<Eigen::Vector3d> Triangle::getVertices()
+std::vector<Eigen::Vector3d*> Triangle::getVertices()
 {
-	return {a, b, c};
+	return {&a, &b, &c};
 }
 
 std::shared_ptr<Primitive> Triangle::clone()

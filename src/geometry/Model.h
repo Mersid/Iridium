@@ -36,10 +36,24 @@ public:
 	 */
 	void generateBVH();
 
+	// TODO: Pay off technical debt associated with making this rather messy implementation.
+	void setPosition(const Eigen::Vector3d& position);
+	void setRotation(const Eigen::Vector3d& rotation);
+	void setScale(const Eigen::Vector3d& scale);
+
+	/**
+	 * Applies the position, rotation, and scale transforms defined in this object.
+	 */
+	void applyTransforms();
+
 
 private:
 	Mesh mesh;
 	std::shared_ptr<BoundingVolumeHierarchy> bvh;
+
+	Eigen::Vector3d position;
+	Eigen::Vector3d rotation;
+	Eigen::Vector3d scale;
 
 	/**
 	 * Gets a short-listed list of possible intersects. Since this list is likely *much* shorter than the list of all primitives,
