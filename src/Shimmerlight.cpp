@@ -15,7 +15,7 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
-	Camera camera(800, 800);
+	Camera camera(1200, 960);
 	camera.setFov(90);
 
 	Scene defaultScene;
@@ -60,7 +60,7 @@ void Shimmerlight::run()
 	textureSerializer.serialize(dragonForwardsTexture, "dragon_forwards.png");
 
 
-	Camera combinedCamera(800, 800);
+	Camera combinedCamera(1200, 960);
 
 	Scene combinedScene;
 	combinedScene.setCamera(combinedCamera);
