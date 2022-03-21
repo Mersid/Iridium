@@ -3,6 +3,7 @@
 
 #include "Primitive.h"
 #include "Box.h"
+#include "Eigen/Dense"
 
 /**
  * Represents a triangle. Note that the code is essentially copied from the parallelogram,

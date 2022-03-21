@@ -1,6 +1,7 @@
 #include <iostream>
 #include <utility>
 #include "Mesh.h"
+#include "Primitive.h"
 
 Mesh::Mesh(std::vector<std::shared_ptr<Primitive>> primitives) : primitives(std::move(primitives))
 {

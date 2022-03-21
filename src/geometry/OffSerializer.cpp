@@ -1,6 +1,7 @@
 #include <fstream>
 #include "OffSerializer.h"
 #include "../utils/StringUtils.h"
+#include <memory>
 
 Mesh OffSerializer::loadOff(const std::string& path)
 {
