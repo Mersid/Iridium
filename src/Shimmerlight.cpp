@@ -6,6 +6,8 @@
 #include "scene/Scene.h"
 #include "geometry/Material.h"
 #include "geometry/Sphere.h"
+#include "yaml-cpp/node/parse.h"
+#include "yaml-cpp/node/node.h"
 
 
 Shimmerlight::Shimmerlight()
@@ -15,6 +17,10 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
+	YAML::Node node = YAML::Load("[1, 2, 31]");
+
+	return;
+
 	Camera camera(1920, 1536);
 	camera.setFov(90);
 
