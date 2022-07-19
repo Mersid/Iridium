@@ -63,13 +63,6 @@ void Triangle::setMaterial(Material mat)
 	material = mat;
 }
 
-void Triangle::translate(Eigen::Vector3d translation)
-{
-	a += translation;
-	b += translation;
-	c += translation;
-}
-
 const Eigen::Vector3d& Triangle::getA() const
 {
 	return a;
@@ -102,16 +95,6 @@ Box Triangle::getBoundingBox()
 			std::max(std::max(a.z(), b.z()), c.z()));
 
 	return Box(min, max);
-}
-
-std::vector<Eigen::Vector3d*> Triangle::getVertices()
-{
-	return {&a, &b, &c};
-}
-
-std::shared_ptr<Primitive> Triangle::clone()
-{
-	return std::make_shared<Triangle>(a, b, c, material);
 }
 
 Eigen::Vector3d Triangle::getU()

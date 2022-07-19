@@ -42,14 +42,7 @@ public:
 
 	void setMaterial(Material material) override;
 
-	void translate(Eigen::Vector3d newPos) override;
-
 	Box getBoundingBox() override;
-
-	std::vector<Eigen::Vector3d*> getVertices() override;
-
-	std::shared_ptr<Primitive> clone() override;
-
 
 private:
 	Eigen::Vector3d center;

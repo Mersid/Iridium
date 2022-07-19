@@ -28,8 +28,6 @@ public:
 
 	void setMaterial(Material mat) override;
 
-	void translate(Eigen::Vector3d translation) override;
-
 	Eigen::Vector3d getPosition() override;
 
 	Box getBoundingBox() override;
@@ -39,10 +37,6 @@ public:
 	[[nodiscard]] const Eigen::Vector3d& getB() const;
 
 	[[nodiscard]] const Eigen::Vector3d& getC() const;
-
-	std::vector<Eigen::Vector3d*> getVertices() override;
-
-	std::shared_ptr<Primitive> clone() override;
 
 private:
 	Eigen::Vector3d a; // Common point

@@ -64,13 +64,6 @@ void Parallelogram::setMaterial(Material material)
 	this->material = material;
 }
 
-void Parallelogram::translate(Eigen::Vector3d translation)
-{
-	a += translation;
-	b += translation;
-	c += translation;
-}
-
 Eigen::Vector3d Parallelogram::getPosition()
 {
 	return a;
@@ -90,16 +83,6 @@ Box Parallelogram::getBoundingBox()
 			std::max(std::max(std::max(a.z(), b.z()), c.z()), opposite.z()));
 
 	return Box(min, max);
-}
-
-std::vector<Eigen::Vector3d*> Parallelogram::getVertices()
-{
-	return {&a, &b, &c};
-}
-
-std::shared_ptr<Primitive> Parallelogram::clone()
-{
-	return std::make_shared<Parallelogram>(a, b, c, material);
 }
 
 Eigen::Vector3d Parallelogram::getU()

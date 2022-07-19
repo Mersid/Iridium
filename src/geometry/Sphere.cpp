@@ -56,11 +56,6 @@ void Sphere::setMaterial(Material material)
 	this->material = material;
 }
 
-void Sphere::translate(Eigen::Vector3d newPos)
-{
-	center += newPos;
-}
-
 Box Sphere::getBoundingBox()
 {
 	Eigen::Vector3d min(
@@ -74,14 +69,3 @@ Box Sphere::getBoundingBox()
 
 	return Box(min, max);
 }
-
-std::vector<Eigen::Vector3d*> Sphere::getVertices()
-{
-	return {&center};
-}
-
-std::shared_ptr<Primitive> Sphere::clone()
-{
-	return std::make_shared<Sphere>(center, radius, material);
-}
-
