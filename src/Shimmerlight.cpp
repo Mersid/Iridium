@@ -6,8 +6,8 @@
 #include "scene/Scene.h"
 #include "geometry/Material.h"
 #include "geometry/Sphere.h"
-#include "yaml-cpp/node/parse.h"
-#include "yaml-cpp/node/node.h"
+#include "yaml-cpp/yaml.h" // https://stackoverflow.com/questions/47389809/yaml-cpp-unresolved-external-symbol-error
+#include "misc/Vector3dConvert.h"
 
 
 Shimmerlight::Shimmerlight()
@@ -17,10 +17,6 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
-	YAML::Node node = YAML::Load("[1, 2, 31]");
-
-	return;
-
 	Camera camera(1920, 1536);
 	camera.setFov(90);
 
@@ -33,39 +29,39 @@ void Shimmerlight::run()
 	double zOffset = -2;
 	double defaultLightIntensity = 0.13;
 	Material defaultMaterial(defaultDiffuse, defaultSpecular, defaultPhongExponent, defaultReflection);
-
-	defaultScene.addLight(Light(Eigen::Vector3d(8, 8, 0), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(6, -8, 0), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(4, 8, 0), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(2, -8, 0), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(0, 8, 0), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(-2, -8, 0), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(-4, 8, 0), defaultLightIntensity));
-	defaultScene.addLight(Light(Eigen::Vector3d(-5, 0, 0), defaultLightIntensity));
-
+//
+//	defaultScene.addLight(Light(Eigen::Vector3d(8, 8, 0), defaultLightIntensity));
+//	defaultScene.addLight(Light(Eigen::Vector3d(6, -8, 0), defaultLightIntensity));
+//	defaultScene.addLight(Light(Eigen::Vector3d(4, 8, 0), defaultLightIntensity));
+//	defaultScene.addLight(Light(Eigen::Vector3d(2, -8, 0), defaultLightIntensity));
+//	defaultScene.addLight(Light(Eigen::Vector3d(0, 8, 0), defaultLightIntensity));
+//	defaultScene.addLight(Light(Eigen::Vector3d(-2, -8, 0), defaultLightIntensity));
+//	defaultScene.addLight(Light(Eigen::Vector3d(-4, 8, 0), defaultLightIntensity));
+//	defaultScene.addLight(Light(Eigen::Vector3d(-5, 0, 0), defaultLightIntensity));
+//
 	Mesh dragonMesh = offSerializer.loadOff("data/dragon.off");
 	Model dragonModel(dragonMesh, defaultMaterial);
-
-	dragonModel.setPosition(Eigen::Vector3d(0, 0, zOffset));
-	dragonModel.setRotation(Eigen::Vector3d(0, 0, 0));
-	dragonModel.setScale(Eigen::Vector3d(3, 3, 3));
-	defaultScene.addModel(dragonModel);
-
+//
+//	dragonModel.setPosition(Eigen::Vector3d(0, 0, zOffset));
+//	dragonModel.setRotation(Eigen::Vector3d(0, 0, 0));
+//	dragonModel.setScale(Eigen::Vector3d(3, 3, 3));
+//	defaultScene.addModel(dragonModel);
+//
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
-
-	Texture dragonTexture = defaultScene.render();
-	textureSerializer.serialize(dragonTexture, "dragon.png");
-
-
-	defaultScene.clearModels();
-	dragonModel.setRotation(Eigen::Vector3d(0, 80, 0));
-	dragonModel.setScale(Eigen::Vector3d(2, 2, 2));
-	defaultScene.addModel(dragonModel);
-
-	Texture dragonForwardsTexture = defaultScene.render();
-	textureSerializer.serialize(dragonForwardsTexture, "dragon_forwards.png");
-
-
+//
+//	Texture dragonTexture = defaultScene.render();
+//	textureSerializer.serialize(dragonTexture, "dragon.png");
+//
+//
+//	defaultScene.clearModels();
+//	dragonModel.setRotation(Eigen::Vector3d(0, 80, 0));
+//	dragonModel.setScale(Eigen::Vector3d(2, 2, 2));
+//	defaultScene.addModel(dragonModel);
+//
+//	Texture dragonForwardsTexture = defaultScene.render();
+//	textureSerializer.serialize(dragonForwardsTexture, "dragon_forwards.png");
+//
+//
 	Camera combinedCamera(1920, 1536);
 
 	Scene combinedScene;

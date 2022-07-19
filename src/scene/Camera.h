@@ -7,6 +7,8 @@
 #include "../texture/Texture.h"
 #include "Light.h"
 #include <random>
+#include "yaml-cpp/yaml.h"
+#include "../defs/CameraDef.h"
 
 class Scene; // Forward declaration because #include "Scene.h" will cause circular dependency
 
@@ -20,13 +22,10 @@ public:
 	 * The camera is at the origin, and the raster plane is at z = -1, and spans x and y from -1 to 1 (occupying 2 x 2 units).
 	 * The pixels are distributed evenly along each axis.
 	 * If used in orthographic mode, the initial coordinates of the ray will be equal to the pixel ray, except at z = 0 instead of z = -1.
-	 * @param width The width of the camera, in pixels
-	 * @param height The height of the camera, in pixels
-	 * @param focalLength Distance from the virtual plane to the aperture. Defined this way to keep focalLength positive
-	 * @param apertureRadius Radius of the aperture. Larger values may induce more depth of field blur. Use 0 for the default pinhole camera
-	 * @param rayShots The number of random rays to fire for the depth of field calculation. Use 1 if the aperture is 0 for default model
 	 */
 	Camera(int width, int height, double focalLength = 1.0, double apertureRadius = 0, unsigned int rayShots = 1);
+
+	explicit Camera(CameraDef def);
 
 	/**
 	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.
@@ -86,5 +85,3 @@ private:
 
 	Scene* scene; // Which scene the camera is a part of. Can be null if it's not in a scene. This is needed to access other objects in the scene.
 };
-
-

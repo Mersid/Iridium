@@ -10,6 +10,10 @@ Camera::Camera(int width, int height, double focalLength, double apertureRadius,
 {
 }
 
+Camera::Camera(CameraDef def) : Camera(def.width, def.height, def.focalLength, def.apertureRadius, def.rayShots)
+{
+}
+
 Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 {
 	Texture t(width, height);
@@ -112,4 +116,3 @@ void Camera::setFov(double angle)
 	// and we have f, the focal length, which we can set to adjust the FOV.
 	focalLength = 1 / std::tan(angle / 2 * EIGEN_PI / 180);
 }
-
