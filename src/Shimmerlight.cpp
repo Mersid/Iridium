@@ -117,32 +117,32 @@ void Shimmerlight::run()
 	Model worldModel(worldMesh, Material(), false);
 	combinedScene.addModel(worldModel);
 
-	Model redDragon(dragonMesh, Material(Eigen::Vector3d(0.95, 0.42, 0.42), defaultSpecular, defaultPhongExponent, 0));
-	redDragon.setPosition(Eigen::Vector3d(-1.2, -0.15, -5));
-	redDragon.setRotation(Eigen::Vector3d(0, 70, 0));
-	redDragon.setScale(Eigen::Vector3d(2, 2, 2));
-	combinedScene.addModel(redDragon);
-
-	Mesh cubeMesh = offSerializer.loadOff("data/cube.off");
-	Model cubeModel(cubeMesh, Material(Eigen::Vector3d(0.95, 0.42, 0.15), defaultSpecular, defaultPhongExponent, 0.55));
-	cubeModel.setPosition(Eigen::Vector3d(-2, -2, -5));
-	cubeModel.setRotation(Eigen::Vector3d(0, 45, 0));
-	cubeModel.setScale(Eigen::Vector3d(1.2, 1.2, 1.2));
-	combinedScene.addModel(cubeModel);
-
-	Mesh bunnyMesh = offSerializer.loadOff("data/bunny.off");
-	Model bunnyModel(bunnyMesh, Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, 0.15));
-	bunnyModel.setPosition(Eigen::Vector3d(1.5, -0.8, -2.6));
-	bunnyModel.setRotation(Eigen::Vector3d(10, 45, 0));
-	bunnyModel.setScale(Eigen::Vector3d(0.8, 0.8, 0.8));
-	combinedScene.addModel(bunnyModel);
-
-	Mesh dodecaMesh = offSerializer.loadOff("data/dodeca.off");
-	Model dodecaModel(dodecaMesh, Material(Eigen::Vector3d(0.15, 0.42, 0.95), defaultSpecular, defaultPhongExponent, 0.55));
-	dodecaModel.setPosition(Eigen::Vector3d(1, -2, -3));
-	dodecaModel.setRotation(Eigen::Vector3d(0, 0, 0));
-	dodecaModel.setScale(Eigen::Vector3d(1.0, 1.0, 1.0));
-	combinedScene.addModel(dodecaModel);
+//	Model redDragon(dragonMesh, Material(Eigen::Vector3d(0.95, 0.42, 0.42), defaultSpecular, defaultPhongExponent, 0));
+//	redDragon.setPosition(Eigen::Vector3d(-1.2, -0.15, -5));
+//	redDragon.setRotation(Eigen::Vector3d(0, 70, 0));
+//	redDragon.setScale(Eigen::Vector3d(2, 2, 2));
+//	combinedScene.addModel(redDragon);
+//
+//	Mesh cubeMesh = offSerializer.loadOff("data/cube.off");
+//	Model cubeModel(cubeMesh, Material(Eigen::Vector3d(0.95, 0.42, 0.15), defaultSpecular, defaultPhongExponent, 0.55));
+//	cubeModel.setPosition(Eigen::Vector3d(-2, -2, -5));
+//	cubeModel.setRotation(Eigen::Vector3d(0, 45, 0));
+//	cubeModel.setScale(Eigen::Vector3d(1.2, 1.2, 1.2));
+//	combinedScene.addModel(cubeModel);
+//
+//	Mesh bunnyMesh = offSerializer.loadOff("data/bunny.off");
+//	Model bunnyModel(bunnyMesh, Material(defaultDiffuse, defaultSpecular, defaultPhongExponent, 0.15));
+//	bunnyModel.setPosition(Eigen::Vector3d(1.5, -0.8, -2.6));
+//	bunnyModel.setRotation(Eigen::Vector3d(10, 45, 0));
+//	bunnyModel.setScale(Eigen::Vector3d(0.8, 0.8, 0.8));
+//	combinedScene.addModel(bunnyModel);
+//
+//	Mesh dodecaMesh = offSerializer.loadOff("data/dodeca.off");
+//	Model dodecaModel(dodecaMesh, Material(Eigen::Vector3d(0.15, 0.42, 0.95), defaultSpecular, defaultPhongExponent, 0.55));
+//	dodecaModel.setPosition(Eigen::Vector3d(1, -2, -3));
+//	dodecaModel.setRotation(Eigen::Vector3d(0, 0, 0));
+//	dodecaModel.setScale(Eigen::Vector3d(1.0, 1.0, 1.0));
+//	combinedScene.addModel(dodecaModel);
 
 	Texture combinedTexture = combinedScene.render();
 	textureSerializer.serialize(combinedTexture, "combined.png");

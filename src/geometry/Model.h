@@ -5,6 +5,7 @@
 #include "Box.h"
 #include "BoundingVolumeHierarchy.h"
 #include "RayTraceInfo.h"
+#include "../misc/Transform.h"
 
 /**
  * A model consists of a mesh and associated information, such as the bounding box and the BVH
@@ -27,33 +28,18 @@ public:
 	void setMaterial(const Material& material);
 
 	/**
-	 * @param translateBy Translates the model by this amount
-	 */
-	void translate(const Eigen::Vector3d& translateBy);
-
-	/**
 	 * Generates a bounding volume hierarchy for this model
 	 */
 	void generateBVH();
 
-	// TODO: Pay off technical debt associated with making this rather messy implementation.
-	void setPosition(const Eigen::Vector3d& position);
-	void setRotation(const Eigen::Vector3d& rotation);
-	void setScale(const Eigen::Vector3d& scale);
-
-	/**
-	 * Applies the position, rotation, and scale transforms defined in this object.
-	 */
-	void applyTransforms();
+	Transform& getTransform();
 
 
 private:
 	Mesh mesh;
 	std::shared_ptr<BoundingVolumeHierarchy> bvh;
 
-	Eigen::Vector3d position;
-	Eigen::Vector3d rotation;
-	Eigen::Vector3d scale;
+	Transform transform;
 
 	/**
 	 * Gets a short-listed list of possible intersects. Since this list is likely *much* shorter than the list of all primitives,
@@ -64,5 +50,3 @@ private:
 	 */
 	std::vector<Primitive*> getPossibleIntersects(const Ray& ray);
 };
-
-

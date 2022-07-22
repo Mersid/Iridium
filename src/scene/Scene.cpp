@@ -6,11 +6,6 @@ Scene::Scene() : ambientCoefficient(Eigen::Vector3d(1, 1, 1)), ambientLightInten
 
 Texture Scene::render(CameraMode cameraMode)
 {
-	for (Model m : modelStorage)
-	{
-		m.applyTransforms();
-		models.emplace_back(m);
-	}
 	// TODO / BUG: Pay off technical debt. Beyond this being a hack-job, we have to generate the models' BVHs
 	// TODO: in-place because otherwise when copying models with a BVH the BVH is copied... but it points to the old
 	// TODO: model's primitives, so if that old copy disappears or the new one is updated or whatever, it will not reflect
@@ -18,7 +13,7 @@ Texture Scene::render(CameraMode cameraMode)
 	for (Model& m : models)
 		m.generateBVH();
 
-	Texture t = camera.takeSnapshot(cameraMode, 5);
+	Texture t = camera.takeSnapshot(cameraMode, 1);
 
 	models.clear();
 	return t;
@@ -52,7 +47,7 @@ void Scene::addLight(const Light& l)
 
 void Scene::addModel(const Model& model)
 {
-	modelStorage.emplace_back(model);
+	models.emplace_back(model);
 }
 
 Primitive* Scene::getFirstIntersection(const Ray& ray)
@@ -149,11 +144,6 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 	color += primitive.getMaterial().getReflectionCoefficient() * (optReflectColor.has_value() ? optReflectColor.value() : Eigen::Vector3d::Zero());
 
 	return color;
-}
-
-void Scene::clearModels()
-{
-	modelStorage.clear();
 }
 
 

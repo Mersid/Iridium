@@ -17,32 +17,7 @@ std::vector<Primitive*> Mesh::getPrimitives()
 	return ptrs;
 }
 
-
-void Mesh::translate(const Eigen::Vector3d& translateBy)
-{
-	for (const std::shared_ptr<Primitive>& primitive : primitives) // Forgetting the & cost me an hour :(  -- Steven, 2022-03-16
-		primitive->translate(translateBy);
-}
-
 void Mesh::addPrimitive(std::shared_ptr<Primitive>&& primitive)
 {
 	primitives.emplace_back(primitive);
-}
-
-Mesh& Mesh::operator=(const Mesh& other)
-{
-	for (const std::shared_ptr<Primitive>& p : other.primitives)
-	{
-		primitives.emplace_back(p->clone());
-	}
-
-	return *this;
-}
-
-Mesh::Mesh(const Mesh& other)
-{
-	for (const std::shared_ptr<Primitive>& p : other.primitives)
-	{
-		primitives.emplace_back(p->clone());
-	}
 }

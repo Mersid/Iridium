@@ -15,6 +15,13 @@ public:
 	Transform& operator=(const Transform& other) = default;
 	Transform& operator=(Transform&& other) = default;
 
+	[[nodiscard]] const Eigen::Vector3d& getPosition() const;
+	[[nodiscard]] const Eigen::Vector3d& getRotation() const;
+	[[nodiscard]] const Eigen::Vector3d& getScale() const;
+	void setPosition(const Eigen::Vector3d& position);
+	void setRotation(const Eigen::Vector3d& rotation);
+	void setScale(const Eigen::Vector3d& scale);
+
 private:
 	Eigen::Vector3d position;
 	Eigen::Vector3d rotation;

@@ -57,11 +57,8 @@ public:
 	 */
 	std::optional<Eigen::Vector3d> trace(const Ray& ray, int ttl = 1);
 
-	void clearModels();
-
 private:
 	Camera camera;
-	std::vector<Model> modelStorage;
 	std::vector<Model> models;
 	std::vector<Light> lights;
 
