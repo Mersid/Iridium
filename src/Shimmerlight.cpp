@@ -8,6 +8,8 @@
 #include "geometry/Sphere.h"
 #include "yaml-cpp/yaml.h" // https://stackoverflow.com/questions/47389809/yaml-cpp-unresolved-external-symbol-error
 #include "misc/Vector3dConvert.h"
+#include "testing/Derived.h"
+#include "testing/Base.h"
 
 
 Shimmerlight::Shimmerlight()
@@ -17,6 +19,7 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
+	return;
 	Camera camera(1920, 1536);
 	camera.setFov(90);
 
