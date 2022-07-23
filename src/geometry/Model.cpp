@@ -6,17 +6,7 @@
 Model::Model(Mesh mesh, const Material& material, bool applyMaterial) : mesh(std::move(mesh)), bvh(nullptr),
 	transform(Transform())
 {
-	if (applyMaterial)
-		setMaterial(material);
-}
 
-// TODO: Mesh-level material
-void Model::setMaterial(const Material& material)
-{
-	for (Primitive* primitive : mesh.getPrimitives())
-	{
-		primitive->setMaterial(material);
-	}
 }
 
 std::optional<RayTraceInfo> Model::intersect(const Ray& ray)

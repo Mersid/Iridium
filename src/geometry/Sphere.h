@@ -38,8 +38,6 @@ public:
 
 	Material& getMaterial() override;
 
-	Eigen::Vector3d getPosition() override;
-
 	void setMaterial(Material material) override;
 
 	Box getBoundingBox() override;

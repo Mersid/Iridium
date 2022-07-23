@@ -19,7 +19,7 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
-	return;
+	//return;
 	Camera camera(1920, 1536);
 	camera.setFov(90);
 

@@ -19,11 +19,11 @@ BoundingVolumeHierarchy::BoundingVolumeHierarchy(std::vector<Primitive*> primiti
 	// Sort the vector of primitives by x, y, or z, depending on the value of i.
 	std::sort(primitives.begin(), primitives.end(), [i](Primitive* a, Primitive* b){
 		if (i % 3 == 0)
-			return a->getPosition().x() < b->getPosition().x();
+			return a->getBoundingBox().getPosition().x() < b->getBoundingBox().getPosition().x();
 		if (i % 3 == 1)
-			return a->getPosition().y() < b->getPosition().y();
+			return a->getBoundingBox().getPosition().y() < b->getBoundingBox().getPosition().y();
 
-		return a->getPosition().z() < b->getPosition().z();
+		return a->getBoundingBox().getPosition().z() < b->getBoundingBox().getPosition().z();
 	});
 
 	// Split the primitives vector in half. While it's arguable easier to reason if for odd-sized vectors the middle element is on the left,

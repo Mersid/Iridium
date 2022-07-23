@@ -78,11 +78,6 @@ const Eigen::Vector3d& Triangle::getC() const
 	return c;
 }
 
-Eigen::Vector3d Triangle::getPosition()
-{
-	return a;
-}
-
 Box Triangle::getBoundingBox()
 {
 	Eigen::Vector3d min(

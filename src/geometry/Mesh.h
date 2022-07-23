@@ -17,4 +17,5 @@ public:
 
 private:
 	std::vector<std::shared_ptr<Primitive>> primitives;
+	Material material;
 };

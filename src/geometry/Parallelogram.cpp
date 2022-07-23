@@ -64,11 +64,6 @@ void Parallelogram::setMaterial(Material material)
 	this->material = material;
 }
 
-Eigen::Vector3d Parallelogram::getPosition()
-{
-	return a;
-}
-
 Box Parallelogram::getBoundingBox()
 {
 	Eigen::Vector3d opposite = a + getU() + getV();

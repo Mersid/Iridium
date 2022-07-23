@@ -25,8 +25,6 @@ public:
 	 */
 	std::optional<RayTraceInfo> intersect(const Ray& ray);
 
-	void setMaterial(const Material& material);
-
 	/**
 	 * Generates a bounding volume hierarchy for this model
 	 */
@@ -37,7 +35,7 @@ public:
 
 private:
 	Mesh mesh;
-	std::shared_ptr<BoundingVolumeHierarchy> bvh;
+	std::shared_ptr<BoundingVolumeHierarchy> bvh; // TODO: unique pointer
 
 	Transform transform;
 

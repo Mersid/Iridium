@@ -28,8 +28,6 @@ public:
 
 	void setMaterial(Material mat) override;
 
-	Eigen::Vector3d getPosition() override;
-
 	Box getBoundingBox() override;
 
 	[[nodiscard]] const Eigen::Vector3d& getA() const;

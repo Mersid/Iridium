@@ -56,3 +56,8 @@ bool Box::intersect(const Ray& ray)
 	// If tMax < 0, it's behind us. If tMax < tMin, we missed.
 	return tMax >= 0 && tMax >= tMin;
 }
+
+Eigen::Vector3d Box::getPosition()
+{
+	return (getMin() + getMax()) / 2;
+}

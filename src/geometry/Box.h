@@ -20,6 +20,9 @@ public:
 
 	[[nodiscard]] Eigen::Vector3d& getMax();
 
+	// Gets the center of the box
+	Eigen::Vector3d getPosition();
+
 	/**
 	 * Checks if the ray intersects the box. Because the box is not meant to be used as a rendering primitive, it isn't one,
 	 * and many features, like normal detection and vector coordinates of hit positions, are not available. It's simply meant
