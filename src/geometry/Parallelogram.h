@@ -4,6 +4,7 @@
 #include "Eigen/Dense"
 #include "Ray.h"
 #include "Primitive.h"
+#include "Mesh.h"
 #include <optional>
 
 /**
@@ -20,12 +21,7 @@ public:
 	 * @param c The third point of the parallelogram. Consider the cross product will use the vector ac as its B value (for A X B)
 	 * @param material The properties of the material of this primitive
 	 */
-	Parallelogram(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Material material);
-
-	/**
-	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.
-	 */
-	Parallelogram() = default;
+	Parallelogram(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh& mesh);
 
 	/**
 	 * Test if the given ray intersects this parallelogram
@@ -41,11 +37,9 @@ public:
 	 */
 	Eigen::Vector3d getNormalAt(Eigen::Vector3d position) override;
 
-	Material& getMaterial() override;
-
-	void setMaterial(Material material) override;
-
 	Box getBoundingBox() override;
+
+	Mesh& getMesh() override;
 
 private:
 	Eigen::Vector3d a; // Common point
@@ -56,7 +50,8 @@ private:
 	Eigen::Vector3d getV(); // Vector ac, equal to c-a
 	Eigen::Vector3d getNormal(); // Normal vector of this triangle, equal to cross product of u x v.
 
-	Material material;
+	Mesh& mesh; // The mesh this primitive belongs to
+
 };
 
 

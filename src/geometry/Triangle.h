@@ -24,10 +24,6 @@ public:
 
 	Eigen::Vector3d getNormalAt(Eigen::Vector3d position) override;
 
-	Material& getMaterial() override;
-
-	void setMaterial(Material mat) override;
-
 	Box getBoundingBox() override;
 
 	[[nodiscard]] const Eigen::Vector3d& getA() const;
@@ -35,6 +31,8 @@ public:
 	[[nodiscard]] const Eigen::Vector3d& getB() const;
 
 	[[nodiscard]] const Eigen::Vector3d& getC() const;
+
+	Mesh& getMesh() override;
 
 private:
 	Eigen::Vector3d a; // Common point
@@ -45,8 +43,7 @@ private:
 	Eigen::Vector3d getV(); // Vector ac, equal to c-a
 	Eigen::Vector3d getNormal(); // Normal vector of this triangle, equal to cross product of u x v.
 
-	Material material;
-
+	Mesh& mesh;
 };
 
 

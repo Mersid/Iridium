@@ -2,8 +2,8 @@
 
 #include <utility>
 
-Parallelogram::Parallelogram(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Material material) :
-	a(a), b(b), c(c), material(std::move(material))
+Parallelogram::Parallelogram(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh& mesh) :
+	a(a), b(b), c(c), mesh(mesh)
 {
 }
 
@@ -54,16 +54,6 @@ Eigen::Vector3d Parallelogram::getNormalAt(Eigen::Vector3d position)
 	return (b - a).cross(c - a).normalized();
 }
 
-Material& Parallelogram::getMaterial()
-{
-	return material;
-}
-
-void Parallelogram::setMaterial(Material material)
-{
-	this->material = material;
-}
-
 Box Parallelogram::getBoundingBox()
 {
 	Eigen::Vector3d opposite = a + getU() + getV();
@@ -93,5 +83,10 @@ Eigen::Vector3d Parallelogram::getV()
 Eigen::Vector3d Parallelogram::getNormal()
 {
 	return (b - a).cross(c - a).normalized();
+}
+
+Mesh& Parallelogram::getMesh()
+{
+	return mesh;
 }
 

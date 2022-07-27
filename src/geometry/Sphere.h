@@ -6,12 +6,6 @@
 class Sphere : public Primitive
 {
 public:
-
-	/**
-	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.
-	 */
-	Sphere() = default;
-
 	/**
 	 * Creates a sphere
 	 * @param center The 3d coordinates of where the center of the sphere is
@@ -36,16 +30,13 @@ public:
 	 */
 	Eigen::Vector3d getNormalAt(Eigen::Vector3d position) override;
 
-	Material& getMaterial() override;
-
-	void setMaterial(Material material) override;
-
 	Box getBoundingBox() override;
+
+	Mesh& getMesh() override;
 
 private:
 	Eigen::Vector3d center;
 	double radius{};
-
-	Material material;
+	Mesh& mesh;
 };
 

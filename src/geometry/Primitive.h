@@ -6,6 +6,7 @@
 #include "Ray.h"
 #include "Material.h"
 #include "Box.h"
+#include "Mesh.h"
 #include <memory>
 
 class Primitive
@@ -34,9 +35,7 @@ public:
 	 */
 	virtual Eigen::Vector3d getNormalAt(Eigen::Vector3d position) = 0;
 
-	virtual void setMaterial(Material material) = 0;
-	virtual Material& getMaterial() = 0;
-
+	virtual Mesh& getMesh() = 0;
 };
 
 

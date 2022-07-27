@@ -3,7 +3,7 @@
 #include <utility>
 
 Triangle::Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Material material) :
-		a(a), b(b), c(c), material(std::move(material))
+		a(a), b(b), c(c)
 {
 
 }
@@ -53,16 +53,6 @@ Eigen::Vector3d Triangle::getNormalAt(Eigen::Vector3d position)
 	return (b - a).cross(c - a).normalized();
 }
 
-Material& Triangle::getMaterial()
-{
-	return material;
-}
-
-void Triangle::setMaterial(Material mat)
-{
-	material = mat;
-}
-
 const Eigen::Vector3d& Triangle::getA() const
 {
 	return a;
@@ -105,6 +95,11 @@ Eigen::Vector3d Triangle::getV()
 Eigen::Vector3d Triangle::getNormal()
 {
 	return (b - a).cross(c - a).normalized();
+}
+
+Mesh& Triangle::getMesh()
+{
+	return mesh;
 }
 
 

@@ -15,6 +15,10 @@ public:
 
 	std::vector<Primitive*> getPrimitives();
 
+	Material& getMaterial();
+
+	void setMaterial(const Material& material);
+
 private:
 	std::vector<std::shared_ptr<Primitive>> primitives;
 	Material material;

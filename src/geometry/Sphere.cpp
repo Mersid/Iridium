@@ -3,7 +3,7 @@
 #include <utility>
 
 Sphere::Sphere(Eigen::Vector3d center, double radius, Material material) :
-		center(std::move(center)), radius(radius), material(std::move(material))
+		center(std::move(center)), radius(radius)
 {
 }
 
@@ -41,16 +41,6 @@ Eigen::Vector3d Sphere::getNormalAt(Eigen::Vector3d position)
 	return (position - center).normalized();
 }
 
-Material& Sphere::getMaterial()
-{
-	return material;
-}
-
-void Sphere::setMaterial(Material material)
-{
-	this->material = material;
-}
-
 Box Sphere::getBoundingBox()
 {
 	Eigen::Vector3d min(
@@ -63,4 +53,9 @@ Box Sphere::getBoundingBox()
 			center.z() + radius);
 
 	return Box(min, max);
+}
+
+Mesh& Sphere::getMesh()
+{
+	return mesh;
 }

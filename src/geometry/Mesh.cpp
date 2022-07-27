@@ -21,3 +21,13 @@ void Mesh::addPrimitive(std::shared_ptr<Primitive>&& primitive)
 {
 	primitives.emplace_back(primitive);
 }
+
+Material& Mesh::getMaterial()
+{
+	return material;
+}
+
+void Mesh::setMaterial(const Material& material)
+{
+	Mesh::material = material;
+}
