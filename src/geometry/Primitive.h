@@ -6,8 +6,9 @@
 #include "Ray.h"
 #include "Material.h"
 #include "Box.h"
-#include "Mesh.h"
 #include <memory>
+
+class Mesh;
 
 class Primitive
 {

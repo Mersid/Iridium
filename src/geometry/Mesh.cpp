@@ -3,11 +3,6 @@
 #include "Mesh.h"
 #include "Primitive.h"
 
-Mesh::Mesh(std::vector<std::shared_ptr<Primitive>> primitives) : primitives(std::move(primitives))
-{
-
-}
-
 std::vector<Primitive*> Mesh::getPrimitives()
 {
 	std::vector<Primitive*> ptrs;

@@ -1,7 +1,6 @@
 #pragma once
 
-
-#include "Triangle.h"
+#include "Primitive.h"
 
 /**
  * A mesh is a collection of primitives
@@ -9,8 +8,7 @@
 class Mesh
 {
 public:
-	explicit Mesh(std::vector<std::shared_ptr<Primitive>> primitives);
-
+	// TODO: Maybe unique_ptr?
 	void addPrimitive(std::shared_ptr<Primitive>&& primitive);
 
 	std::vector<Primitive*> getPrimitives();

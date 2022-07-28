@@ -30,6 +30,8 @@ Mesh OffSerializer::loadOff(const std::string& path)
 		vertices.emplace_back(x, y, z);
 	}
 
+	Mesh mesh;
+
 	// Load triangles. Start offset is 2 (for magic number and metadata, one line each) + the number of vertices
 	for (std::vector<std::string>::size_type i = 2 + vertexCount; i < 2 + vertexCount + trisCount; i++)
 	{
@@ -39,8 +41,8 @@ Mesh OffSerializer::loadOff(const std::string& path)
 		unsigned long indexB = std::stoul(tokens[2]);
 		unsigned long indexC = std::stoul(tokens[3]);
 
-		triangles.emplace_back(std::make_shared<Triangle>(vertices[indexA], vertices[indexB], vertices[indexC]));
+		mesh.addPrimitive(std::make_shared<Triangle>(vertices[indexA], vertices[indexB], vertices[indexC], mesh));
 	}
 
-	return Mesh(triangles);
+	return mesh;
 }

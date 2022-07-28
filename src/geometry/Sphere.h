@@ -10,9 +10,9 @@ public:
 	 * Creates a sphere
 	 * @param center The 3d coordinates of where the center of the sphere is
 	 * @param radius The radius of the sphere, relative to the center
-	 * @param material The properties of the material of this primitive
+	 * @param mesh The mesh that this sphere belongs to
 	 */
-	Sphere(Eigen::Vector3d center, double radius, Material material);
+	Sphere(Eigen::Vector3d center, double radius, Mesh& mesh);
 
 	/**
 	 * Gets the near intersection of the intersection of a ray with a sphere

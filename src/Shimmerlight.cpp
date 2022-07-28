@@ -19,7 +19,9 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
-	//return;
+	YAML::Node sceneDef = YAML::LoadFile("data/Defs/SceneDef.yml");
+	YAML::Node transform = sceneDef["models"][0]["transform"];
+
 	Camera camera(1920, 1536);
 	camera.setFov(90);
 
@@ -72,53 +74,53 @@ void Shimmerlight::run()
 	combinedScene.addLight(Light(Eigen::Vector3d(-1, 4, -6), 0.5));
 	combinedScene.addLight(Light(Eigen::Vector3d(0, 4, 0), 0.5));
 
-	std::vector<std::shared_ptr<Primitive>> worldMeshPrimitives = {
-			std::make_shared<Parallelogram>( // Baseplate
-					Eigen::Vector3d(-10, -2, 0),
-					Eigen::Vector3d(10,-2,0),
-					Eigen::Vector3d(-10,-2,-20),
-					Material(Eigen::Vector3d(0.5, 0.5, 0.5), Eigen::Vector3d(0.5, 0.5, 0.5), 10, 0.7)),
+//	std::vector<std::shared_ptr<Primitive>> worldMeshPrimitives = {
+//			std::make_shared<Parallelogram>( // Baseplate
+//					Eigen::Vector3d(-10, -2, 0),
+//					Eigen::Vector3d(10,-2,0),
+//					Eigen::Vector3d(-10,-2,-20),
+//					Material(Eigen::Vector3d(0.5, 0.5, 0.5), Eigen::Vector3d(0.5, 0.5, 0.5), 10, 0.7)),
+//
+//			std::make_shared<Sphere>( // Blue sphere
+//					Eigen::Vector3d(-2, -1, -8), 1,
+//					Material(Eigen::Vector3d(0.1, 0.1, 0.5), Eigen::Vector3d(0.4, 0.4, 0.4))),
+//
+//			std::make_shared<Sphere>( // Red sphere
+//					Eigen::Vector3d(-2, 1, -8), 1,
+//					Material(Eigen::Vector3d(0.5, 0.1, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4))),
+//
+//			std::make_shared<Sphere>( // Floating green sphere
+//					Eigen::Vector3d(0, 0.5, -6), 0.5,
+//					Material(Eigen::Vector3d(0.1, 0.5, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4), 10, 0.5)),
+//
+//			std::make_shared<Sphere>( // Bronze sphere
+//					Eigen::Vector3d(1, -1.5, -4), 0.5,
+//					Material(Eigen::Vector3d(0.5, 0.3, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4), 12, 0.25)),
+//
+//			std::make_shared<Sphere>( // Yellow sphere w/ blue Phong
+//					Eigen::Vector3d(-1, -1.6, -3), 0.4,
+//					Material(Eigen::Vector3d(1, 1, 0), Eigen::Vector3d(0, 0, 1))),
+//
+//			std::make_shared<Sphere>( // Lavender sphere
+//					Eigen::Vector3d(-3, -1, -4), 0.6,
+//					Material(Eigen::Vector3d(0.8, 0.8, 1), Eigen::Vector3d(0.4, 0.4, 0.4))),
+//
+//			std::make_shared<Parallelogram>( // Pink vertical rectangle
+//					Eigen::Vector3d(1, -2, -9),
+//					Eigen::Vector3d(3,-2,-9),
+//					Eigen::Vector3d(1,-0,-9),
+//					Material(Eigen::Vector3d(1, 0.2, 0.6))),
+//
+//			std::make_shared<Parallelogram>( // Cyan side-facing rectangle
+//					Eigen::Vector3d(3, -2, -8),
+//					Eigen::Vector3d(5,-2,-6),
+//					Eigen::Vector3d(3,-0,-8),
+//					Material(Eigen::Vector3d(0, 1.5, 1.5)))
+//	};
 
-			std::make_shared<Sphere>( // Blue sphere
-					Eigen::Vector3d(-2, -1, -8), 1,
-					Material(Eigen::Vector3d(0.1, 0.1, 0.5), Eigen::Vector3d(0.4, 0.4, 0.4))),
-
-			std::make_shared<Sphere>( // Red sphere
-					Eigen::Vector3d(-2, 1, -8), 1,
-					Material(Eigen::Vector3d(0.5, 0.1, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4))),
-
-			std::make_shared<Sphere>( // Floating green sphere
-					Eigen::Vector3d(0, 0.5, -6), 0.5,
-					Material(Eigen::Vector3d(0.1, 0.5, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4), 10, 0.5)),
-
-			std::make_shared<Sphere>( // Bronze sphere
-					Eigen::Vector3d(1, -1.5, -4), 0.5,
-					Material(Eigen::Vector3d(0.5, 0.3, 0.1), Eigen::Vector3d(0.4, 0.4, 0.4), 12, 0.25)),
-
-			std::make_shared<Sphere>( // Yellow sphere w/ blue Phong
-					Eigen::Vector3d(-1, -1.6, -3), 0.4,
-					Material(Eigen::Vector3d(1, 1, 0), Eigen::Vector3d(0, 0, 1))),
-
-			std::make_shared<Sphere>( // Lavender sphere
-					Eigen::Vector3d(-3, -1, -4), 0.6,
-					Material(Eigen::Vector3d(0.8, 0.8, 1), Eigen::Vector3d(0.4, 0.4, 0.4))),
-
-			std::make_shared<Parallelogram>( // Pink vertical rectangle
-					Eigen::Vector3d(1, -2, -9),
-					Eigen::Vector3d(3,-2,-9),
-					Eigen::Vector3d(1,-0,-9),
-					Material(Eigen::Vector3d(1, 0.2, 0.6))),
-
-			std::make_shared<Parallelogram>( // Cyan side-facing rectangle
-					Eigen::Vector3d(3, -2, -8),
-					Eigen::Vector3d(5,-2,-6),
-					Eigen::Vector3d(3,-0,-8),
-					Material(Eigen::Vector3d(0, 1.5, 1.5)))
-	};
-
-	Mesh worldMesh(worldMeshPrimitives);
-	Model worldModel(worldMesh, Material(), false);
-	combinedScene.addModel(worldModel);
+//	Mesh worldMesh(worldMeshPrimitives);
+//	Model worldModel(worldMesh, Material(), false);
+//	combinedScene.addModel(worldModel);
 
 //	Model redDragon(dragonMesh, Material(Eigen::Vector3d(0.95, 0.42, 0.42), defaultSpecular, defaultPhongExponent, 0));
 //	redDragon.setPosition(Eigen::Vector3d(-1.2, -0.15, -5));

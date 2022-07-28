@@ -2,7 +2,6 @@
 
 
 #include "Primitive.h"
-#include "Box.h"
 #include "Eigen/Dense"
 
 /**
@@ -16,9 +15,9 @@ public:
 	 * @param a The base point of the triangle
 	 * @param b The second point of the triangle. Consider the cross product will use the vector ab as its A value (for A X B)
 	 * @param c The third point of the triangle. Consider the cross product will use the vector ac as its B value (for A X B)
-	 * @param material The properties of the material of this primitive
+	 * @param mesh The mesh that this triangle belongs to
 	 */
-	Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Material material = Material());
+	Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh& mesh);
 
 	std::optional<Eigen::Vector3d> getRayIntersection(const Ray& ray) override;
 

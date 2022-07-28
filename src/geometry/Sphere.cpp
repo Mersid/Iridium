@@ -2,8 +2,8 @@
 
 #include <utility>
 
-Sphere::Sphere(Eigen::Vector3d center, double radius, Material material) :
-		center(std::move(center)), radius(radius)
+Sphere::Sphere(Eigen::Vector3d center, double radius, Mesh& mesh) :
+		center(std::move(center)), radius(radius), mesh(mesh)
 {
 }
 

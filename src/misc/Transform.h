@@ -27,3 +27,14 @@ private:
 	Eigen::Vector3d rotation;
 	Eigen::Vector3d scale;
 };
+
+template<>
+struct YAML::convert<Transform>
+{
+	static bool decode(const Node& node, Transform& def)
+	{
+		def.setPosition(node["position"].as<Eigen::Vector3d>());
+		def.setRotation(node["rotation"].as<Eigen::Vector3d>());
+		def.setScale(node["scale"].as<Eigen::Vector3d>());
+	}
+};

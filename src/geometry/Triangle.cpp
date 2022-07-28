@@ -2,8 +2,8 @@
 
 #include <utility>
 
-Triangle::Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Material material) :
-		a(a), b(b), c(c)
+Triangle::Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh& mesh) :
+		a(a), b(b), c(c), mesh(mesh)
 {
 
 }
@@ -101,6 +101,3 @@ Mesh& Triangle::getMesh()
 {
 	return mesh;
 }
-
-
-
