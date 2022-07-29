@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Primitive.h"
+#include "yaml-cpp/yaml.h"
+#include "Parallelogram.h"
 
 /**
  * A mesh is a collection of primitives
@@ -20,4 +22,30 @@ public:
 private:
 	std::vector<std::shared_ptr<Primitive>> primitives;
 	Material material;
+};
+
+template<>
+struct YAML::convert<Mesh>
+{
+	static bool decode(const Node& node, Mesh& mesh)
+	{
+
+		if (node["parallelogram"])
+		{
+			std::make_shared<Parallelogram>();
+			node["parallelogram"].as<Parallelogram>()
+		}
+		else if (node["sphere"])
+		{
+
+		}
+		else if (node["triangle"])
+		{
+
+		}
+		else
+		{
+
+		}
+	}
 };

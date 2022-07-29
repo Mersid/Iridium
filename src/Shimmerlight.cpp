@@ -20,7 +20,7 @@ Shimmerlight::Shimmerlight()
 void Shimmerlight::run()
 {
 	YAML::Node sceneDef = YAML::LoadFile("data/Defs/SceneDef.yml");
-	YAML::Node transform = sceneDef["models"][0]["transform"];
+	YAML::Node transform = sceneDef["models"][0]["mesh"];
 
 	Camera camera(1920, 1536);
 	camera.setFov(90);

@@ -41,6 +41,11 @@ public:
 
 	Mesh& getMesh() override;
 
+	/**
+	 * Transforms the parallelogram according to the given node
+	 */
+	void deserialize(const YAML::Node& node);
+
 private:
 	Eigen::Vector3d a; // Common point
 	Eigen::Vector3d b; // Usually the horizontal point
@@ -54,4 +59,11 @@ private:
 
 };
 
-
+template<>
+struct YAML::convert<Parallelogram>
+{
+	static bool decode(const Node& node, Parallelogram& parallelogram)
+	{
+		parallelogram.deserialize(node);
+	}
+};

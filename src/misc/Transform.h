@@ -31,10 +31,10 @@ private:
 template<>
 struct YAML::convert<Transform>
 {
-	static bool decode(const Node& node, Transform& def)
+	static bool decode(const Node& node, Transform& transform)
 	{
-		def.setPosition(node["position"].as<Eigen::Vector3d>());
-		def.setRotation(node["rotation"].as<Eigen::Vector3d>());
-		def.setScale(node["scale"].as<Eigen::Vector3d>());
+		transform.setPosition(node["position"].as<Eigen::Vector3d>());
+		transform.setRotation(node["rotation"].as<Eigen::Vector3d>());
+		transform.setScale(node["scale"].as<Eigen::Vector3d>());
 	}
 };

@@ -3,6 +3,7 @@
 
 #include "Primitive.h"
 #include "Eigen/Dense"
+#include "yaml-cpp/yaml.h"
 
 /**
  * Represents a triangle. Note that the code is essentially copied from the parallelogram,
@@ -33,6 +34,8 @@ public:
 
 	Mesh& getMesh() override;
 
+	void deserialize(const YAML::Node& node);
+
 private:
 	Eigen::Vector3d a; // Common point
 	Eigen::Vector3d b; // Usually the horizontal point
@@ -45,4 +48,11 @@ private:
 	Mesh& mesh;
 };
 
-
+template<>
+struct YAML::convert<Triangle>
+{
+	static bool decode(const Node& node, Triangle& triangle)
+	{
+		triangle.deserialize(node);
+	}
+};

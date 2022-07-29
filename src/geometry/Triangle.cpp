@@ -1,6 +1,6 @@
 #include "Triangle.h"
-
 #include <utility>
+#include "../misc/Vector3dConvert.h"
 
 Triangle::Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh& mesh) :
 		a(a), b(b), c(c), mesh(mesh)
@@ -100,4 +100,11 @@ Eigen::Vector3d Triangle::getNormal()
 Mesh& Triangle::getMesh()
 {
 	return mesh;
+}
+
+void Triangle::deserialize(const YAML::Node& node)
+{
+	a = node["a"].as<Eigen::Vector3d>();
+	b = node["b"].as<Eigen::Vector3d>();
+	c = node["c"].as<Eigen::Vector3d>();
 }

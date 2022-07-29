@@ -23,10 +23,9 @@ models:
       scale: [1, 1, 1]
     mesh:
       parallelogram:
-        points:
-          a: [-10, -2, 0]
-          b: [10, -2, 0]
-          c: [-10, -2, -20]
+        a: [-10, -2, 0]
+        b: [10, -2, 0]
+        c: [-10, -2, -20]
       material:
         diffuseCoefficient: [0.5, 0.5, 0.5]
         specularCoefficient: [0.5, 0.5, 0.5]
@@ -124,10 +123,9 @@ models:
       scale: [1, 1, 1]
     mesh:
       parallelogram:
-        points:
-          a: [1, -2, -9]
-          b: [3, -2, -9]
-          c: [1, 0, -9]
+        a: [1, -2, -9]
+        b: [3, -2, -9]
+        c: [1, 0, -9]
       material:
         diffuseCoefficient: [1, 0.2, 0.6]
 
@@ -138,10 +136,9 @@ models:
       scale: [1, 1, 1]
     mesh:
       parallelogram:
-        points:
-          a: [3, -2, -8]
-          b: [5, -2, -6]
-          c: [3, 0, -8]
+        a: [3, -2, -8]
+        b: [5, -2, -6]
+        c: [3, 0, -8]
       material:
         diffuseCoefficient: [0, 1.5, 1.5]
 

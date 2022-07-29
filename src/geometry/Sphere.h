@@ -2,6 +2,7 @@
 
 #include "Primitive.h"
 #include "Material.h"
+#include "yaml-cpp/yaml.h"
 
 class Sphere : public Primitive
 {
@@ -34,9 +35,19 @@ public:
 
 	Mesh& getMesh() override;
 
+	void deserialize(const YAML::Node& node);
+
 private:
 	Eigen::Vector3d center;
 	double radius{};
 	Mesh& mesh;
 };
 
+template<>
+struct YAML::convert<Sphere>
+{
+	static bool decode(const Node& node, Sphere& sphere)
+	{
+		sphere.deserialize(node);
+	}
+};
