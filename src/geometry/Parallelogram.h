@@ -21,7 +21,12 @@ public:
 	 * @param c The third point of the parallelogram. Consider the cross product will use the vector ac as its B value (for A X B)
 	 * @param mesh The mesh that this parallelogram belongs to
 	 */
-	Parallelogram(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh& mesh);
+	Parallelogram(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh* mesh);
+
+	/**
+	 * For serialization purposes only
+	 */
+	Parallelogram() = default;
 
 	/**
 	 * Test if the given ray intersects this parallelogram
@@ -39,7 +44,9 @@ public:
 
 	Box getBoundingBox() override;
 
-	Mesh& getMesh() override;
+	Mesh* getMesh() override;
+
+	void setMesh(Mesh* mesh) override;
 
 	/**
 	 * Transforms the parallelogram according to the given node
@@ -55,7 +62,7 @@ private:
 	Eigen::Vector3d getV(); // Vector ac, equal to c-a
 	Eigen::Vector3d getNormal(); // Normal vector of this triangle, equal to cross product of u x v.
 
-	Mesh& mesh; // The mesh this primitive belongs to
+	Mesh* mesh; // The mesh this primitive belongs to
 
 };
 

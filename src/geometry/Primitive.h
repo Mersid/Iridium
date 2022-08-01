@@ -36,7 +36,8 @@ public:
 	 */
 	virtual Eigen::Vector3d getNormalAt(Eigen::Vector3d position) = 0;
 
-	virtual Mesh& getMesh() = 0;
+	virtual Mesh* getMesh() = 0;
+	virtual void setMesh(Mesh* mesh) = 0;
 };
 
 

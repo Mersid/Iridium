@@ -3,7 +3,7 @@
 #include <utility>
 #include "../misc/Vector3dConvert.h"
 
-Parallelogram::Parallelogram(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh& mesh) :
+Parallelogram::Parallelogram(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh* mesh) :
 	a(a), b(b), c(c), mesh(mesh)
 {
 }
@@ -86,7 +86,7 @@ Eigen::Vector3d Parallelogram::getNormal()
 	return (b - a).cross(c - a).normalized();
 }
 
-Mesh& Parallelogram::getMesh()
+Mesh* Parallelogram::getMesh()
 {
 	return mesh;
 }
@@ -96,5 +96,10 @@ void Parallelogram::deserialize(const YAML::Node& node)
 	a = node["a"].as<Eigen::Vector3d>();
 	b = node["b"].as<Eigen::Vector3d>();
 	c = node["c"].as<Eigen::Vector3d>();
+}
+
+void Parallelogram::setMesh(Mesh* mesh)
+{
+	Parallelogram::mesh = mesh;
 }
 

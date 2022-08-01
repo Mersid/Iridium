@@ -3,7 +3,7 @@
 #include <utility>
 #include "../misc/Vector3dConvert.h"
 
-Sphere::Sphere(Eigen::Vector3d center, double radius, Mesh& mesh) :
+Sphere::Sphere(Eigen::Vector3d center, double radius, Mesh* mesh) :
 		center(std::move(center)), radius(radius), mesh(mesh)
 {
 }
@@ -56,7 +56,7 @@ Box Sphere::getBoundingBox()
 	return Box(min, max);
 }
 
-Mesh& Sphere::getMesh()
+Mesh* Sphere::getMesh()
 {
 	return mesh;
 }
@@ -65,4 +65,9 @@ void Sphere::deserialize(const YAML::Node& node)
 {
 	center = node["center"].as<Eigen::Vector3d>();
 	radius = node["radius"].as<double>();
+}
+
+void Sphere::setMesh(Mesh* mesh)
+{
+	Sphere::mesh = mesh;
 }

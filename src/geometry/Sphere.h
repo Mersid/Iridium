@@ -13,7 +13,7 @@ public:
 	 * @param radius The radius of the sphere, relative to the center
 	 * @param mesh The mesh that this sphere belongs to
 	 */
-	Sphere(Eigen::Vector3d center, double radius, Mesh& mesh);
+	Sphere(Eigen::Vector3d center, double radius, Mesh* mesh);
 
 	/**
 	 * Gets the near intersection of the intersection of a ray with a sphere
@@ -33,14 +33,15 @@ public:
 
 	Box getBoundingBox() override;
 
-	Mesh& getMesh() override;
+	Mesh* getMesh() override;
+	void setMesh(Mesh* mesh) override;
 
 	void deserialize(const YAML::Node& node);
 
 private:
 	Eigen::Vector3d center;
 	double radius{};
-	Mesh& mesh;
+	Mesh* mesh;
 };
 
 template<>

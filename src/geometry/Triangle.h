@@ -18,7 +18,7 @@ public:
 	 * @param c The third point of the triangle. Consider the cross product will use the vector ac as its B value (for A X B)
 	 * @param mesh The mesh that this triangle belongs to
 	 */
-	Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh& mesh);
+	Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh* mesh);
 
 	std::optional<Eigen::Vector3d> getRayIntersection(const Ray& ray) override;
 
@@ -32,7 +32,8 @@ public:
 
 	[[nodiscard]] const Eigen::Vector3d& getC() const;
 
-	Mesh& getMesh() override;
+	Mesh* getMesh() override;
+	void setMesh(Mesh* mesh) override;
 
 	void deserialize(const YAML::Node& node);
 
@@ -45,7 +46,7 @@ private:
 	Eigen::Vector3d getV(); // Vector ac, equal to c-a
 	Eigen::Vector3d getNormal(); // Normal vector of this triangle, equal to cross product of u x v.
 
-	Mesh& mesh;
+	Mesh* mesh;
 };
 
 template<>

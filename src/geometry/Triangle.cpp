@@ -2,7 +2,7 @@
 #include <utility>
 #include "../misc/Vector3dConvert.h"
 
-Triangle::Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh& mesh) :
+Triangle::Triangle(const Eigen::Vector3d& a, const Eigen::Vector3d& b, const Eigen::Vector3d& c, Mesh* mesh) :
 		a(a), b(b), c(c), mesh(mesh)
 {
 
@@ -97,7 +97,7 @@ Eigen::Vector3d Triangle::getNormal()
 	return (b - a).cross(c - a).normalized();
 }
 
-Mesh& Triangle::getMesh()
+Mesh* Triangle::getMesh()
 {
 	return mesh;
 }
@@ -107,4 +107,9 @@ void Triangle::deserialize(const YAML::Node& node)
 	a = node["a"].as<Eigen::Vector3d>();
 	b = node["b"].as<Eigen::Vector3d>();
 	c = node["c"].as<Eigen::Vector3d>();
+}
+
+void Triangle::setMesh(Mesh* mesh)
+{
+	Triangle::mesh = mesh;
 }

@@ -32,8 +32,10 @@ struct YAML::convert<Mesh>
 
 		if (node["parallelogram"])
 		{
-			std::make_shared<Parallelogram>();
-			node["parallelogram"].as<Parallelogram>()
+			//auto parallelogram = node["parallelogram"].as<Parallelogram>();
+			//parallelogram.setMesh(&mesh);
+			//mesh.addPrimitive(std::make_shared<Parallelogram>(std::move(parallelogram)));
+			
 		}
 		else if (node["sphere"])
 		{
