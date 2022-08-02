@@ -20,7 +20,11 @@ Shimmerlight::Shimmerlight()
 void Shimmerlight::run()
 {
 	YAML::Node sceneDef = YAML::LoadFile("data/Defs/SceneDef.yml");
-	YAML::Node transform = sceneDef["models"][0]["mesh"];
+
+	Scene testScene = Scene::deserialize(sceneDef);
+	Texture deftexture = testScene.render();
+	textureSerializer.serialize(deftexture, "abcde.png");
+	return;
 
 	Camera camera(1920, 1536);
 	camera.setFov(90);
@@ -45,7 +49,7 @@ void Shimmerlight::run()
 //	defaultScene.addLight(Light(Eigen::Vector3d(-5, 0, 0), defaultLightIntensity));
 //
 	Mesh dragonMesh = offSerializer.loadOff("data/dragon.off");
-	Model dragonModel(dragonMesh, defaultMaterial);
+	//Model dragonModel(dragonMesh, defaultMaterial);
 //
 //	dragonModel.setPosition(Eigen::Vector3d(0, 0, zOffset));
 //	dragonModel.setRotation(Eigen::Vector3d(0, 0, 0));
@@ -55,7 +59,7 @@ void Shimmerlight::run()
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 //
 //	Texture dragonTexture = defaultScene.render();
-//	textureSerializer.serialize(dragonTexture, "dragon.png");
+//	textureSerializer.deserialize(dragonTexture, "dragon.png");
 //
 //
 //	defaultScene.clearModels();
@@ -64,7 +68,7 @@ void Shimmerlight::run()
 //	defaultScene.addModel(dragonModel);
 //
 //	Texture dragonForwardsTexture = defaultScene.render();
-//	textureSerializer.serialize(dragonForwardsTexture, "dragon_forwards.png");
+//	textureSerializer.deserialize(dragonForwardsTexture, "dragon_forwards.png");
 //
 //
 	Camera combinedCamera(1920, 1536);
@@ -167,4 +171,9 @@ Shimmerlight* Shimmerlight::getInstance()
 TextureSerializer& Shimmerlight::getTextureSerializer()
 {
 	return textureSerializer;
+}
+
+OffSerializer Shimmerlight::getOffSerializer()
+{
+	return offSerializer;
 }

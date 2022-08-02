@@ -1,7 +1,7 @@
 #pragma once
 
-
 #include "Eigen/Core"
+#include "yaml-cpp/yaml.h"
 
 class Light
 {
@@ -16,6 +16,8 @@ public:
 	[[nodiscard]] const Eigen::Vector3d& getPosition() const;
 
 	[[nodiscard]] double getIntensity() const;
+
+	static Light deserialize(const YAML::Node& node);
 
 private:
 	Eigen::Vector3d position;

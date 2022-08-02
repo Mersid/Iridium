@@ -4,7 +4,6 @@
 #include "Eigen/Dense"
 #include "Ray.h"
 #include "Primitive.h"
-#include "Mesh.h"
 #include <optional>
 
 /**
@@ -49,9 +48,9 @@ public:
 	void setMesh(Mesh* mesh) override;
 
 	/**
-	 * Transforms the parallelogram according to the given node
+	 * Returns a parallelogram with no mesh owner (make sure to set it!)
 	 */
-	void deserialize(const YAML::Node& node);
+	static std::shared_ptr<Parallelogram> deserialize(const YAML::Node& node);
 
 private:
 	Eigen::Vector3d a; // Common point
@@ -64,13 +63,4 @@ private:
 
 	Mesh* mesh; // The mesh this primitive belongs to
 
-};
-
-template<>
-struct YAML::convert<Parallelogram>
-{
-	static bool decode(const Node& node, Parallelogram& parallelogram)
-	{
-		parallelogram.deserialize(node);
-	}
 };

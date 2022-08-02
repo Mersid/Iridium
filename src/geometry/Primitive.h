@@ -7,6 +7,7 @@
 #include "Material.h"
 #include "Box.h"
 #include <memory>
+#include "yaml-cpp/yaml.h"
 
 class Mesh;
 
@@ -39,5 +40,3 @@ public:
 	virtual Mesh* getMesh() = 0;
 	virtual void setMesh(Mesh* mesh) = 0;
 };
-
-

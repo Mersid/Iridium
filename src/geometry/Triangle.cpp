@@ -102,11 +102,14 @@ Mesh* Triangle::getMesh()
 	return mesh;
 }
 
-void Triangle::deserialize(const YAML::Node& node)
+std::shared_ptr<Triangle> Triangle::deserialize(const YAML::Node& node)
 {
-	a = node["a"].as<Eigen::Vector3d>();
-	b = node["b"].as<Eigen::Vector3d>();
-	c = node["c"].as<Eigen::Vector3d>();
+	auto a = node["a"].as<Eigen::Vector3d>();
+	auto b = node["b"].as<Eigen::Vector3d>();
+	auto c = node["c"].as<Eigen::Vector3d>();
+
+	std::shared_ptr<Triangle> triangle = std::make_shared<Triangle>(a, b, c, nullptr);
+	return triangle;
 }
 
 void Triangle::setMesh(Mesh* mesh)

@@ -36,19 +36,10 @@ public:
 	Mesh* getMesh() override;
 	void setMesh(Mesh* mesh) override;
 
-	void deserialize(const YAML::Node& node);
+	static std::shared_ptr<Sphere> deserialize(const YAML::Node& node);
 
 private:
 	Eigen::Vector3d center;
 	double radius{};
 	Mesh* mesh;
-};
-
-template<>
-struct YAML::convert<Sphere>
-{
-	static bool decode(const Node& node, Sphere& sphere)
-	{
-		sphere.deserialize(node);
-	}
 };

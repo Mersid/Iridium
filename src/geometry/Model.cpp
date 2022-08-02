@@ -3,7 +3,7 @@
 #include <utility>
 #include "Eigen/Dense"
 
-Model::Model(Mesh mesh, const Material& material, bool applyMaterial) : mesh(std::move(mesh)), bvh(nullptr),
+Model::Model(Mesh mesh) : mesh(std::move(mesh)), bvh(nullptr),
 	transform(Transform())
 {
 
@@ -54,4 +54,15 @@ std::vector<Primitive*> Model::getPossibleIntersects(const Ray& ray)
 Transform& Model::getTransform()
 {
 	return transform;
+}
+
+Model Model::deserialize(const YAML::Node& node)
+{
+	Mesh mesh = Mesh::deserialize(node["mesh"]);
+	Transform transform = Transform::deserialize(node["transform"]);
+
+	Model model(mesh);
+	model.transform = transform;
+
+	return model;
 }

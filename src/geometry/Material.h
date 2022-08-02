@@ -4,6 +4,7 @@
 #include <optional>
 #include "Eigen/Core"
 #include "../texture/Texture.h"
+#include "yaml-cpp/yaml.h"
 
 class Material
 {
@@ -26,6 +27,8 @@ public:
 	[[nodiscard]] double getPhongExponent() const;
 
 	[[nodiscard]] double getReflectionCoefficient() const;
+
+	static Material deserialize(const YAML::Node& node);
 
 private:
 	Eigen::Vector3d diffuseCoefficient;

@@ -33,3 +33,13 @@ void Transform::setScale(const Eigen::Vector3d& scale)
 {
 	Transform::scale = scale;
 }
+
+Transform Transform::deserialize(const YAML::Node& node)
+{
+	Transform transform;
+	transform.setPosition(node["position"].as<Eigen::Vector3d>());
+	transform.setRotation(node["rotation"].as<Eigen::Vector3d>());
+	transform.setScale(node["scale"].as<Eigen::Vector3d>());
+
+	return transform;
+}

@@ -17,7 +17,7 @@ public:
 	 * @param mesh Constructs a model from the given mesh
 	 * @param material The material to be applied to each of the triangles
 	 */
-	explicit Model(Mesh mesh, const Material& material = Material(), bool applyMaterial = true);
+	explicit Model(Mesh mesh);
 
 	/**
 	 * @param ray The ray to fire against the model
@@ -31,6 +31,8 @@ public:
 	void generateBVH();
 
 	Transform& getTransform();
+
+	static Model deserialize(const YAML::Node& node);
 
 
 private:

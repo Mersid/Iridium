@@ -71,6 +71,8 @@ public:
 	 */
 	void setFov(double angle);
 
+	static Camera deserialize(const YAML::Node& node);
+
 private:
 	int width;
 	int height;

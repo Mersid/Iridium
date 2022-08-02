@@ -57,6 +57,8 @@ public:
 	 */
 	std::optional<Eigen::Vector3d> trace(const Ray& ray, int ttl = 1);
 
+	static Scene deserialize(const YAML::Node& node);
+
 private:
 	Camera camera;
 	std::vector<Model> models;

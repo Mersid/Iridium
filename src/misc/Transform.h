@@ -22,19 +22,10 @@ public:
 	void setRotation(const Eigen::Vector3d& rotation);
 	void setScale(const Eigen::Vector3d& scale);
 
+	static Transform deserialize(const YAML::Node& node);
+
 private:
 	Eigen::Vector3d position;
 	Eigen::Vector3d rotation;
 	Eigen::Vector3d scale;
-};
-
-template<>
-struct YAML::convert<Transform>
-{
-	static bool decode(const Node& node, Transform& transform)
-	{
-		transform.setPosition(node["position"].as<Eigen::Vector3d>());
-		transform.setRotation(node["rotation"].as<Eigen::Vector3d>());
-		transform.setScale(node["scale"].as<Eigen::Vector3d>());
-	}
 };

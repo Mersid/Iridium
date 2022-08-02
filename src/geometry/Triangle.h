@@ -35,7 +35,10 @@ public:
 	Mesh* getMesh() override;
 	void setMesh(Mesh* mesh) override;
 
-	void deserialize(const YAML::Node& node);
+	/**
+	 * Returns a triangle with no mesh owner (make sure to set it!)
+	 */
+	static std::shared_ptr<Triangle> deserialize(const YAML::Node& node);
 
 private:
 	Eigen::Vector3d a; // Common point
@@ -47,13 +50,4 @@ private:
 	Eigen::Vector3d getNormal(); // Normal vector of this triangle, equal to cross product of u x v.
 
 	Mesh* mesh;
-};
-
-template<>
-struct YAML::convert<Triangle>
-{
-	static bool decode(const Node& node, Triangle& triangle)
-	{
-		triangle.deserialize(node);
-	}
 };

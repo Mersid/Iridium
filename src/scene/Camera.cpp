@@ -27,6 +27,9 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 		//if (i % width == 0)
 			std::cout << std::to_string(pixelY) + " | " + std::to_string(pixelX) << std::endl;
 
+		if (pixelY == 1530)
+			std::cout << "Hello world";
+
 		// Potentially sample many colors for depth of field, and we need to average them
 		std::vector<Eigen::Vector3d> colors;
 		colors.reserve(rayShots);
@@ -115,4 +118,16 @@ void Camera::setFov(double angle)
 	// Well, we can obtain tan(t) = 1/f, therefore f = 1/tan(t). Plug in t as the angle (divided by 2 to get only the top half we're considering),
 	// and we have f, the focal length, which we can set to adjust the FOV.
 	focalLength = 1 / std::tan(angle / 2 * EIGEN_PI / 180);
+}
+
+Camera Camera::deserialize(const YAML::Node& node)
+{
+	auto width = node["width"].as<int>();
+	auto height = node["height"].as<int>();
+	auto focalLength = node["focalLength"].as<double>();
+	auto apertureRadius = node["apertureRadius"].as<double>();
+	auto rayShots = node["rayShots"].as<unsigned int>();
+
+	Camera camera(width, height, focalLength, apertureRadius, rayShots);
+	return camera;
 }

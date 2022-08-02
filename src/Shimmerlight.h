@@ -13,6 +13,7 @@ public:
 	static Shimmerlight* getInstance();
 
 	[[nodiscard]] TextureSerializer& getTextureSerializer();
+	[[nodiscard]] OffSerializer getOffSerializer();
 
 private:
 	inline static Shimmerlight* instance;
