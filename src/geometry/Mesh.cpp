@@ -15,7 +15,6 @@ std::vector<Primitive*> Mesh::getPrimitives()
 
 void Mesh::addPrimitive(std::shared_ptr<Primitive> primitive)
 {
-	primitive->setMesh(this);
 	primitives.emplace_back(primitive);
 }
 
@@ -53,4 +52,10 @@ Mesh Mesh::deserialize(const YAML::Node& node)
 	mesh = Shimmerlight::getInstance()->getOffSerializer().loadOff(node["file"]["path"].as<std::string>());
 	mesh.setMaterial(material);
 	return mesh;
+}
+
+void Mesh::setPrimitivesOwner()
+{
+	for (std::shared_ptr<Primitive>& primitive : primitives)
+		primitive->setMesh(this);
 }

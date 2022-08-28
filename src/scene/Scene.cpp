@@ -156,9 +156,11 @@ Scene Scene::deserialize(const YAML::Node& node)
 		scene.addLight(Light::deserialize(node));
 
 	for (const YAML::Node& node : node["models"])
-		scene.addModel(Model::deserialize(node));
+	{
+		Model model = Model::deserialize(node);
+		scene.addModel(model);
+	}
+
 
 	return scene;
 }
-
-

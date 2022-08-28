@@ -63,6 +63,7 @@ Model Model::deserialize(const YAML::Node& node)
 
 	Model model(mesh);
 	model.transform = transform;
+	model.mesh.setPrimitivesOwner();
 
 	return model;
 }
