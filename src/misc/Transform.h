@@ -2,13 +2,13 @@
 
 
 #include "Eigen/Core"
-#include "../defs/TransformDef.h"
+#include "yaml-cpp/yaml.h"
 
 class Transform
 {
 public:
 	Transform() = default;
-	explicit Transform(const TransformDef& def);
+	explicit Transform(Eigen::Vector3d position, Eigen::Vector3d rotation, Eigen::Vector3d scale);
 
 	Transform(const Transform& other) = default;
 	Transform(Transform&& other) = default;

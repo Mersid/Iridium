@@ -60,7 +60,6 @@ std::unique_ptr<Model> Model::deserialize(const YAML::Node& node)
 {
 	std::unique_ptr<Mesh> mesh = Mesh::deserialize(node["mesh"]);
 	Transform transform = Transform::deserialize(node["transform"]);
-	// TODO: Fix issue here!
 	std::unique_ptr<Model> model = instantiate(std::move(mesh));
 	model->transform = transform;
 

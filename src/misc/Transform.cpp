@@ -1,6 +1,7 @@
 #include "Transform.h"
+#include "../misc/Vector3dConvert.h"
 
-Transform::Transform(const TransformDef& def) : position(def.position), rotation(def.rotation), scale(def.scale)
+Transform::Transform(Eigen::Vector3d position, Eigen::Vector3d rotation, Eigen::Vector3d scale) : position(position), rotation(rotation), scale(scale)
 {
 }
 
