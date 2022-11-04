@@ -91,13 +91,13 @@ Mesh* Parallelogram::getMesh()
 	return mesh;
 }
 
-std::shared_ptr<Parallelogram> Parallelogram::deserialize(const YAML::Node& node)
+std::unique_ptr<Parallelogram> Parallelogram::deserialize(const YAML::Node& node)
 {
 	auto a = node["a"].as<Eigen::Vector3d>();
 	auto b = node["b"].as<Eigen::Vector3d>();
 	auto c = node["c"].as<Eigen::Vector3d>();
 
-	std::shared_ptr<Parallelogram> parallelogram = std::make_shared<Parallelogram>(a, b, c, nullptr);
+	std::unique_ptr<Parallelogram> parallelogram = std::make_unique<Parallelogram>(a, b, c, nullptr);
 	return parallelogram;
 }
 

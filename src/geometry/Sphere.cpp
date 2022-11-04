@@ -61,12 +61,12 @@ Mesh* Sphere::getMesh()
 	return mesh;
 }
 
-std::shared_ptr<Sphere> Sphere::deserialize(const YAML::Node& node)
+std::unique_ptr<Sphere> Sphere::deserialize(const YAML::Node& node)
 {
 	auto center = node["center"].as<Eigen::Vector3d>();
 	auto radius = node["radius"].as<double>();
 
-	std::shared_ptr<Sphere> sphere = std::make_shared<Sphere>(center, radius, nullptr);
+	std::unique_ptr<Sphere> sphere = std::make_unique<Sphere>(center, radius, nullptr);
 	return sphere;
 }
 

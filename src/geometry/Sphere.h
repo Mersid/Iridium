@@ -36,7 +36,7 @@ public:
 	Mesh* getMesh() override;
 	void setMesh(Mesh* mesh) override;
 
-	static std::shared_ptr<Sphere> deserialize(const YAML::Node& node);
+	static std::unique_ptr<Sphere> deserialize(const YAML::Node& node);
 
 private:
 	Eigen::Vector3d center;

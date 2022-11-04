@@ -41,8 +41,8 @@ std::unique_ptr<Mesh> OffSerializer::loadOff(const std::string& path)
 		unsigned long indexB = std::stoul(tokens[2]);
 		unsigned long indexC = std::stoul(tokens[3]);
 
-		std::shared_ptr<Triangle> triangle = std::make_shared<Triangle>(vertices[indexA], vertices[indexB], vertices[indexC], &*mesh);
-		mesh->addPrimitive(triangle);
+		std::unique_ptr<Triangle> triangle = std::make_unique<Triangle>(vertices[indexA], vertices[indexB], vertices[indexC], &*mesh);
+		mesh->addPrimitive(std::move(triangle));
 	}
 
 	return mesh;

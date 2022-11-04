@@ -38,7 +38,7 @@ public:
 	/**
 	 * Returns a triangle with no mesh owner (make sure to set it!)
 	 */
-	static std::shared_ptr<Triangle> deserialize(const YAML::Node& node);
+	static std::unique_ptr<Triangle> deserialize(const YAML::Node& node);
 
 private:
 	Eigen::Vector3d a; // Common point

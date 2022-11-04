@@ -8,15 +8,15 @@ std::vector<Primitive*> Mesh::getPrimitives()
 {
 	std::vector<Primitive*> ptrs;
 	ptrs.reserve(primitives.size());
-	for (const std::shared_ptr<Primitive>& primitive : primitives)
+	for (const std::unique_ptr<Primitive>& primitive : primitives)
 		ptrs.emplace_back(primitive.get());
 	return ptrs;
 }
 
-void Mesh::addPrimitive(std::shared_ptr<Primitive> primitive)
+void Mesh::addPrimitive(std::unique_ptr<Primitive> primitive)
 {
-	primitives.emplace_back(primitive);
 	primitive->setMesh(this);
+	primitives.emplace_back(std::move(primitive));
 }
 
 Material& Mesh::getMaterial()
@@ -31,7 +31,7 @@ void Mesh::setMaterial(const Material& material)
 
 std::unique_ptr<Mesh> Mesh::deserialize(const YAML::Node& node)
 {
-	std::shared_ptr<Primitive> primitive;
+	std::unique_ptr<Primitive> primitive;
 	std::unique_ptr<Mesh> mesh(new Mesh());
 	Material material = Material::deserialize(node["material"]);
 
@@ -44,7 +44,7 @@ std::unique_ptr<Mesh> Mesh::deserialize(const YAML::Node& node)
 
 	if (primitive)
 	{
-		mesh->addPrimitive(primitive);
+		mesh->addPrimitive(std::move(primitive));
 		mesh->setMaterial(material);
 		return mesh;
 	}
@@ -57,6 +57,6 @@ std::unique_ptr<Mesh> Mesh::deserialize(const YAML::Node& node)
 
 void Mesh::setPrimitivesOwner()
 {
-	for (std::shared_ptr<Primitive>& primitive : primitives)
+	for (std::unique_ptr<Primitive>& primitive : primitives)
 		primitive->setMesh(this);
 }

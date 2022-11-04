@@ -50,7 +50,7 @@ public:
 	/**
 	 * Returns a parallelogram with no mesh owner (make sure to set it!)
 	 */
-	static std::shared_ptr<Parallelogram> deserialize(const YAML::Node& node);
+	static std::unique_ptr<Parallelogram> deserialize(const YAML::Node& node);
 
 private:
 	Eigen::Vector3d a; // Common point

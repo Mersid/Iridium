@@ -13,8 +13,7 @@
 class Mesh
 {
 public:
-	// TODO: Maybe unique_ptr?
-	void addPrimitive(std::shared_ptr<Primitive> primitive);
+	void addPrimitive(std::unique_ptr<Primitive> primitive);
 
 	std::vector<Primitive*> getPrimitives();
 
@@ -33,6 +32,6 @@ public:
 private:
 	Mesh() = default;
 
-	std::vector<std::shared_ptr<Primitive>> primitives;
+	std::vector<std::unique_ptr<Primitive>> primitives;
 	Material material;
 };
