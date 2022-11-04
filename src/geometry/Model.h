@@ -13,11 +13,14 @@
 class Model
 {
 public:
+
 	/**
-	 * @param mesh Constructs a model from the given mesh
-	 * @param material The material to be applied to each of the triangles
+	 * Instantiates a new, empty model that can be manipulated to add things like models This is exposed
+	 * because models should not be stack allocated, as child objects like meshes may point to this and thus should not be moved
 	 */
-	explicit Model(Mesh mesh);
+	static std::unique_ptr<Model> instantiate(std::unique_ptr<Mesh> mesh);
+
+	void setMesh(std::unique_ptr<Mesh> mesh);
 
 	/**
 	 * @param ray The ray to fire against the model
@@ -32,14 +35,19 @@ public:
 
 	Transform& getTransform();
 
-	static Model deserialize(const YAML::Node& node);
+	static std::unique_ptr<Model> deserialize(const YAML::Node& node);
 
 
 private:
-	Mesh mesh;
+	std::unique_ptr<Mesh> mesh;
 	std::shared_ptr<BoundingVolumeHierarchy> bvh; // TODO: unique pointer
 
 	Transform transform;
+
+	/**
+	 * @param mesh Constructs a model from the given mesh
+	 */
+	explicit Model(std::unique_ptr<Mesh> mesh);
 
 	/**
 	 * Gets a short-listed list of possible intersects. Since this list is likely *much* shorter than the list of all primitives,

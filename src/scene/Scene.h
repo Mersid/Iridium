@@ -27,7 +27,7 @@ public:
 	/**
 	 * @param model The model to add to the scene
 	 */
-	void addModel(const Model& model);
+	void addModel(std::unique_ptr<Model> model);
 
 	/**
 	 * Takes a snapshot with the camera in the scene
@@ -61,7 +61,7 @@ public:
 
 private:
 	Camera camera;
-	std::vector<Model> models;
+	std::vector<std::unique_ptr<Model>> models;
 	std::vector<Light> lights;
 
 	Eigen::Vector3d ambientCoefficient;

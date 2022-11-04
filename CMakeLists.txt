@@ -8,6 +8,7 @@ target_include_directories(Shimmerlight PUBLIC lib/eigen-3.4.0)
 target_include_directories(Shimmerlight PUBLIC lib/stb)
 
 # https://www.reddit.com/r/cpp_questions/comments/bdxcp0/im_a_beginner_to_c_help_me_install_and_use/
+# https://github.com/jbeder/yaml-cpp/issues/566
 add_subdirectory(lib/yaml-cpp-0.7.0)
 target_link_libraries(Shimmerlight PRIVATE yaml-cpp)
 

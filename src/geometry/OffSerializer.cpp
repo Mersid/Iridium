@@ -3,7 +3,7 @@
 #include "../utils/StringUtils.h"
 #include <memory>
 
-Mesh OffSerializer::loadOff(const std::string& path)
+std::unique_ptr<Mesh> OffSerializer::loadOff(const std::string& path)
 {
 	std::ifstream stream(path);
 	std::stringstream ss;
@@ -30,7 +30,7 @@ Mesh OffSerializer::loadOff(const std::string& path)
 		vertices.emplace_back(x, y, z);
 	}
 
-	Mesh mesh;
+	std::unique_ptr<Mesh> mesh;
 
 	// Load triangles. Start offset is 2 (for magic number and metadata, one line each) + the number of vertices
 	for (std::vector<std::string>::size_type i = 2 + vertexCount; i < 2 + vertexCount + trisCount; i++)
@@ -41,8 +41,8 @@ Mesh OffSerializer::loadOff(const std::string& path)
 		unsigned long indexB = std::stoul(tokens[2]);
 		unsigned long indexC = std::stoul(tokens[3]);
 
-		std::shared_ptr<Triangle> triangle = std::make_shared<Triangle>(vertices[indexA], vertices[indexB], vertices[indexC], &mesh);
-		mesh.addPrimitive(triangle);
+		std::shared_ptr<Triangle> triangle = std::make_shared<Triangle>(vertices[indexA], vertices[indexB], vertices[indexC], &*mesh);
+		mesh->addPrimitive(triangle);
 	}
 
 	return mesh;

@@ -10,8 +10,8 @@ Texture Scene::render(CameraMode cameraMode)
 	// TODO: in-place because otherwise when copying models with a BVH the BVH is copied... but it points to the old
 	// TODO: model's primitives, so if that old copy disappears or the new one is updated or whatever, it will not reflect
 	// TODO: the actual situation, and we will likely end up with a crash for dereferencing invalid memory.
-	for (Model& m : models)
-		m.generateBVH();
+	for (std::unique_ptr<Model>& m : models)
+		m->generateBVH();
 
 	Texture t = camera.takeSnapshot(cameraMode, 1);
 
@@ -45,9 +45,9 @@ void Scene::addLight(const Light& l)
 	lights.emplace_back(l);
 }
 
-void Scene::addModel(const Model& model)
+void Scene::addModel(std::unique_ptr<Model> model)
 {
-	models.emplace_back(model);
+	models.emplace_back(std::move(model));
 }
 
 Primitive* Scene::getFirstIntersection(const Ray& ray)
@@ -55,9 +55,9 @@ Primitive* Scene::getFirstIntersection(const Ray& ray)
 	Primitive* nearestObject = nullptr;
 	Eigen::Vector3d nearestHitPos; // The hit pos of the nearest object. We need this to compare with the current object, and replace it if it's closer than this one
 
-	for (Model& model : models)
+	for (std::unique_ptr<Model>& model : models)
 	{
-		std::optional<RayTraceInfo> possibleHit = model.intersect(ray);
+		std::optional<RayTraceInfo> possibleHit = model->intersect(ray);
 		if (!possibleHit.has_value())
 			continue; // We missed. Continue on with the next object
 
@@ -157,8 +157,8 @@ Scene Scene::deserialize(const YAML::Node& node)
 
 	for (const YAML::Node& node : node["models"])
 	{
-		Model model = Model::deserialize(node);
-		scene.addModel(model);
+		std::unique_ptr<Model> model = Model::deserialize(node);
+		scene.addModel(std::move(model));
 	}
 
 

@@ -16,6 +16,7 @@ std::vector<Primitive*> Mesh::getPrimitives()
 void Mesh::addPrimitive(std::shared_ptr<Primitive> primitive)
 {
 	primitives.emplace_back(primitive);
+	primitive->setMesh(this);
 }
 
 Material& Mesh::getMaterial()
@@ -28,10 +29,10 @@ void Mesh::setMaterial(const Material& material)
 	Mesh::material = material;
 }
 
-Mesh Mesh::deserialize(const YAML::Node& node)
+std::unique_ptr<Mesh> Mesh::deserialize(const YAML::Node& node)
 {
 	std::shared_ptr<Primitive> primitive;
-	Mesh mesh;
+	std::unique_ptr<Mesh> mesh(new Mesh());
 	Material material = Material::deserialize(node["material"]);
 
 	if (node["parallelogram"])
@@ -43,14 +44,14 @@ Mesh Mesh::deserialize(const YAML::Node& node)
 
 	if (primitive)
 	{
-		mesh.addPrimitive(primitive);
-		mesh.setMaterial(material);
+		mesh->addPrimitive(primitive);
+		mesh->setMaterial(material);
 		return mesh;
 	}
 
 	// Complex mesh
 	mesh = Shimmerlight::getInstance()->getOffSerializer().loadOff(node["file"]["path"].as<std::string>());
-	mesh.setMaterial(material);
+	mesh->setMaterial(material);
 	return mesh;
 }
 

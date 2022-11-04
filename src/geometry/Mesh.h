@@ -28,9 +28,11 @@ public:
 	 */
 	void setPrimitivesOwner();
 
-	static Mesh deserialize(const YAML::Node& node);
+	static std::unique_ptr<Mesh> deserialize(const YAML::Node& node);
 
 private:
+	Mesh() = default;
+
 	std::vector<std::shared_ptr<Primitive>> primitives;
 	Material material;
 };

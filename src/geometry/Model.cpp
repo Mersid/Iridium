@@ -3,7 +3,7 @@
 #include <utility>
 #include "Eigen/Dense"
 
-Model::Model(Mesh mesh) : mesh(std::move(mesh)), bvh(nullptr),
+Model::Model(std::unique_ptr<Mesh> mesh) : mesh(std::move(mesh)), bvh(nullptr),
 	transform(Transform())
 {
 
@@ -14,7 +14,7 @@ std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 	Primitive* nearestObject = nullptr;
 	Eigen::Vector3d nearestHitPos; // The hit pos of the nearest object. We need this to compare with the current object, and replace it if it's closer than this one
 
-	std::vector<Primitive*> consideredPrimitives = bvh == nullptr ? mesh.getPrimitives() : getPossibleIntersects(ray);
+	std::vector<Primitive*> consideredPrimitives = bvh == nullptr ? mesh->getPrimitives() : getPossibleIntersects(ray);
 
 	for (Primitive* primitive : consideredPrimitives)
 	{
@@ -41,7 +41,7 @@ std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 
 void Model::generateBVH()
 {
-	bvh = std::make_shared<BoundingVolumeHierarchy>(mesh.getPrimitives());
+	bvh = std::make_shared<BoundingVolumeHierarchy>(mesh->getPrimitives());
 }
 
 std::vector<Primitive*> Model::getPossibleIntersects(const Ray& ray)
@@ -56,14 +56,23 @@ Transform& Model::getTransform()
 	return transform;
 }
 
-Model Model::deserialize(const YAML::Node& node)
+std::unique_ptr<Model> Model::deserialize(const YAML::Node& node)
 {
-	Mesh mesh = Mesh::deserialize(node["mesh"]);
+	std::unique_ptr<Mesh> mesh = Mesh::deserialize(node["mesh"]);
 	Transform transform = Transform::deserialize(node["transform"]);
-
-	Model model(mesh);
-	model.transform = transform;
-	model.mesh.setPrimitivesOwner();
+	// TODO: Fix issue here!
+	std::unique_ptr<Model> model = instantiate(std::move(mesh));
+	model->transform = transform;
 
 	return model;
+}
+
+std::unique_ptr<Model> Model::instantiate(std::unique_ptr<Mesh> mesh)
+{
+	return std::unique_ptr<Model>(new Model(std::move(mesh)));
+}
+
+void Model::setMesh(std::unique_ptr<Mesh> mesh)
+{
+	this->mesh = std::move(mesh);
 }

@@ -13,7 +13,7 @@
 class OffSerializer
 {
 public:
-	Mesh loadOff(const std::string& path);
+	std::unique_ptr<Mesh> loadOff(const std::string& path);
 
 private:
 
