@@ -16,7 +16,7 @@ public:
 	BoundingVolumeHierarchy() = default;
 
 	/**
-	 * Static recursive method call that gets a list of possible hits. TODO: Consider making non-static
+	 * Static recursive method call that gets a list of possible hits.
 	 * @param bvh The BVH to test against.
 	 * @param ray The ray to fire against the BVH and all its substructures
 	 * @param bvhHits Pass in a reference to a vector, and the call will add on any possible hits to it

@@ -6,10 +6,6 @@ Scene::Scene() : ambientCoefficient(Eigen::Vector3d(1, 1, 1)), ambientLightInten
 
 Texture Scene::render(CameraMode cameraMode)
 {
-	// TODO / BUG: Pay off technical debt. Beyond this being a hack-job, we have to generate the models' BVHs
-	// TODO: in-place because otherwise when copying models with a BVH the BVH is copied... but it points to the old
-	// TODO: model's primitives, so if that old copy disappears or the new one is updated or whatever, it will not reflect
-	// TODO: the actual situation, and we will likely end up with a crash for dereferencing invalid memory.
 	for (std::unique_ptr<Model>& m : models)
 		m->generateBVH();
 
