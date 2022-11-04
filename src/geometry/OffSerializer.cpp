@@ -17,8 +17,6 @@ std::unique_ptr<Mesh> OffSerializer::loadOff(const std::string& path)
 
 	std::vector<Eigen::Vector3d> vertices;
 	vertices.reserve(vertexCount);
-	std::vector<std::shared_ptr<Primitive>> triangles;
-	triangles.reserve(trisCount);
 
 	// Load vertices
 	for (std::vector<std::string>::size_type i = 2; i < 2 + vertexCount; i++)

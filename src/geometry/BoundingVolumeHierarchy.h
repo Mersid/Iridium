@@ -22,11 +22,11 @@ public:
 	 * @param bvhHits Pass in a reference to a vector, and the call will add on any possible hits to it
 	 * @return True if it hit the main box, false otherwise
 	 */
-	static bool intersectsBVH(std::shared_ptr<BoundingVolumeHierarchy>& bvh, const Ray& ray, std::vector<Primitive*>& bvhHits);
+	static bool intersectsBVH(std::unique_ptr<BoundingVolumeHierarchy>& bvh, const Ray& ray, std::vector<Primitive*>& bvhHits);
 
 private:
-	std::shared_ptr<BoundingVolumeHierarchy> left;
-	std::shared_ptr<BoundingVolumeHierarchy> right;
+	std::unique_ptr<BoundingVolumeHierarchy> left;
+	std::unique_ptr<BoundingVolumeHierarchy> right;
 	Box box;
 	Primitive* primitive;
 };

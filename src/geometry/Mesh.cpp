@@ -55,8 +55,3 @@ std::unique_ptr<Mesh> Mesh::deserialize(const YAML::Node& node)
 	return mesh;
 }
 
-void Mesh::setPrimitivesOwner()
-{
-	for (std::unique_ptr<Primitive>& primitive : primitives)
-		primitive->setMesh(this);
-}

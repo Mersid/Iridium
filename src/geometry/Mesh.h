@@ -21,12 +21,6 @@ public:
 
 	void setMaterial(const Material& material);
 
-	/**
-	 * Sets the pointer of the mesh of each primitive to this. We cannot do this during construction because the mesh is constructed on the stack and then moved to a shared pointer,
-	 * so attempting to do so then will cause invalid memory when the mesh is removed on return.
-	 */
-	void setPrimitivesOwner();
-
 	static std::unique_ptr<Mesh> deserialize(const YAML::Node& node);
 
 private:

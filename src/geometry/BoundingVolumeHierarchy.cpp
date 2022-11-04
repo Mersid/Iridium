@@ -33,13 +33,13 @@ BoundingVolumeHierarchy::BoundingVolumeHierarchy(std::vector<Primitive*> primiti
 	std::vector<Primitive*> leftPrimitives(std::vector<Primitive*>(primitives.begin(), primitives.begin() + (primitives.size() / 2)));
 	std::vector<Primitive*> rightPrimitives(std::vector<Primitive*>(primitives.begin() + (primitives.size() / 2), primitives.end()));
 
-	left = std::make_shared<BoundingVolumeHierarchy>(leftPrimitives, i + 1);
-	right = std::make_shared<BoundingVolumeHierarchy>(rightPrimitives, i + 1);
+	left = std::make_unique<BoundingVolumeHierarchy>(leftPrimitives, i + 1);
+	right = std::make_unique<BoundingVolumeHierarchy>(rightPrimitives, i + 1);
 
 }
 
 
-bool BoundingVolumeHierarchy::intersectsBVH(std::shared_ptr<BoundingVolumeHierarchy>& bvh, const Ray& ray,
+bool BoundingVolumeHierarchy::intersectsBVH(std::unique_ptr<BoundingVolumeHierarchy>& bvh, const Ray& ray,
                                             std::vector<Primitive*>& bvhHits)
 {
 	// Missed, can discard all below.

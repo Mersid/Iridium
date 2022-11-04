@@ -41,7 +41,7 @@ std::optional<RayTraceInfo> Model::intersect(const Ray& ray)
 
 void Model::generateBVH()
 {
-	bvh = std::make_shared<BoundingVolumeHierarchy>(mesh->getPrimitives());
+	bvh = std::make_unique<BoundingVolumeHierarchy>(mesh->getPrimitives());
 }
 
 std::vector<Primitive*> Model::getPossibleIntersects(const Ray& ray)

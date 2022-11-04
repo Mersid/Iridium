@@ -40,7 +40,7 @@ public:
 
 private:
 	std::unique_ptr<Mesh> mesh;
-	std::shared_ptr<BoundingVolumeHierarchy> bvh; // TODO: unique pointer
+	std::unique_ptr<BoundingVolumeHierarchy> bvh;
 
 	Transform transform;
 
