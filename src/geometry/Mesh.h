@@ -13,6 +13,8 @@
 class Mesh
 {
 public:
+	Mesh() = default;
+
 	void addPrimitive(std::unique_ptr<Primitive> primitive);
 
 	std::vector<Primitive*> getPrimitives();
@@ -24,8 +26,6 @@ public:
 	static std::unique_ptr<Mesh> deserialize(const YAML::Node& node);
 
 private:
-	Mesh() = default;
-
 	std::vector<std::unique_ptr<Primitive>> primitives;
 	Material material;
 };
