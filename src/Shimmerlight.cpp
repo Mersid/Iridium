@@ -8,9 +8,6 @@
 #include "geometry/Sphere.h"
 #include "yaml-cpp/yaml.h" // https://stackoverflow.com/questions/47389809/yaml-cpp-unresolved-external-symbol-error
 #include "misc/Vector3dConvert.h"
-#include "testing/Derived.h"
-#include "testing/Base.h"
-
 
 Shimmerlight::Shimmerlight()
 {
@@ -19,13 +16,14 @@ Shimmerlight::Shimmerlight()
 
 void Shimmerlight::run()
 {
-	YAML::Node sceneDef = YAML::LoadFile("data/Defs/SceneDef.yml");
+	YAML::Node sceneDef = YAML::LoadFile("data/scene.yml");
+	options = std::make_unique<Options>(Options::deserialize(sceneDef["options"]));
 
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
 	Scene testScene = Scene::deserialize(sceneDef);
-	Texture deftexture = testScene.render();
-	textureSerializer.serialize(deftexture, "abcde.png");
+	Texture texture = testScene.render(options->getCameraMode(), options->getRayBounces());
+	textureSerializer.serialize(texture, options->getSavePath());
 
 	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 
@@ -46,4 +44,9 @@ TextureSerializer& Shimmerlight::getTextureSerializer()
 OffSerializer Shimmerlight::getOffSerializer()
 {
 	return offSerializer;
+}
+
+const std::unique_ptr<Options>& Shimmerlight::getOptions() const
+{
+	return options;
 }

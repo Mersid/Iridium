@@ -8,6 +8,7 @@
 #include "Light.h"
 #include <random>
 #include "yaml-cpp/yaml.h"
+#include "../misc/Transform.h"
 
 class Scene; // Forward declaration because #include "Scene.h" will cause circular dependency
 
@@ -22,7 +23,7 @@ public:
 	 * The pixels are distributed evenly along each axis.
 	 * If used in orthographic mode, the initial coordinates of the ray will be equal to the pixel ray, except at z = 0 instead of z = -1.
 	 */
-	Camera(int width, int height, double focalLength = 1.0, double apertureRadius = 0, unsigned int rayShots = 1);
+	Camera(Transform transform, int width, int height, double focalLength = 1.0, double apertureRadius = 0, unsigned int rayShots = 1);
 
 	/**
 	 * Default constructor for object initialization. Do not attempt to use, behaviour is undefined and may crash or segfault.
@@ -68,9 +69,13 @@ public:
 	 */
 	void setFov(double angle);
 
+	[[nodiscard]] const Transform& getTransform() const;
+
 	static Camera deserialize(const YAML::Node& node);
 
 private:
+	Transform transform;
+
 	int width;
 	int height;
 	double focalLength;

@@ -32,9 +32,10 @@ public:
 	/**
 	 * Takes a snapshot with the camera in the scene
 	 * @param cameraMode Take the snapshot in perspective or orthographic mode
+	 * @param rayBounces Number of times the ray bounces. 1 means no reflections
 	 * @return The texture containing what this camera captured when the method was called
 	 */
-	Texture render(CameraMode cameraMode = CameraMode::PERSPECTIVE);
+	Texture render(CameraMode cameraMode = CameraMode::PERSPECTIVE, int rayBounces = 1);
 
 	/**
 	 * Finds the first object the ray intersects.

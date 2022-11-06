@@ -3,8 +3,8 @@
 #include "../Shimmerlight.h"
 #include "Scene.h" // We can use "Scene.h" here because .cpp files aren't #included, so we won't have to deal with circular dependency
 
-Camera::Camera(int width, int height, double focalLength, double apertureRadius, unsigned int rayShots) :
-		width(width), height(height), focalLength(focalLength), apertureRadius(apertureRadius),
+Camera::Camera(Transform transform, int width, int height, double focalLength, double apertureRadius, unsigned int rayShots) :
+		transform(transform), width(width), height(height), focalLength(focalLength), apertureRadius(apertureRadius),
 		rayShots(rayShots), dist(std::uniform_real_distribution<double>(-apertureRadius, apertureRadius)),
 		aspectRatio((double)width / height), scene(nullptr)
 {
@@ -21,10 +21,7 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 		unsigned int pixelY = i / width;
 
 		//if (i % width == 0)
-			std::cout << std::to_string(pixelY) + " | " + std::to_string(pixelX) << std::endl;
-
-		if (pixelY == 1530)
-			std::cout << "Hello world";
+		std::cout << std::to_string(pixelY) + " | " + std::to_string(pixelX) << std::endl;
 
 		// Potentially sample many colors for depth of field, and we need to average them
 		std::vector<Eigen::Vector3d> colors;
@@ -34,7 +31,9 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 		{
 			Ray ray;
 			if (cameraMode == CameraMode::PERSPECTIVE)
-				ray = Ray(Eigen::Vector3d(dist(mt), dist(mt), -1 + focalLength), pixelRay); // because plane is at z = -1
+				ray = Ray(
+						Eigen::Vector3d(dist(mt) + transform.getPosition().x(), dist(mt) + transform.getPosition().y(), -1 + focalLength + transform.getPosition().z()),
+						pixelRay); // because plane is at z = -1
 			else // Orthographic, so fire rays in a straight line
 				// RECALL THAT RAY PARAM TAKES POS AND DIR, NOT START AND END. DON'T BE LIKE ME AND MAKE THIS MISTAKE :'(  - Steven, 2022-02-11
 				// Guess what? I made the same mistake again (for the focal length), by changing the aperture's z pos but not the dir. Classic. - Steven, 2022-02-19
@@ -95,7 +94,23 @@ Eigen::Vector3d Camera::getPixelRayAt(int i) const
 	double pixelCameraY = screenY * std::tan(halfAlpha);
 
 
-	return Eigen::Vector3d(pixelCameraX, pixelCameraY, -1); // We're fixing z = -1
+	Eigen::Vector3d localPixelRayPos = Eigen::Vector3d(pixelCameraX, pixelCameraY, -1); // We're fixing z = -1
+
+	// We have the local pos, which works fine as-is if the camera never moves (is at origin), but if it moves, we need to
+	// apply transformations to it.
+	// https://stackoverflow.com/questions/21412169/creating-a-rotation-matrix-with-pitch-yaw-roll-using-eigen
+
+	// Positive numbers rotate up, negative rotates down
+	Eigen::AngleAxisd rotX(transform.getRotation().x(), Eigen::Vector3d::UnitX());
+	// Positive numbers rotate left, negative rotates right
+	Eigen::AngleAxisd rotY(transform.getRotation().y(), Eigen::Vector3d::UnitY());
+	// Positive numbers rotate clockwise, negative numbers rotate counterclockwise
+	Eigen::AngleAxisd rotZ(transform.getRotation().z(), Eigen::Vector3d::UnitZ());
+
+	localPixelRayPos = rotZ.matrix() * rotY.matrix() * rotX.matrix() * localPixelRayPos;
+	localPixelRayPos += transform.getPosition();
+
+	return localPixelRayPos;
 }
 
 unsigned int Camera::getPixelCount() const
@@ -123,7 +138,13 @@ Camera Camera::deserialize(const YAML::Node& node)
 	auto focalLength = node["focalLength"].as<double>();
 	auto apertureRadius = node["apertureRadius"].as<double>();
 	auto rayShots = node["rayShots"].as<unsigned int>();
+	auto transform = Transform::deserialize(node["transform"]);
 
-	Camera camera(width, height, focalLength, apertureRadius, rayShots);
+	Camera camera(transform, width, height, focalLength, apertureRadius, rayShots);
 	return camera;
+}
+
+const Transform& Camera::getTransform() const
+{
+	return transform;
 }

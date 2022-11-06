@@ -28,3 +28,5 @@ cl-build*/
 cl-perf/
 cl-release/
 cl-wsl/
+cl-debug/
+cl-reldebinfo/

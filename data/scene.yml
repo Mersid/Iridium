@@ -1,6 +1,7 @@
 options:
   cameraMode: perspective
   savePath: combined.png
+  rayBounces: 1
 
 camera:
   width: 1920
@@ -8,6 +9,10 @@ camera:
   focalLength: 1.0
   apertureRadius: 0
   rayShots: 1
+  transform:
+    position: [0, 18, -5]
+    rotation: [-1.5708, -1.5708, 0]
+    scale: [1, 1, 1]
 
 lights:
   - position: [-1, 4, -6]
