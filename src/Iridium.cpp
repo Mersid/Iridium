@@ -14,9 +14,13 @@ Iridium::Iridium()
 	instance = this;
 }
 
-void Iridium::run()
+void Iridium::run(std::vector<std::string> args)
 {
-	YAML::Node sceneDef = YAML::LoadFile("data/scene.yml");
+	YAML::Node sceneDef = YAML::LoadFile("data/scene.yml");;
+
+	if (args.size() > 1)
+		sceneDef = YAML::LoadFile(args[1]);
+
 	options = std::make_unique<Options>(Options::deserialize(sceneDef["options"]));
 
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();

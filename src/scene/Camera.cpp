@@ -21,7 +21,8 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 		unsigned int pixelY = i / width;
 
 		if (pixelX == 0 && pixelY % 10 == 0)
-			std::cout << std::to_string(pixelY) + " | " + std::to_string(pixelX) << std::endl;
+//			std::cout << std::to_string(pixelY) + " | " + std::to_string(pixelX) << std::endl;
+			std::cout << "\r" + std::to_string(pixelY) + " | " + std::to_string(i) + "/" + std::to_string(getPixelCount()) + " (" + std::to_string((double)i / getPixelCount() * 100) + "%)";
 
 		// Potentially sample many colors for depth of field, and we need to average them
 		std::vector<Eigen::Vector3d> colors;

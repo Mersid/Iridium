@@ -9,7 +9,7 @@ class Iridium
 {
 public:
 	Iridium();
-	void run();
+	void run(std::vector<std::string> args);
 
 	static Iridium* getInstance();
 
