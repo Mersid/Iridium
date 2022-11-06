@@ -1,6 +1,6 @@
 #include <chrono>
 #include <iostream>
-#include "Shimmerlight.h"
+#include "Iridium.h"
 #include "texture/Texture.h"
 #include "scene/Camera.h"
 #include "scene/Scene.h"
@@ -9,12 +9,12 @@
 #include "yaml-cpp/yaml.h" // https://stackoverflow.com/questions/47389809/yaml-cpp-unresolved-external-symbol-error
 #include "misc/Vector3dConvert.h"
 
-Shimmerlight::Shimmerlight()
+Iridium::Iridium()
 {
 	instance = this;
 }
 
-void Shimmerlight::run()
+void Iridium::run()
 {
 	YAML::Node sceneDef = YAML::LoadFile("data/scene.yml");
 	options = std::make_unique<Options>(Options::deserialize(sceneDef["options"]));
@@ -31,22 +31,22 @@ void Shimmerlight::run()
 
 }
 
-Shimmerlight* Shimmerlight::getInstance()
+Iridium* Iridium::getInstance()
 {
 	return instance;
 }
 
-TextureSerializer& Shimmerlight::getTextureSerializer()
+TextureSerializer& Iridium::getTextureSerializer()
 {
 	return textureSerializer;
 }
 
-OffSerializer Shimmerlight::getOffSerializer()
+OffSerializer Iridium::getOffSerializer()
 {
 	return offSerializer;
 }
 
-const std::unique_ptr<Options>& Shimmerlight::getOptions() const
+const std::unique_ptr<Options>& Iridium::getOptions() const
 {
 	return options;
 }

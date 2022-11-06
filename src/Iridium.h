@@ -5,20 +5,20 @@
 #include "geometry/OffSerializer.h"
 #include "misc/Options.h"
 
-class Shimmerlight
+class Iridium
 {
 public:
-	Shimmerlight();
+	Iridium();
 	void run();
 
-	static Shimmerlight* getInstance();
+	static Iridium* getInstance();
 
 	[[nodiscard]] TextureSerializer& getTextureSerializer();
 	[[nodiscard]] OffSerializer getOffSerializer();
 	[[nodiscard]] const std::unique_ptr<Options>& getOptions() const;
 
 private:
-	inline static Shimmerlight* instance;
+	inline static Iridium* instance;
 	TextureSerializer textureSerializer;
 	OffSerializer offSerializer;
 	std::unique_ptr<Options> options;

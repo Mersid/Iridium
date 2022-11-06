@@ -1,7 +1,7 @@
-#include "Shimmerlight.h"
+#include "Iridium.h"
 
 int main()
 {
-	Shimmerlight shimmerlight;
-	shimmerlight.run();
+	Iridium iridium;
+	iridium.run();
 }

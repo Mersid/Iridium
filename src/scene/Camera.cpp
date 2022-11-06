@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Camera.h"
-#include "../Shimmerlight.h"
+#include "../Iridium.h"
 #include "Scene.h" // We can use "Scene.h" here because .cpp files aren't #included, so we won't have to deal with circular dependency
 
 Camera::Camera(Transform transform, int width, int height, double focalLength, double apertureRadius, unsigned int rayShots) :

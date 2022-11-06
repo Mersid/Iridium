@@ -2,7 +2,7 @@
 #include <utility>
 #include "Mesh.h"
 #include "Primitive.h"
-#include "../Shimmerlight.h"
+#include "../Iridium.h"
 
 std::vector<Primitive*> Mesh::getPrimitives()
 {
@@ -50,7 +50,7 @@ std::unique_ptr<Mesh> Mesh::deserialize(const YAML::Node& node)
 	}
 
 	// Complex mesh
-	mesh = Shimmerlight::getInstance()->getOffSerializer().loadOff(node["file"]["path"].as<std::string>());
+	mesh = Iridium::getInstance()->getOffSerializer().loadOff(node["file"]["path"].as<std::string>());
 	mesh->setMaterial(material);
 	return mesh;
 }
