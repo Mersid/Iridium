@@ -32,7 +32,7 @@ void Mesh::setMaterial(const Material& material)
 std::unique_ptr<Mesh> Mesh::deserialize(const YAML::Node& node)
 {
 	std::unique_ptr<Primitive> primitive;
-	std::unique_ptr<Mesh> mesh(new Mesh());
+	std::unique_ptr<Mesh> mesh = Mesh::instantiate();
 	Material material = Material::deserialize(node["material"]);
 
 	if (node["parallelogram"])
@@ -53,5 +53,10 @@ std::unique_ptr<Mesh> Mesh::deserialize(const YAML::Node& node)
 	mesh = Iridium::getInstance()->getOffSerializer().loadOff(node["file"]["path"].as<std::string>());
 	mesh->setMaterial(material);
 	return mesh;
+}
+
+std::unique_ptr<Mesh> Mesh::instantiate()
+{
+	return std::unique_ptr<Mesh>(new Mesh());
 }
 

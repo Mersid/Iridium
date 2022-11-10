@@ -28,7 +28,7 @@ std::unique_ptr<Mesh> OffSerializer::loadOff(const std::string& path)
 		vertices.emplace_back(x, y, z);
 	}
 
-	std::unique_ptr<Mesh> mesh = std::make_unique<Mesh>();
+	std::unique_ptr<Mesh> mesh = Mesh::instantiate();
 
 	// Load triangles. Start offset is 2 (for magic number and metadata, one line each) + the number of vertices
 	for (std::vector<std::string>::size_type i = 2 + vertexCount; i < 2 + vertexCount + trisCount; i++)
