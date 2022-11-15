@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include "Camera.h"
 #include "../Iridium.h"
 #include "Scene.h" // We can use "Scene.h" here because .cpp files aren't #included, so we won't have to deal with circular dependency
@@ -13,6 +14,8 @@ Camera::Camera(Transform transform, int width, int height, double focalLength, d
 Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 {
 	Texture t(width, height);
+	// For recording when last progress printout is, so we don't spam the console and slow stuff down too much
+	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
 	for (unsigned int i = 0; i < getPixelCount(); i++)
 	{
@@ -20,9 +23,14 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 		unsigned int pixelX = i % width;
 		unsigned int pixelY = i / width;
 
-		if (pixelX == 0 && pixelY % 10 == 0)
-//			std::cout << std::to_string(pixelY) + " | " + std::to_string(pixelX) << std::endl;
-			std::cout << "\r" + std::to_string(pixelY) + " | " + std::to_string(i) + "/" + std::to_string(getPixelCount()) + " (" + std::to_string((double)i / getPixelCount() * 100) + "%)";
+		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t0).count() >= 250)
+		{
+			std::cout << "\r" + std::to_string(pixelY) + " | " + std::to_string(i) + "/" +
+		               std::to_string(getPixelCount()) + " (" + std::to_string((double) i / getPixelCount() * 100) +
+		               "%)";
+
+			t0 = std::chrono::high_resolution_clock::now();
+		}
 
 		// Potentially sample many colors for depth of field, and we need to average them
 		std::vector<Eigen::Vector3d> colors;
