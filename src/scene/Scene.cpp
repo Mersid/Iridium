@@ -141,21 +141,25 @@ std::optional<Eigen::Vector3d> Scene::trace(const Ray& ray, int ttl)
 	return color;
 }
 
-Scene Scene::deserialize(const YAML::Node& node)
+std::unique_ptr<Scene> Scene::deserialize(const YAML::Node& node)
 {
-	Scene scene;
+	std::unique_ptr<Scene> scene = Scene::instantiate();
 	Camera camera = Camera::deserialize(node["camera"]);
-	scene.setCamera(camera);
+	scene->setCamera(camera);
 
 	for (const YAML::Node& node : node["lights"])
-		scene.addLight(Light::deserialize(node));
+		scene->addLight(Light::deserialize(node));
 
 	for (const YAML::Node& node : node["models"])
 	{
 		std::unique_ptr<Model> model = Model::deserialize(node);
-		scene.addModel(std::move(model));
+		scene->addModel(std::move(model));
 	}
 
-
 	return scene;
+}
+
+std::unique_ptr<Scene> Scene::instantiate()
+{
+	return std::unique_ptr<Scene>(new Scene());
 }

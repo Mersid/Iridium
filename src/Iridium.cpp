@@ -16,6 +16,7 @@ Iridium::Iridium()
 
 void Iridium::run(std::vector<std::string> args)
 {
+	// TODO: What if no file named this? Will always crash even if we specify custom file
 	YAML::Node sceneDef = YAML::LoadFile("data/scene.yml");;
 
 	if (args.size() > 1)
@@ -25,8 +26,8 @@ void Iridium::run(std::vector<std::string> args)
 
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
-	Scene testScene = Scene::deserialize(sceneDef);
-	Texture texture = testScene.render(options->getCameraMode(), options->getRayBounces());
+	std::unique_ptr<Scene> testScene = Scene::deserialize(sceneDef);
+	Texture texture = testScene->render(options->getCameraMode(), options->getRayBounces());
 	textureSerializer.serialize(texture, options->getSavePath());
 
 	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();

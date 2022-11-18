@@ -27,7 +27,7 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 		{
 			std::cout << "\r" + std::to_string(pixelY) + " | " + std::to_string(i) + "/" +
 		               std::to_string(getPixelCount()) + " (" + std::to_string((double) i / getPixelCount() * 100) +
-		               "%)";
+		               "%)" << std::endl;
 
 			t0 = std::chrono::high_resolution_clock::now();
 		}

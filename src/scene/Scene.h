@@ -8,7 +8,7 @@
 class Scene
 {
 public:
-	Scene();
+
 
 	std::vector<Light>& getLights();
 
@@ -58,9 +58,13 @@ public:
 	 */
 	std::optional<Eigen::Vector3d> trace(const Ray& ray, int ttl = 1);
 
-	static Scene deserialize(const YAML::Node& node);
+	static std::unique_ptr<Scene> deserialize(const YAML::Node& node);
+
+	static std::unique_ptr<Scene> instantiate();
 
 private:
+	Scene();
+
 	Camera camera;
 	std::vector<std::unique_ptr<Model>> models;
 	std::vector<Light> lights;
