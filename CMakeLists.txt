@@ -13,8 +13,14 @@ add_subdirectory(lib/yaml-cpp-0.7.0)
 target_link_libraries(Iridium PRIVATE yaml-cpp)
 
 # https://stackoverflow.com/questions/13429656/how-to-copy-contents-of-a-directory-into-build-directory-after-make-with-cmake
-add_custom_command(TARGET Iridium
-    PRE_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:Iridium>/data
-)
+#add_custom_command(TARGET Iridium
+#    PRE_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E copy_directory
+#    ${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:Iridium>/data
+#)
+
+# https://stackoverflow.com/questions/42476765/copying-assets-directory-from-source-to-build-directory-in-cmake
+add_custom_target(copy_assets
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/data ${CMAKE_CURRENT_BINARY_DIR}/data
+        )
+add_dependencies(Iridium copy_assets)

@@ -2,7 +2,7 @@
 
 Texture::Texture(int width, int height) : width(width), height(height)
 {
-	data = std::vector<unsigned char>(width * height * 4, 255);
+	data = std::vector<unsigned char>((uint64_t)width * height * 4, 255);
 
 	// Set alpha to 255, so default texture is black
 	for (std::vector<unsigned char>::size_type i = 0; i < data.size(); i++)
@@ -22,7 +22,7 @@ void Texture::setPixel(int x, int y, unsigned int color)
 
 void Texture::setPixel(int x, int y, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-	int offset = (y * width + x) * 4;
+	uint64_t offset = ((uint64_t)y * width + x) * 4;
 
 	data[offset] = r;
 	data[offset + 1] = g;

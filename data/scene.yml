@@ -4,8 +4,8 @@ options:
   rayBounces: 1
 
 camera:
-  width: 1920
-  height: 1536
+  width: 38400
+  height: 30720
   focalLength: 1.0
   apertureRadius: 0
   rayShots: 1
