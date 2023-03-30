@@ -60,3 +60,8 @@ std::unique_ptr<Mesh> Mesh::instantiate()
 	return std::unique_ptr<Mesh>(new Mesh());
 }
 
+void Mesh::applyTransformationMatrix(const Eigen::Matrix4d &transformationMatrix) {
+    for (auto& primitive : primitives) {
+        primitive->applyTransformationMatrix(transformationMatrix);
+    }
+}

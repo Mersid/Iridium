@@ -1,5 +1,5 @@
 #include "Sphere.h"
-
+#include "Eigen/Dense"
 #include <utility>
 #include "../misc/Vector3dConvert.h"
 
@@ -73,4 +73,8 @@ std::unique_ptr<Sphere> Sphere::deserialize(const YAML::Node& node)
 void Sphere::setMesh(Mesh* mesh)
 {
 	Sphere::mesh = mesh;
+}
+
+void Sphere::applyTransformationMatrix(const Eigen::Matrix4d &transformationMatrix) {
+    center = (transformationMatrix * center.homogeneous()).head<3>();
 }

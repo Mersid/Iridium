@@ -106,3 +106,9 @@ void Parallelogram::setMesh(Mesh* mesh)
 	Parallelogram::mesh = mesh;
 }
 
+void Parallelogram::applyTransformationMatrix(const Eigen::Matrix4d &transformationMatrix) {
+    a = (transformationMatrix * a.homogeneous()).head<3>();
+    b = (transformationMatrix * b.homogeneous()).head<3>();
+    c = (transformationMatrix * c.homogeneous()).head<3>();
+}
+

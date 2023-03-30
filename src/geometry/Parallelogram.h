@@ -47,9 +47,11 @@ public:
 
 	void setMesh(Mesh* mesh) override;
 
-	/**
-	 * Returns a parallelogram with no mesh owner (make sure to set it!)
-	 */
+    void applyTransformationMatrix(const Eigen::Matrix4d &transformationMatrix) override;
+
+    /**
+     * Returns a parallelogram with no mesh owner (make sure to set it!)
+     */
 	static std::unique_ptr<Parallelogram> deserialize(const YAML::Node& node);
 
 private:

@@ -37,6 +37,11 @@ public:
 	 */
 	virtual Eigen::Vector3d getNormalAt(Eigen::Vector3d position) = 0;
 
+    /**
+     * Applies the given transformation matrix to the primitive
+     */
+    virtual void applyTransformationMatrix(const Eigen::Matrix4d& transformationMatrix) = 0;
+
 	virtual Mesh* getMesh() = 0;
 	virtual void setMesh(Mesh* mesh) = 0;
 };

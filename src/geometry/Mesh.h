@@ -23,6 +23,8 @@ public:
 
 	void setMaterial(const Material& material);
 
+    void applyTransformationMatrix(const Eigen::Matrix4d& transformationMatrix);
+
 	static std::unique_ptr<Mesh> deserialize(const YAML::Node& node);
 
 private:

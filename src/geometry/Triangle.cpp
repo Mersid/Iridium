@@ -116,3 +116,9 @@ void Triangle::setMesh(Mesh* mesh)
 {
 	Triangle::mesh = mesh;
 }
+
+void Triangle::applyTransformationMatrix(const Eigen::Matrix4d &transformationMatrix) {
+    a = (transformationMatrix * a.homogeneous()).head<3>();
+    b = (transformationMatrix * b.homogeneous()).head<3>();
+    c = (transformationMatrix * c.homogeneous()).head<3>();
+}

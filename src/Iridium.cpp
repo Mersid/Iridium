@@ -21,7 +21,6 @@ void Iridium::run(std::vector<std::string> args)
 
 	if (args.size() > 1)
 		sceneDef = YAML::LoadFile(args[1]);
-	auto t = 16;
 
 	options = std::make_unique<Options>(Options::deserialize(sceneDef["options"]));
 

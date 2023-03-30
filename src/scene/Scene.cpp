@@ -7,7 +7,10 @@ Scene::Scene() : ambientCoefficient(Eigen::Vector3d(1, 1, 1)), ambientLightInten
 Texture Scene::render(CameraMode cameraMode, int rayBounces)
 {
 	for (std::unique_ptr<Model>& m : models)
-		m->generateBVH();
+    {
+        m->applyTransform(); // TODO: Find a better way to do this!
+        m->generateBVH();
+    }
 
 	Texture t = camera.takeSnapshot(cameraMode, rayBounces);
 

@@ -35,9 +35,11 @@ public:
 	Mesh* getMesh() override;
 	void setMesh(Mesh* mesh) override;
 
-	/**
-	 * Returns a triangle with no mesh owner (make sure to set it!)
-	 */
+    void applyTransformationMatrix(const Eigen::Matrix4d &transformationMatrix) override;
+
+    /**
+     * Returns a triangle with no mesh owner (make sure to set it!)
+     */
 	static std::unique_ptr<Triangle> deserialize(const YAML::Node& node);
 
 private:

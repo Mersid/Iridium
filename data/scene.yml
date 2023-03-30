@@ -147,58 +147,58 @@ models:
       material:
         diffuseCoefficient: [0, 1.5, 1.5]
 
-  # - useBvh: true # Dragon
-  #   transform:
-  #     position: [-1.2, -0.15, -5]
-  #     rotation: [0, 70, 0]
-  #     scale: [2, 2, 2]
-  #   mesh:
-  #     file:
-  #       path: data/dragon.off
-  #     material:
-  #       diffuseCoefficient: [0.95, 0.42, 0.42]
-  #       specularCoefficient: [0.2, 0.2, 0.2]
-  #       phongExponent: 256
-  #       reflectionCoefficient: 0
+  - useBvh: true # Dragon
+    transform:
+      position: [-1.2, -0.15, -5]
+      rotation: [0, 70, 0]
+      scale: [2, 2, 2]
+    mesh:
+      file:
+        path: data/dragon.off
+      material:
+        diffuseCoefficient: [0.95, 0.42, 0.42]
+        specularCoefficient: [0.2, 0.2, 0.2]
+        phongExponent: 256
+        reflectionCoefficient: 0
 
-  # - useBvh: true # Cube
-  #   transform:
-  #     position: [-2, -2, -5]
-  #     rotation: [0, 45, 0]
-  #     scale: [1.2, 1.2, 1.2]
-  #   mesh:
-  #     file:
-  #       path: data/cube.off
-  #     material:
-  #       diffuseCoefficient: [0.95, 0.42, 0.15]
-  #       specularCoefficient: [0.2, 0.2, 0.2]
-  #       phongExponent: 256
-  #       reflectionCoefficient: 0.55
+  - useBvh: true # Cube
+    transform:
+      position: [-2, -2, -5]
+      rotation: [0, 45, 0]
+      scale: [1.2, 1.2, 1.2]
+    mesh:
+      file:
+        path: data/cube.off
+      material:
+        diffuseCoefficient: [0.95, 0.42, 0.15]
+        specularCoefficient: [0.2, 0.2, 0.2]
+        phongExponent: 256
+        reflectionCoefficient: 0.55
 
-  # - useBvh: true # Bunny
-  #   transform:
-  #     position: [1.5, -0.8, -2.6]
-  #     rotation: [10, 45, 0]
-  #     scale: [0.8, 0.8, 0.8]
-  #   mesh:
-  #     file:
-  #       path: data/bunny.off
-  #     material:
-  #       diffuseCoefficient: [0.35, 0.8, 0.35]
-  #       specularCoefficient: [0.2, 0.2, 0.2]
-  #       phongExponent: 256
-  #       reflectionCoefficient: 0.15
+  - useBvh: true # Bunny
+    transform:
+      position: [1.5, -0.8, -2.6]
+      rotation: [10, 45, 0]
+      scale: [0.8, 0.8, 0.8]
+    mesh:
+      file:
+        path: data/bunny.off
+      material:
+        diffuseCoefficient: [0.35, 0.8, 0.35]
+        specularCoefficient: [0.2, 0.2, 0.2]
+        phongExponent: 256
+        reflectionCoefficient: 0.15
 
-  # - useBvh: true # Dodecahedron
-  #   transform:
-  #     position: [1, -2, -3]
-  #     rotation: [0, 0, 0]
-  #     scale: [1, 1, 1]
-  #   mesh:
-  #     file:
-  #       path: data/dodeca.off
-  #     material:
-  #       diffuseCoefficient: [0.15, 0.42, 0.95]
-  #       specularCoefficient: [0.2, 0.2, 0.2]
-  #       phongExponent: 256
-  #       reflectionCoefficient: 0.55
+  - useBvh: true # Dodecahedron
+    transform:
+      position: [1, -2, -3]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      file:
+        path: data/dodeca.off
+      material:
+        diffuseCoefficient: [0.15, 0.42, 0.95]
+        specularCoefficient: [0.2, 0.2, 0.2]
+        phongExponent: 256
+        reflectionCoefficient: 0.55

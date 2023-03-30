@@ -75,3 +75,17 @@ void Model::setMesh(std::unique_ptr<Mesh> mesh)
 {
 	this->mesh = std::move(mesh);
 }
+
+void Model::applyTransform() {
+    // https://stackoverflow.com/questions/51315825/precedence-in-eigen-transformations-and-difference-between-pretranslate-and-tran
+    Eigen::Transform<double, 3, Eigen::Affine> t;
+    t = Eigen::Scaling(transform.getScale());
+    t.prerotate(Eigen::AngleAxis<double>(transform.getRotation().x() * EIGEN_PI / 180, Eigen::Vector3d::UnitX()));
+    t.prerotate(Eigen::AngleAxis<double>(transform.getRotation().y() * EIGEN_PI / 180, Eigen::Vector3d::UnitY()));
+    t.prerotate(Eigen::AngleAxis<double>(transform.getRotation().z() * EIGEN_PI / 180, Eigen::Vector3d::UnitZ()));
+    t.pretranslate(transform.getPosition());
+
+    Eigen::Matrix4d m = t.matrix();
+
+    mesh->applyTransformationMatrix(m);
+}

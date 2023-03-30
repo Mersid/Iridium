@@ -33,6 +33,11 @@ public:
 	 */
 	void generateBVH();
 
+    /**
+     * TODO: If we apply it twice it will be applied twice. We should probably check if it's already applied
+     */
+    void applyTransform();
+
 	Transform& getTransform();
 
 	static std::unique_ptr<Model> deserialize(const YAML::Node& node);

@@ -36,7 +36,13 @@ public:
 	Mesh* getMesh() override;
 	void setMesh(Mesh* mesh) override;
 
-	static std::unique_ptr<Sphere> deserialize(const YAML::Node& node);
+    /**
+     * Only apply translations for this; scaling and rotations are not supported
+     * @param transformationMatrix The transformation matrix to apply
+     */
+    void applyTransformationMatrix(const Eigen::Matrix4d &transformationMatrix) override;
+
+    static std::unique_ptr<Sphere> deserialize(const YAML::Node& node);
 
 private:
 	Eigen::Vector3d center;
