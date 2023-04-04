@@ -110,11 +110,11 @@ Eigen::Vector3d Camera::getPixelRayAt(int i) const
 	// https://stackoverflow.com/questions/21412169/creating-a-rotation-matrix-with-pitch-yaw-roll-using-eigen
 
 	// Positive numbers rotate up, negative rotates down
-	Eigen::AngleAxisd rotX(transform.getRotation().x(), Eigen::Vector3d::UnitX());
+	Eigen::AngleAxisd rotX(transform.getRotation().x() * EIGEN_PI / 180, Eigen::Vector3d::UnitX());
 	// Positive numbers rotate left, negative rotates right
-	Eigen::AngleAxisd rotY(transform.getRotation().y(), Eigen::Vector3d::UnitY());
+	Eigen::AngleAxisd rotY(transform.getRotation().y() * EIGEN_PI / 180, Eigen::Vector3d::UnitY());
 	// Positive numbers rotate clockwise, negative numbers rotate counterclockwise
-	Eigen::AngleAxisd rotZ(transform.getRotation().z(), Eigen::Vector3d::UnitZ());
+	Eigen::AngleAxisd rotZ(transform.getRotation().z() * EIGEN_PI / 180, Eigen::Vector3d::UnitZ());
 
 	localPixelRayPos = rotZ.matrix() * rotY.matrix() * rotX.matrix() * localPixelRayPos;
 	localPixelRayPos += transform.getPosition();
