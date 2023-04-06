@@ -54,7 +54,7 @@ public:
 	 * 			Ensure that the value is less than the number of pixels, or it will fall off the bottom edge.
 	 * @return The pixel ray position along the virtual plane.
 	 */
-	[[nodiscard]] Eigen::Vector3d getPixelRayAt(int i) const;
+	[[nodiscard]] Eigen::Vector3d getPixelRayAt(unsigned int pixelX, unsigned int pixelY) const;
 
 	/**
 	 * @return The number of pixels that comprise the camera's virtual plane.

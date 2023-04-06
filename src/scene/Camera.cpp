@@ -1,5 +1,7 @@
 #include <iostream>
 #include <chrono>
+#include <execution>
+#include <ranges>
 #include "Camera.h"
 #include "../Iridium.h"
 #include "Scene.h" // We can use "Scene.h" here because .cpp files aren't #included, so we won't have to deal with circular dependency
@@ -16,62 +18,78 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 	Texture t(width, height);
 	// For recording when last progress printout is, so we don't spam the console and slow stuff down too much
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
+    // To lock the timer and print
+    std::mutex timerMutex;
+    // Number of lines completed
+    std::atomic_uint progress = 0;
 
-	for (unsigned int i = 0; i < getPixelCount(); i++)
-	{
-		Eigen::Vector3d pixelRay = getPixelRayAt(i);
-		unsigned int pixelX = i % width;
-		unsigned int pixelY = i / width;
+    // https://stackoverflow.com/questions/57947061/how-to-use-stdfor-each-stdexecutionpar-without-iterator
+    // https://en.cppreference.com/w/cpp/ranges/iota_view
+    // https://en.cppreference.com/w/cpp/algorithm/for_each
+    auto k = std::views::iota(0, height);
+    std::for_each(std::execution::par, k.begin(), k.end(), [&](int pixelY) {
+        for (int pixelX = 0; pixelX < width; pixelX++)
+        {
+            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t0).count() >= 250)
+            {
+                if (timerMutex.try_lock())
+                {
+                    std::cout << "\r" + std::to_string(progress) + "/" + std::to_string(height) +
+                    " (" + std::to_string((double) progress / height * 100) +
+                               "%)" << std::flush;
 
-		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t0).count() >= 250)
-		{
-			std::cout << "\r" + std::to_string(pixelY) + " | " + std::to_string(i) + "/" +
-		               std::to_string(getPixelCount()) + " (" + std::to_string((double) i / getPixelCount() * 100) +
-		               "%)" << std::flush;
+                    t0 = std::chrono::high_resolution_clock::now();
+                    timerMutex.unlock();
+                }
 
-			t0 = std::chrono::high_resolution_clock::now();
-		}
+            }
 
-		// Potentially sample many colors for depth of field, and we need to average them
-		std::vector<Eigen::Vector3d> colors;
-		colors.reserve(rayShots);
+            Eigen::Vector3d pixelRay = getPixelRayAt(pixelX, pixelY);
 
-		for (unsigned int j = 0; j < rayShots; j++)
-		{
-			Ray ray;
-			if (cameraMode == CameraMode::PERSPECTIVE)
-				ray = Ray(
-						Eigen::Vector3d(dist(mt) + transform.getPosition().x(), dist(mt) + transform.getPosition().y(), -1 + focalLength + transform.getPosition().z()),
-						pixelRay); // because plane is at z = -1
-			else // Orthographic, so fire rays in a straight line
-				// RECALL THAT RAY PARAM TAKES POS AND DIR, NOT START AND END. DON'T BE LIKE ME AND MAKE THIS MISTAKE :'(  - Steven, 2022-02-11
-				// Guess what? I made the same mistake again (for the focal length), by changing the aperture's z pos but not the dir. Classic. - Steven, 2022-02-19
-				ray = Ray(pixelRay + Eigen::Vector3d(0, 0, 1), pixelRay);
+            // Potentially sample many colors for depth of field, and we need to average them
+            std::vector<Eigen::Vector3d> colors;
+            colors.reserve(rayShots);
 
-			std::optional<Eigen::Vector3d> colorOpt = scene->trace(ray, ttl);
-			Eigen::Vector3d color = colorOpt.has_value() ? colorOpt.value() : Eigen::Vector3d::Zero(); // Missed pixels are black
-			colors.emplace_back(color);
-		}
+            for (unsigned int j = 0; j < rayShots; j++)
+            {
+                Ray ray;
+                if (cameraMode == CameraMode::PERSPECTIVE)
+                    ray = Ray(
+                            Eigen::Vector3d(dist(mt) + transform.getPosition().x(), dist(mt) + transform.getPosition().y(), -1 + focalLength + transform.getPosition().z()),
+                            pixelRay); // because plane is at z = -1
+                else // Orthographic, so fire rays in a straight line
+                    // RECALL THAT RAY PARAM TAKES POS AND DIR, NOT START AND END. DON'T BE LIKE ME AND MAKE THIS MISTAKE :'(  - Steven, 2022-02-11
+                    // Guess what? I made the same mistake again (for the focal length), by changing the aperture's z pos but not the dir. Classic. - Steven, 2022-02-19
+                    ray = Ray(pixelRay + Eigen::Vector3d(0, 0, 1), pixelRay);
 
-		double avgR = 0;
-		double avgG = 0;
-		double avgB = 0;
-		for (Eigen::Vector3d& colorVec : colors)
-		{
-			avgR += colorVec[0];
-			avgG += colorVec[1];
-			avgB += colorVec[2];
-		}
-		avgR /= rayShots;
-		avgG /= rayShots;
-		avgB /= rayShots;
+                std::optional<Eigen::Vector3d> colorOpt = scene->trace(ray, ttl);
+                Eigen::Vector3d color = colorOpt.has_value() ? colorOpt.value() : Eigen::Vector3d::Zero(); // Missed pixels are black
+                colors.emplace_back(color);
+            }
 
-		unsigned char colorR = (unsigned char)(255 * std::clamp(avgR, 0.0, 1.0));
-		unsigned char colorG = (unsigned char)(255 * std::clamp(avgG, 0.0, 1.0));
-		unsigned char colorB = (unsigned char)(255 * std::clamp(avgB, 0.0, 1.0));
+            double avgR = 0;
+            double avgG = 0;
+            double avgB = 0;
+            for (Eigen::Vector3d& colorVec : colors)
+            {
+                avgR += colorVec[0];
+                avgG += colorVec[1];
+                avgB += colorVec[2];
+            }
+            avgR /= rayShots;
+            avgG /= rayShots;
+            avgB /= rayShots;
 
-		t.setPixel((signed int)pixelX, (signed int)pixelY, colorR, colorG, colorB);
-	}
+            unsigned char colorR = (unsigned char)(255 * std::clamp(avgR, 0.0, 1.0));
+            unsigned char colorG = (unsigned char)(255 * std::clamp(avgG, 0.0, 1.0));
+            unsigned char colorB = (unsigned char)(255 * std::clamp(avgB, 0.0, 1.0));
+
+            t.setPixel((signed int)pixelX, (signed int)pixelY, colorR, colorG, colorB);
+        }
+        progress++;
+    });
+
+	std::cout << "\n" << std::endl;
 	return t;
 }
 
@@ -80,14 +98,11 @@ void Camera::setScene(Scene &s)
 	this->scene = &s;
 }
 
-Eigen::Vector3d Camera::getPixelRayAt(int i) const
+Eigen::Vector3d Camera::getPixelRayAt(unsigned int pixelX, unsigned int pixelY) const
 {
 	// We start with an empty "image" represented by a vector of "pixel" rays, each pixel of which corresponds to a single pixel on
 	// a texture. However, our camera's pixel rays are from -1 to 1, so we need to scale accordingly.
 	// We're converting from raster space, to NDC, to screen space for each pixel to evenly distribute our pixel rays.
-
-	unsigned int pixelX = i % width;
-	unsigned int pixelY = i / width;
 
 	// NDC, between 0 and 1
 	double ndcX = (pixelX + 0.5) / width;
