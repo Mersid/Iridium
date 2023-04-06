@@ -43,7 +43,7 @@ Iridium* Iridium::getInstance()
 	return instance;
 }
 
-TextureSerializer& Iridium::getTextureSerializer()
+LodeTextureSerializer& Iridium::getTextureSerializer()
 {
 	return textureSerializer;
 }

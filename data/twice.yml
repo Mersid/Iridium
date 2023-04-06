@@ -1,0 +1,204 @@
+options:
+  cameraMode: perspective
+  savePath: combined.png
+  rayBounces: 10
+
+camera:
+  width: 76800
+  height: 61440
+  focalLength: 1.0
+  apertureRadius: 0
+  rayShots: 1
+  transform:
+    position: [0, 0, 0]
+    rotation: [0, 0, 0]
+    scale: [1, 1, 1]
+
+lights:
+  - position: [-1, 4, -6]
+    intensity: 0.5
+  - position: [0, 4, 0]
+    intensity: 0.5
+
+models:
+  - useBvh: false # Baseplate
+    transform:
+      position: [0, 0, 0]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      parallelogram:
+        a: [-10, -2, 0]
+        b: [10, -2, 0]
+        c: [-10, -2, -20]
+      material:
+        diffuseCoefficient: [0.5, 0.5, 0.5]
+        specularCoefficient: [0.5, 0.5, 0.5]
+        phongExponent: 10
+        reflectionCoefficient: 0.7
+
+  - useBvh: false # Blue sphere
+    transform:
+      position: [0, 0, 0]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      sphere:
+        center: [-2, -1, -8]
+        radius: 1
+      material:
+        diffuseCoefficient: [0.5, 0.5, 0.5]
+        specularCoefficient: [0.5, 0.5, 0.5]
+        phongExponent: 10
+        reflectionCoefficient: 0.7
+
+  - useBvh: false # Red sphere
+    transform:
+      position: [0, 0, 0]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      sphere:
+        center: [-2, 1, -8]
+        radius: 1
+      material:
+        diffuseCoefficient: [0.5, 0.1, 0.1]
+        specularCoefficient: [0.4, 0.4, 0.4]
+
+  - useBvh: false # Floating green sphere
+    transform:
+      position: [0, 0, 0]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      sphere:
+        center: [0, 0.5, -6]
+        radius: 0.5
+      material:
+        diffuseCoefficient: [0.1, 0.5, 0.1]
+        specularCoefficient: [0.4, 0.4, 0.4]
+        phongExponent: 10
+        reflectionCoefficient: 0.5
+
+  - useBvh: false # Bronze sphere
+    transform:
+      position: [0, 0, 0]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      sphere:
+        center: [1, -1.5, -4]
+        radius: 0.5
+      material:
+        diffuseCoefficient: [0.5, 0.3, 0.1]
+        specularCoefficient: [0.4, 0.4, 0.4]
+        phongExponent: 12
+        reflectionCoefficient: 0.25
+
+  - useBvh: false # Yellow sphere w/ blue Phong
+    transform:
+      position: [0, 0, 0]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      sphere:
+        center: [-1, -1.6, -3]
+        radius: 0.4
+      material:
+        diffuseCoefficient: [1, 1, 0]
+        specularCoefficient: [0, 0, 1]
+
+  - useBvh: false # Lavender sphere
+    transform:
+      position: [0, 0, 0]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      sphere:
+        center: [-3, -1, -4]
+        radius: 0.6
+      material:
+        diffuseCoefficient: [0.8, 0.8, 1]
+        specularCoefficient: [0.4, 0.4, 0.4]
+
+  - useBvh: false # Pink vertical rectangle
+    transform:
+      position: [0, 0, 0]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      parallelogram:
+        a: [1, -2, -9]
+        b: [3, -2, -9]
+        c: [1, 0, -9]
+      material:
+        diffuseCoefficient: [1, 0.2, 0.6]
+
+  - useBvh: false # Cyan side-facing rectangle
+    transform:
+      position: [0, 0, 0]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      parallelogram:
+        a: [3, -2, -8]
+        b: [5, -2, -6]
+        c: [3, 0, -8]
+      material:
+        diffuseCoefficient: [0, 1.5, 1.5]
+
+  - useBvh: true # Dragon
+    transform:
+      position: [-1.2, -0.15, -5]
+      rotation: [0, 70, 0]
+      scale: [2, 2, 2]
+    mesh:
+      file:
+        path: data/dragon.off
+      material:
+        diffuseCoefficient: [0.95, 0.42, 0.42]
+        specularCoefficient: [0.2, 0.2, 0.2]
+        phongExponent: 256
+        reflectionCoefficient: 0
+
+  - useBvh: true # Cube
+    transform:
+      position: [-2, -2, -5]
+      rotation: [0, 45, 0]
+      scale: [1.2, 1.2, 1.2]
+    mesh:
+      file:
+        path: data/cube.off
+      material:
+        diffuseCoefficient: [0.95, 0.42, 0.15]
+        specularCoefficient: [0.2, 0.2, 0.2]
+        phongExponent: 256
+        reflectionCoefficient: 0.55
+
+  - useBvh: true # Bunny
+    transform:
+      position: [1.5, -0.8, -2.6]
+      rotation: [10, 45, 0]
+      scale: [0.8, 0.8, 0.8]
+    mesh:
+      file:
+        path: data/bunny.off
+      material:
+        diffuseCoefficient: [0.35, 0.8, 0.35]
+        specularCoefficient: [0.2, 0.2, 0.2]
+        phongExponent: 256
+        reflectionCoefficient: 0.15
+
+  - useBvh: true # Dodecahedron
+    transform:
+      position: [1, -2, -3]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      file:
+        path: data/dodeca.off
+      material:
+        diffuseCoefficient: [0.15, 0.42, 0.95]
+        specularCoefficient: [0.2, 0.2, 0.2]
+        phongExponent: 256
+        reflectionCoefficient: 0.55
