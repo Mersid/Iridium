@@ -17,12 +17,14 @@ Iridium::Iridium()
 void Iridium::run(std::vector<std::string> args)
 {
 	// TODO: What if no file named this? Will always crash even if we specify custom file
-	YAML::Node sceneDef = YAML::LoadFile("data/scene.yml");;
+	YAML::Node sceneDef;
 
-	if (args.size() > 1)
-		sceneDef = YAML::LoadFile(args[1]);
+    if (args.size() > 1)
+        sceneDef = YAML::LoadFile(args[1]);
+    else
+        sceneDef = YAML::LoadFile("data/scene.yml");
 
-	options = std::make_unique<Options>(Options::deserialize(sceneDef["options"]));
+    options = std::make_unique<Options>(Options::deserialize(sceneDef["options"]));
 
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
