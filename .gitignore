@@ -30,3 +30,5 @@ cl-release/
 cl-wsl/
 cl-debug/
 cl-reldebinfo/
+cl-wsl-debug/
+cl-wsl-reldebinfo/

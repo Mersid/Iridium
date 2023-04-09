@@ -1,10 +1,9 @@
 #pragma once
 
 
-#include "texture/TextureSerializer.h"
 #include "geometry/OffSerializer.h"
 #include "misc/Options.h"
-#include "texture/LodeTextureSerializer.h"
+#include "texture/TextureSerializer.h"
 
 class Iridium
 {
@@ -14,13 +13,14 @@ public:
 
 	static Iridium* getInstance();
 
-	[[nodiscard]] LodeTextureSerializer& getTextureSerializer();
+	[[nodiscard]] TextureSerializer* getTextureSerializer();
 	[[nodiscard]] OffSerializer getOffSerializer();
 	[[nodiscard]] const std::unique_ptr<Options>& getOptions() const;
 
+
 private:
 	inline static Iridium* instance;
-	LodeTextureSerializer textureSerializer;
+	std::unique_ptr<TextureSerializer> textureSerializer;
 	OffSerializer offSerializer;
 	std::unique_ptr<Options> options;
 };

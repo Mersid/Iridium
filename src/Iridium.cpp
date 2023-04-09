@@ -8,6 +8,8 @@
 #include "geometry/Sphere.h"
 #include "yaml-cpp/yaml.h" // https://stackoverflow.com/questions/47389809/yaml-cpp-unresolved-external-symbol-error
 #include "misc/Vector3dConvert.h"
+#include "texture/PpmTextureSerializer.h"
+#include "texture/LodeTextureSerializer.h"
 
 Iridium::Iridium()
 {
@@ -16,7 +18,6 @@ Iridium::Iridium()
 
 void Iridium::run(std::vector<std::string> args)
 {
-	// TODO: What if no file named this? Will always crash even if we specify custom file
 	YAML::Node sceneDef;
 
     if (args.size() > 1)
@@ -26,11 +27,16 @@ void Iridium::run(std::vector<std::string> args)
 
     options = std::make_unique<Options>(Options::deserialize(sceneDef["options"]));
 
+    if (options->isPpm())
+        textureSerializer = std::make_unique<PpmTextureSerializer>();
+    else
+        textureSerializer = std::make_unique<LodeTextureSerializer>();
+
 	std::chrono::high_resolution_clock::time_point t0 = std::chrono::high_resolution_clock::now();
 
 	std::unique_ptr<Scene> testScene = Scene::deserialize(sceneDef);
 	Texture texture = testScene->render(options->getCameraMode(), options->getRayBounces());
-	textureSerializer.serialize(texture, options->getSavePath());
+	textureSerializer->serialize(texture, options->getSavePath());
 
 	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 
@@ -43,9 +49,9 @@ Iridium* Iridium::getInstance()
 	return instance;
 }
 
-LodeTextureSerializer& Iridium::getTextureSerializer()
+TextureSerializer* Iridium::getTextureSerializer()
 {
-	return textureSerializer;
+	return textureSerializer.get();
 }
 
 OffSerializer Iridium::getOffSerializer()

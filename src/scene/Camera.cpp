@@ -1,8 +1,11 @@
 #include <iostream>
 #include <chrono>
 #include <execution>
+#include <future>
 #include <ranges>
+#include <semaphore>
 #include "Camera.h"
+#include "BS_thread_pool.hpp"
 #include "../Iridium.h"
 #include "Scene.h" // We can use "Scene.h" here because .cpp files aren't #included, so we won't have to deal with circular dependency
 
@@ -22,72 +25,94 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
     std::mutex timerMutex;
     // Number of lines completed
     std::atomic_uint progress = 0;
+    BS::thread_pool pool;
+
+    std::cout << "Rendering " << width << "x" << height << " image with " << ttl << " bounces" << std::endl;
+
+//    std::counting_semaphore semaphore(1024);
 
     // https://stackoverflow.com/questions/57947061/how-to-use-stdfor-each-stdexecutionpar-without-iterator
     // https://en.cppreference.com/w/cpp/ranges/iota_view
     // https://en.cppreference.com/w/cpp/algorithm/for_each
     auto k = std::views::iota(0, height);
-    std::for_each(std::execution::par, k.begin(), k.end(), [&](int pixelY) {
-        for (int pixelX = 0; pixelX < width; pixelX++)
-        {
-            if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t0).count() >= 250)
-            {
+//    std::for_each(std::execution::par, k.begin(), k.end(), [&](int pixelY) {
+    std::vector<std::future<void>> futures;
+    futures.reserve(height);
+    for (int pixelY = 0; pixelY < height; pixelY++)
+    {
+//        semaphore.acquire();
+
+        // pixelY is captured by value because it should stay consistent for each line
+        std::future<void> f = pool.submit([&, pixelY]() {
+
+            for (int pixelX = 0; pixelX < width; pixelX++) {
                 if (timerMutex.try_lock())
                 {
-                    std::cout << "\r" + std::to_string(progress) + "/" + std::to_string(height) +
-                    " (" + std::to_string((double) progress / height * 100) +
-                               "%)" << std::flush;
+                    if (std::chrono::duration_cast<std::chrono::milliseconds>(
+                        std::chrono::high_resolution_clock::now() - t0).count() >= 250)
+                    {
+                        std::cout << "\r" + std::to_string(progress) + "/" + std::to_string(height) +
+                                     " (" + std::to_string((double) progress / height * 100) +
+                                     "%)" << std::flush;
 
-                    t0 = std::chrono::high_resolution_clock::now();
+                        t0 = std::chrono::high_resolution_clock::now();
+                    }
                     timerMutex.unlock();
                 }
 
+                Eigen::Vector3d pixelRay = getPixelRayAt(pixelX, pixelY);
+
+                // Potentially sample many colors for depth of field, and we need to average them
+                std::vector<Eigen::Vector3d> colors;
+                colors.reserve(rayShots);
+
+                for (unsigned int j = 0; j < rayShots; j++) {
+                    Ray ray;
+                    if (cameraMode == CameraMode::PERSPECTIVE)
+                        ray = Ray(
+                                Eigen::Vector3d(dist(mt) + transform.getPosition().x(),
+                                                dist(mt) + transform.getPosition().y(),
+                                                -1 + focalLength + transform.getPosition().z()),
+                                pixelRay); // because plane is at z = -1
+                    else // Orthographic, so fire rays in a straight line
+                        // RECALL THAT RAY PARAM TAKES POS AND DIR, NOT START AND END. DON'T BE LIKE ME AND MAKE THIS MISTAKE :'(  - Steven, 2022-02-11
+                        // Guess what? I made the same mistake again (for the focal length), by changing the aperture's z pos but not the dir. Classic. - Steven, 2022-02-19
+                        ray = Ray(pixelRay + Eigen::Vector3d(0, 0, 1), pixelRay);
+
+                    std::optional<Eigen::Vector3d> colorOpt = scene->trace(ray, ttl);
+                    Eigen::Vector3d color = colorOpt.has_value() ? colorOpt.value()
+                                                                 : Eigen::Vector3d::Zero(); // Missed pixels are black
+                    colors.emplace_back(color);
+                }
+
+                double avgR = 0;
+                double avgG = 0;
+                double avgB = 0;
+                for (Eigen::Vector3d &colorVec: colors) {
+                    avgR += colorVec[0];
+                    avgG += colorVec[1];
+                    avgB += colorVec[2];
+                }
+                avgR /= rayShots;
+                avgG /= rayShots;
+                avgB /= rayShots;
+
+                unsigned char colorR = (unsigned char) (255 * std::clamp(avgR, 0.0, 1.0));
+                unsigned char colorG = (unsigned char) (255 * std::clamp(avgG, 0.0, 1.0));
+                unsigned char colorB = (unsigned char) (255 * std::clamp(avgB, 0.0, 1.0));
+
+                t.setPixel((signed int) pixelX, (signed int) pixelY, colorR, colorG, colorB);
             }
+            progress++;
+//            semaphore.release();
+        });
+        futures.emplace_back(std::move(f));
+    }
 
-            Eigen::Vector3d pixelRay = getPixelRayAt(pixelX, pixelY);
-
-            // Potentially sample many colors for depth of field, and we need to average them
-            std::vector<Eigen::Vector3d> colors;
-            colors.reserve(rayShots);
-
-            for (unsigned int j = 0; j < rayShots; j++)
-            {
-                Ray ray;
-                if (cameraMode == CameraMode::PERSPECTIVE)
-                    ray = Ray(
-                            Eigen::Vector3d(dist(mt) + transform.getPosition().x(), dist(mt) + transform.getPosition().y(), -1 + focalLength + transform.getPosition().z()),
-                            pixelRay); // because plane is at z = -1
-                else // Orthographic, so fire rays in a straight line
-                    // RECALL THAT RAY PARAM TAKES POS AND DIR, NOT START AND END. DON'T BE LIKE ME AND MAKE THIS MISTAKE :'(  - Steven, 2022-02-11
-                    // Guess what? I made the same mistake again (for the focal length), by changing the aperture's z pos but not the dir. Classic. - Steven, 2022-02-19
-                    ray = Ray(pixelRay + Eigen::Vector3d(0, 0, 1), pixelRay);
-
-                std::optional<Eigen::Vector3d> colorOpt = scene->trace(ray, ttl);
-                Eigen::Vector3d color = colorOpt.has_value() ? colorOpt.value() : Eigen::Vector3d::Zero(); // Missed pixels are black
-                colors.emplace_back(color);
-            }
-
-            double avgR = 0;
-            double avgG = 0;
-            double avgB = 0;
-            for (Eigen::Vector3d& colorVec : colors)
-            {
-                avgR += colorVec[0];
-                avgG += colorVec[1];
-                avgB += colorVec[2];
-            }
-            avgR /= rayShots;
-            avgG /= rayShots;
-            avgB /= rayShots;
-
-            unsigned char colorR = (unsigned char)(255 * std::clamp(avgR, 0.0, 1.0));
-            unsigned char colorG = (unsigned char)(255 * std::clamp(avgG, 0.0, 1.0));
-            unsigned char colorB = (unsigned char)(255 * std::clamp(avgB, 0.0, 1.0));
-
-            t.setPixel((signed int)pixelX, (signed int)pixelY, colorR, colorG, colorB);
-        }
-        progress++;
-    });
+    for (auto &f: futures)
+    {
+        f.wait();
+    }
 
 	std::cout << "\n" << std::endl;
 	return t;

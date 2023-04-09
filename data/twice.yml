@@ -2,6 +2,7 @@ options:
   cameraMode: perspective
   savePath: combined.png
   rayBounces: 10
+  outputFormat: ppm
 
 camera:
   width: 76800

@@ -48,7 +48,7 @@ const std::vector<unsigned char>& Texture::getData() const
 
 Eigen::Vector4d Texture::getPixelVectorAt(int x, int y) const
 {
-	int offset = (y * width + x) * 4;
+	unsigned long long offset = ((unsigned long long )y * width + x) * 4;
 
 	unsigned char r = data[offset] ;
 	unsigned char g = data[offset + 1];
