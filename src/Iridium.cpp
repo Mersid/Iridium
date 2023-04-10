@@ -1,5 +1,6 @@
 #include <chrono>
 #include <iostream>
+#include <filesystem>
 #include "Iridium.h"
 #include "texture/Texture.h"
 #include "scene/Camera.h"
@@ -10,6 +11,7 @@
 #include "misc/Vector3dConvert.h"
 #include "texture/PpmTextureSerializer.h"
 #include "texture/LodeTextureSerializer.h"
+#include "texture/ChunkedPpmTextureSerializer.h"
 
 Iridium::Iridium()
 {
@@ -28,7 +30,7 @@ void Iridium::run(std::vector<std::string> args)
     options = std::make_unique<Options>(Options::deserialize(sceneDef["options"]));
 
     if (options->isPpm())
-        textureSerializer = std::make_unique<PpmTextureSerializer>();
+        textureSerializer = std::make_unique<ChunkedPpmTextureSerializer>();
     else
         textureSerializer = std::make_unique<LodeTextureSerializer>();
 
