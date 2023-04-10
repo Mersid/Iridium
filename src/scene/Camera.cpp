@@ -29,19 +29,10 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
 
     std::cout << "Rendering " << width << "x" << height << " image with " << ttl << " bounces" << std::endl;
 
-//    std::counting_semaphore semaphore(1024);
-
-    // https://stackoverflow.com/questions/57947061/how-to-use-stdfor-each-stdexecutionpar-without-iterator
-    // https://en.cppreference.com/w/cpp/ranges/iota_view
-    // https://en.cppreference.com/w/cpp/algorithm/for_each
-    auto k = std::views::iota(0, height);
-//    std::for_each(std::execution::par, k.begin(), k.end(), [&](int pixelY) {
     std::vector<std::future<void>> futures;
     futures.reserve(height);
     for (int pixelY = 0; pixelY < height; pixelY++)
     {
-//        semaphore.acquire();
-
         // pixelY is captured by value because it should stay consistent for each line
         std::future<void> f = pool.submit([&, pixelY]() {
 
@@ -104,7 +95,6 @@ Texture Camera::takeSnapshot(CameraMode cameraMode, int ttl)
                 t.setPixel((signed int) pixelX, (signed int) pixelY, colorR, colorG, colorB);
             }
             progress++;
-//            semaphore.release();
         });
         futures.emplace_back(std::move(f));
     }

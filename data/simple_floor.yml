@@ -1,0 +1,67 @@
+options:
+  cameraMode: perspective
+  savePath: floor.png
+  rayBounces: 10
+  outputFormat: png
+
+camera:
+  width: 10
+  height: 8
+  focalLength: 1.0
+  apertureRadius: 0
+  rayShots: 1
+  transform:
+    position: [0, 0, 0]
+    rotation: [0, 0, 0]
+    scale: [1, 1, 1]
+
+lights:
+  - position: [-1, 4, -6]
+    intensity: 0.5
+  - position: [0, 4, 0]
+    intensity: 0.5
+
+models:
+  - useBvh: false # Baseplate
+    transform:
+      position: [0, 0, 0]
+      rotation: [0, 0, 0]
+      scale: [1, 1, 1]
+    mesh:
+      parallelogram:
+        a: [-10, -2, 0]
+        b: [10, -2, 0]
+        c: [-10, -2, -20]
+      material:
+        diffuseCoefficient: [0.5, 0.5, 0.5]
+        specularCoefficient: [0.5, 0.5, 0.5]
+        phongExponent: 10
+        reflectionCoefficient: 0.7
+
+  - useBvh: true # Bunny
+    transform:
+      position: [ 1.5, -0.8, -2.6 ]
+      rotation: [ 10, 45, 0 ]
+      scale: [ 0.8, 0.8, 0.8 ]
+    mesh:
+      file:
+        path: data/bunny.off
+      material:
+        diffuseCoefficient: [ 0.35, 0.8, 0.35 ]
+        specularCoefficient: [ 0.2, 0.2, 0.2 ]
+        phongExponent: 256
+        reflectionCoefficient: 0.15
+
+  - useBvh: true # Dodecahedron
+    transform:
+      position: [ 1, -2, -3 ]
+      rotation: [ 0, 0, 0 ]
+      scale: [ 1, 1, 1 ]
+    mesh:
+      file:
+        path: data/dodeca.off
+      material:
+        diffuseCoefficient: [ 0.15, 0.42, 0.95 ]
+        specularCoefficient: [ 0.2, 0.2, 0.2 ]
+        phongExponent: 256
+        reflectionCoefficient: 0.55

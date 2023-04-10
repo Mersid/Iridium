@@ -1,6 +1,6 @@
 options:
   cameraMode: perspective
-  savePath: combined.png
+  savePath: floor.ppm
   rayBounces: 10
   outputFormat: ppm
 
