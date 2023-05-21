@@ -16,7 +16,7 @@ void ChunkedPpmTextureSerializer::serialize(Texture &texture, const std::string 
     unsigned long long number = dist(mt);
 
     // Create a temporary directory to store the chunks, with a random number appended to allow multiple instances to run at once
-    std::filesystem::path tempDir = std::filesystem::temp_directory_path() / ("Iridium_" + std::to_string(number));
+    std::filesystem::path tempDir = ("Iridium_" + std::to_string(number));
     std::filesystem::create_directories(tempDir);
 
     std::cout << "PPM serializing chunks to " << tempDir.string() << std::endl;
@@ -94,7 +94,7 @@ void ChunkedPpmTextureSerializer::serialize(Texture &texture, const std::string 
         std::string line;
         while (std::getline(chunkStream, line))
         {
-            fileStream << line;
+            fileStream << line << "\n"; // Try removing the \n to get some wild results
         }
         chunkStream.close();
 

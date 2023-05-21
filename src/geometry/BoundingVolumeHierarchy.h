@@ -10,9 +10,9 @@ public:
 	/**
 	 * Recursively builds a BVH tree. Note that a tree contains subtrees, so this recursively builds the tree up.
 	 * @param primitives The primitives to create a new tree from. It is illegal and undefined behavior for the vector to be empty.
-	 * @param i Incremented with depth. This is used with modulo to determine to split in x, y, or z axis (%0 = x, %1 = y, %2 = z)
+	 * @param depth Incremented with depth. This is used with modulo to determine to split in x, y, or z axis (%0 = x, %1 = y, %2 = z). Root has depth 0
 	 */
-	explicit BoundingVolumeHierarchy(std::vector<Primitive*> primitives, unsigned int i = 0);
+	explicit BoundingVolumeHierarchy(std::vector<Primitive*> primitives, unsigned int depth = 0);
 	BoundingVolumeHierarchy() = default;
 
 	/**
