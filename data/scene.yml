@@ -164,8 +164,8 @@ models:
 
   - useBvh: true # Teapot
     transform:
-      position: [ -1.8, 0.15, -5 ]
-      rotation: [ 0, 25, 0 ]
+      position: [ -1.2, 0.15, -5 ]
+      rotation: [ -90, 0, 0 ]
       scale: [ 0.01, 0.01, 0.01 ]
     mesh:
       file:
@@ -174,7 +174,7 @@ models:
         diffuseCoefficient: [ 0.35, 0.8, 0.35 ]
         specularCoefficient: [ 0.2, 0.2, 0.2 ]
         phongExponent: 256
-        reflectionCoefficient: 0.15
+        reflectionCoefficient: 0.55
 
   - useBvh: true # Cube
     transform:

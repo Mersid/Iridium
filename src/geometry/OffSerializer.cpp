@@ -5,6 +5,8 @@
 
 std::unique_ptr<Mesh> OffSerializer::loadOff(const std::string& path)
 {
+    // NOTE: Does not handle quads. Only triangles.
+
 	std::ifstream stream(path);
 	std::stringstream ss;
 	ss << stream.rdbuf();
