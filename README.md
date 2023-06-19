@@ -118,3 +118,5 @@ Iridium data/scene.yml
 ```
 
 ## Gallery
+![combined](https://github.com/Mersid/Iridium/assets/30786211/a47a0591-35bf-4eb0-8250-5d3aa11081fc)
+The default scene that is generated when run without any parameters. This corresponds to `data/scene.yml`.
